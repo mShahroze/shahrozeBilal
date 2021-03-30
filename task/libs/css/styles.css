@@ -1,15 +1,18 @@
 #results {
-  text-align: center;
+  text-align: left;
   align-items: center;
   height: 200px;
+  padding-left: 10px;
 }
 
 table {
   border-collapse: collapse;
 }
+
 tr {
   border: none;
 }
+
 th,
 td {
   border-collapse: collapse;

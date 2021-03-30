@@ -31,14 +31,15 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>1.&ltname&gt</td>
-						<td colspan="3" class="description">&ltdescription&gt</td>
-						<td><button>Submit</button></td>
+						<td>Earthquakes Api</td>
+						<td colspan="3" class="description">This Api returns a list of earthquakes, ordered by magnitude. 
+							You can click on Submit on the right to view the list </td>
+						<td><button id="earthquakesSubmit">Submit</button></td>
 					</tr>
 					<tr>
-						<td>2.&ltname&gt</td>
-						<td colspan="3" class="description">&ltdescription&gt</td>
-						<td><button>Submit</button></td>
+						<td>Oceans Api</td>
+						<td colspan="3" class="description">returns the ocean or sea for the given latitude/longitude</td>
+						<td><button id="OceansSubmit">Submit</button></td>
 					</tr>
 					<tr>
 						<td>3.&ltname&gt</td>
@@ -47,14 +48,21 @@
 					</tr>
 				</tbody>
 				<tfoot>
-						<td colspan="5" rowspan="3" id="results"><p id="latitude">Latitude: </p></td>
+						<td colspan="5" rowspan="3" id="results">
+							<p>Date & Time: <span id="datetime"></span></p>
+							<p>Depth: <span id="depth"></span></p>
+							<p>Longitude: <span id="longitude"></span></p>
+							<p>src: <span id="src"></span></p>
+							<p>Maginitude: <span id="magnitude"></span></p>
+							<p>Latitude: <span id="latitude"></span></p>
+						</td>
 				</tfoot>
 			</table>
 		</main>
 
 		<div id=”preloader”></div>
 
-		<script type="application/javascript" src="libs/js/jquery-3.6.0.js"></script>
+		<script type="application/javascript" src="libs/js/jquery-3.6.0.min.js"></script>
 		<script type=application/javascript src="libs/js/script.js"></script>
 
 	</body>
