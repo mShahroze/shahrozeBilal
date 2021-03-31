@@ -1,4 +1,4 @@
-#results {
+#footer {
   text-align: left;
   align-items: center;
   height: 200px;
@@ -34,4 +34,23 @@ button {
   width: 60px;
   background-color: #0262d6;
   color: #e8e6e3;
+}
+
+#results {
+  text-align: center;
+  align-items: center;
+}
+
+#first,
+#second,
+#third {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }

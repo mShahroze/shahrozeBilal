@@ -38,23 +38,39 @@
 					</tr>
 					<tr>
 						<td>Oceans Api</td>
-						<td colspan="3" class="description">returns the ocean or sea for the given latitude/longitude</td>
-						<td><button id="OceansSubmit">Submit</button></td>
+						<td colspan="3" class="description">This Api lists information about the ocean or sea for the given latitude/longitude</td>
+						<td><button id="oceansSubmit">Submit</button></td>
 					</tr>
 					<tr>
-						<td>3.&ltname&gt</td>
-						<td colspan="3" class="description">&ltdescription&gt</td>
-						<td><button>Submit</button></td>
+						<td>Weather Api</td>
+						<td colspan="3" class="description">This Api lists information of weather stations with the most recent weather observation</td>
+						<td><button id="weatherSubmit">Submit</button></td>
 					</tr>
 				</tbody>
 				<tfoot>
-						<td colspan="5" rowspan="3" id="results">
-							<p>Date & Time: <span id="datetime"></span></p>
-							<p>Depth: <span id="depth"></span></p>
-							<p>Longitude: <span id="longitude"></span></p>
-							<p>src: <span id="src"></span></p>
-							<p>Maginitude: <span id="magnitude"></span></p>
-							<p>Latitude: <span id="latitude"></span></p>
+					<td colspan="5" rowspan="3" id="footer">
+						<h4 id='results'>Results</h4>
+							<div id="first">
+								<p>Date & Time: <span id="datetime1"></span></p>
+								<p>Depth: <span id="depth"></span></p>
+								<p>Longitude: <span id="longitude"></span></p>
+								<p>src: <span id="src"></span></p>
+								<p>Maginitude: <span id="magnitude"></span></p>
+								<p>Latitude: <span id="latitude"></span></p>
+							</div>
+							<div id="second">
+								<p>Distance: <span id="distance"></span></p>
+								<p>GeonameId: <span id="geonameId"></span></p>
+								<p>Name: <span id="name"></span></p>
+							</div>
+							<div id="third">
+								<p>Observation: <span id="observation"></span></p>
+								<p>Date & Time: <span id="datetime2"></span></p>
+								<p>Temperature: <span id="temperature"></span></p>
+								<p>Humidity: <span id="humidity"></span></p>
+								<p>Station Name: <span id="stationName"></span></p>
+								<p>Wind Direction: <span id="windDirection"></span></p>
+							</div>
 						</td>
 				</tfoot>
 			</table>
