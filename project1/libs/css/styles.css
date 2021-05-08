@@ -1,3 +1,50 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
 #geomap {
-  height: 600px;
+  width: 99vw;
+  height: 90vh;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  z-index: 0;
+}
+
+.container-fluid {
+  display: none;
+}
+
+.navbar {
+  width: 99vw;
+}
+
+.loader {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #16191e;
+  position: absolute;
+}
+
+.loader > div {
+  height: 50px;
+  width: 50px;
+  border: 10px solid #45474b;
+  border-top-color: #2a88e6;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 50%;
+  animation: spin 1.5s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }
