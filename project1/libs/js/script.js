@@ -55,6 +55,75 @@ $(document).ready(function () {
     myMap.setView(mapOptions.center, 14);
     marker.bindPopup('<b>You Are Here', { minWidth: 80 }).openPopup();
     myMap.locate({ setView: true, maxZoom: 10 });
+
+    $.ajax({
+      url: 'libs/php/getCountryBorders.php',
+      type: 'POST',
+      dataType: 'json',
+      success: function (result) {
+        if (result.status.name == 'ok') {
+          function highlightFeature(e) {
+            const layer = e.target;
+
+            layer.setStyle({
+              weight: 5,
+              color: '#666',
+              dashArray: '',
+              fillOpacity: 0.7,
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              layer.bringToFront();
+            }
+          }
+
+          function resetHighlight(e) {
+            border.resetStyle(e.target);
+          }
+
+          function zoomToFeature(e) {
+            myMap.fitBounds(e.target.getBounds());
+          }
+
+          function onEachFeature(feature, layer) {
+            layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight,
+              click: zoomToFeature,
+            });
+          }
+
+          function onEachFeature(feature, layer) {
+            if (feature.geometry.type === 'MultiPolygon') {
+              layer.bindPopup(feature.geometry.coordinates.join(', '));
+            }
+          }
+
+          if (myMap.hasLayer(border)) {
+            myMap.removeLayer(border);
+          }
+
+          const filterData = result.data.features.filter(
+            (country) => country.properties.iso_a2 === 'GB'
+          );
+
+          border = L.geoJSON(filterData[0], {
+            style: function (feature) {
+              return {
+                color: '#0d89d6',
+                weight: 5,
+                opacity: 0.65,
+              };
+            },
+            onEachFeature: onEachFeature,
+          }).addTo(myMap);
+          myMap.fitBounds(border.getBounds().pad(0.5));
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+    });
   }).addTo(myMap);
 
   $.ajax({
@@ -153,7 +222,7 @@ $(document).ready(function () {
 
   // geoJson map countryborders extraction
   myMap.on('click', function (e) {
-    console.log(e.target);
+    console.log(e);
     $.ajax({
       url: 'libs/php/getCountryBorders.php',
       type: 'POST',
