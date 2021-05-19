@@ -34,3 +34,69 @@ function locate() {
 // call locate every 3 seconds... forever
 setInterval(locate, 1000);
 // getgeolocation ---------------
+
+//Country Border
+
+// GeoJSON --------------
+
+// Grab Country Borders -----------
+
+// $(document).ready(function () {
+//   $(window).on('load', function () {
+//     $('.loader').fadeOut(1000);
+//     $('.container-fluid').fadeIn(1000);
+//   });
+
+//   $.ajax({
+//     url: 'libs/php/getCountryBorders.php',
+//     type: 'POST',
+//     dataType: 'json',
+//     data: {},
+//     success: function (result) {
+//       console.log(JSON.stringify(result));
+
+//       if (result.status.name == 'ok') {
+//         L.geoJSON(result.data, {
+//           style: { color: '#0d89d6' },
+//         })
+//           .bindPopup(function (layer) {
+//             return layer.feature.properties.name;
+//           })
+//           .addTo(myMap);
+
+//         // $('#datetime1').html(result.data[0]['datetime'])
+//       }
+//     },
+//     error: function (jqXHR, textStatus, errorThrown) {
+//       console.log(textStatus);
+//     },
+//   });
+// });
+
+// // Event Handler on Left Click
+// myMap.on('click', function (e) {
+//   alert(e.latlng.toString());
+//   alert(myMap.getZoom());
+// });
+
+//Get geolocation using Navigator
+
+// var options = {
+//   enableHighAccuracy: true,
+//   timeout: 5000,
+// };
+
+// const successCallback = (position) => {
+//   console.log(position);
+//   myMap.getZoom();
+// };
+
+// const errorCallback = (error) => {
+//   console.error(error);
+// };
+
+// const watchId = navigator.geolocation.getCurrentPosition(
+//   successCallback,
+//   errorCallback,
+//   { options }
+// );

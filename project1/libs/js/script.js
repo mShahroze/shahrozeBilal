@@ -1,8 +1,13 @@
 let mapOptions;
 let myMap;
 let mapTile;
+let border;
 
 $(document).ready(function () {
+  $(window).on('load', function () {
+    $('.loader').fadeOut(1000);
+    $('.container-fluid').fadeIn(1000);
+  });
   // Created Map Object
   mapOptions = {
     center: [53.50296, -2.23643],
@@ -30,12 +35,6 @@ $(document).ready(function () {
 
   myMap.addLayer(mapTile);
 
-  // Event Handler on Left Click
-  myMap.on('click', function (e) {
-    alert(e.latlng.toString());
-    alert(myMap.getZoom());
-  });
-
   // Event Handler on Right Click
   myMap.on('contextmenu', function (e) {
     L.marker(e.latlng, { icon: redIcon })
@@ -49,68 +48,153 @@ $(document).ready(function () {
     iconAnchor: [24, 10],
   });
 
-  const marker = L.marker([53.50296, -2.23643], { icon: redIcon }).addTo(myMap);
-
-  map.fitbounds();
-  myMap.on('zoomend', function () {
-    if (myMap.getZoom() > 6) {
-      marker.bindPopup('<b>You Are Here', { minWidth: 80 }).openPopup();
-    }
-  });
-
   L.easyButton('fa-crosshairs fa-lg', function () {
+    const marker = L.marker([53.50296, -2.23643], { icon: redIcon }).addTo(
+      myMap
+    );
+    myMap.setView(mapOptions.center, 14);
+    marker.bindPopup('<b>You Are Here', { minWidth: 80 }).openPopup();
     myMap.locate({ setView: true, maxZoom: 10 });
   }).addTo(myMap);
-});
-
-const successCallback = (position) => {
-  console.log(position);
-};
-
-const errorCallback = (error) => {
-  console.error(error);
-};
-
-navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
-//Country Border
-
-// GeoJSON --------------
-
-// Grab Country Borders -----------
-
-$(document).ready(function () {
-  $(window).on('load', function () {
-    $('.loader').fadeOut(1000);
-    $('.container-fluid').fadeIn(1000);
-  });
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-  };
 
   $.ajax({
     url: 'libs/php/getCountryBorders.php',
     type: 'POST',
     dataType: 'json',
-    data: {},
+
     success: function (result) {
-      console.log(JSON.stringify(result));
-
+      // console.log(JSON.stringify(result));
       if (result.status.name == 'ok') {
-        L.geoJSON(result.data, {
-          style: { color: '#0d89d6' },
-        })
-          .bindPopup(function (layer) {
-            return layer.feature.properties.name;
-          })
-          .addTo(myMap);
-
-        // $('#datetime1').html(result.data[0]['datetime'])
+        for (var i = 0; i < result.data.features.length; i++) {
+          $('#selCountry').append(
+            $('<option>', {
+              value: result.data.features[i].properties.iso_a3,
+              text: result.data.features[i].properties.name,
+            })
+          );
+        }
       }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
+  });
+
+  $(document).on('click', '#btnSearch', function () {
+    $('#output').html('hello world');
+    let name = $('#selCountry').val();
+    $.ajax({
+      url: 'libs/php/getCountryBorders.php',
+      type: 'POST',
+      dataType: 'json',
+      success: function (result) {
+        // console.log(JSON.stringify(result));
+        if (result.status.name == 'ok') {
+          function highlightFeature(e) {
+            const layer = e.target;
+
+            layer.setStyle({
+              weight: 5,
+              color: '#666',
+              dashArray: '',
+              fillOpacity: 0.7,
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              layer.bringToFront();
+            }
+          }
+
+          function resetHighlight(e) {
+            border.resetStyle(e.target);
+          }
+
+          function zoomToFeature(e) {
+            myMap.fitBounds(e.target.getBounds());
+          }
+
+          function onEachFeature(feature, layer) {
+            layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight,
+              click: zoomToFeature,
+            });
+          }
+
+          function onEachFeature(feature, layer) {
+            if (feature.geometry.type === 'MultiPolygon') {
+              layer.bindPopup(feature.geometry.coordinates.join(', '));
+            }
+          }
+
+          if (myMap.hasLayer(border)) {
+            myMap.removeLayer(border);
+          }
+
+          const filterData = result.data.features.filter(
+            (country) => country.properties.iso_a3 === name
+          );
+
+          border = L.geoJSON(filterData[0], {
+            style: function (feature) {
+              return {
+                color: 'blue',
+                weight: 5,
+                opacity: 0.65,
+              };
+            },
+            onEachFeature: onEachFeature,
+          }).addTo(myMap);
+          myMap.fitBounds(border.getBounds().pad(0.5));
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+    });
+  });
+
+  // geoJson map countryborders extraction
+  myMap.on('click', function (e) {
+    console.log(e.target);
+    $.ajax({
+      url: 'libs/php/getCountryBorders.php',
+      type: 'POST',
+      dataType: 'json',
+      data: {},
+      success: function (result) {
+        console.log(JSON.stringify(result.data));
+        if (result.status.name == 'ok') {
+          function zoomToFeature(e) {
+            myMap.fitBounds(e.target.getBounds());
+          }
+
+          function onEachFeature(feature, layer) {
+            layer.on({
+              click: zoomToFeature,
+            });
+          }
+
+          function onEachFeature(feature, layer) {
+            if (feature.geometry.type === 'MultiPolygon') {
+              layer.bindPopup(feature.geometry.coordinates.join(', '));
+            }
+          }
+
+          const filterData = result.data.features.filter(
+            (country) => country.properties.iso_a2 === 'AF'
+          );
+          if (border) {
+            border.remove();
+          }
+
+          border = L.geoJSON(filterData[0], {
+            style: { color: '#0d89d6' },
+            onEachFeature: onEachFeature,
+          }).addTo(myMap);
+          myMap.fitBounds(border.getBounds());
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+    });
   });
 });
