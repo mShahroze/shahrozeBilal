@@ -8,7 +8,32 @@ $(document).ready(function () {
   $(window).on('load', function () {
     $('.loader').fadeOut(1000);
     $('.container-fluid').fadeIn(1000);
+    $.ajax({
+      url: 'libs/php/getCountryBorders.php',
+      type: 'POST',
+      dataType: 'json',
+  
+      success: function (result) {
+        // console.log(JSON.stringify(result));
+        // console.log(result.data.features[3].properties.iso_a3);
+        if (result.status.name == 'ok') {
+          for (var i = 0; i < result.data.features.length; i++) {
+            $('#selCountry').append(
+              $('<option>', {
+                value: result.data.features[i].properties.iso_a3,
+                text: result.data.features[i].properties.name,
+              })
+            );
+          }
+        }
+      },
+      error: function(a, b, c){
+        console.log('a: ', a);
+        console.log(b, c);
+      }
+    });
   });
+
   // Created Map Object
   mapOptions = {
     center: [53.50296, -2.23643],
@@ -61,7 +86,7 @@ $(document).ready(function () {
       current_position = L.marker(e.latlng, { icon: redIcon })
         .addTo(myMap)
         // .bindPopup('You are within ' + radius + ' meters from this point')
-        .openPopup();
+        // .openPopup();
 
       current_accuracy = L.circle(e.latlng, radius).addTo(myMap);
     }
@@ -97,11 +122,9 @@ $(document).ready(function () {
               (country) => country.countryCode === 'GB'
             );
 
-            console.log(filterData[0]);
-
             const popup = L.popup()
               .setLatLng(e.latlng)
-              .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+              // .setContent('<p>Hello world!<br />This is a nice popup.</p>')
               .openOn(myMap);
             // current_position.bindPopup(filterData[0]).addTo(myMap).openPopup();
           }
@@ -276,50 +299,93 @@ $(document).ready(function () {
     });
   });
 
-  // geoJson map countryborders extraction
-  // myMap.on('click', function (e) {
-  //   console.log(e);
-  //   $.ajax({
-  //     url: 'libs/php/getCountryBorders.php',
-  //     type: 'POST',
-  //     dataType: 'json',
-  //     data: {},
-  //     success: function (result) {
-  //       console.log(JSON.stringify(result.data));
-  //       if (result.status.name == 'ok') {
-  //         function zoomToFeature(e) {
-  //           myMap.fitBounds(e.target.getBounds());
-  //         }
+  myMap.on('click', function(e) {
+    
+    $.ajax({
+      url: 'libs/php/getCountryBorders.php',
+          type: 'POST',
+          dataType: 'json',
+          data: {},
+          success: function (result) {
+            // console.log(JSON.stringify(result.data.features.properties));
+            if (result.status.name == 'ok') {
+              var filteredData = result.data.features.forEach(element => {
+                // console.log(element.geometry)
+                var gjLayer = L.geoJson(element.geometry);
+                var results = leafletPip.pointInLayer([e.latlng.lng, e.latlng.lat], gjLayer);
+                // results is an array of L.Polygon objects containing that point
+                // gjLayer.addTo(myMap)
+                if (results.length) {
+                  $("#myModal").modal('show');
+                  ($("#Country-Name").html(element.properties.name))
+                  $.ajax({
+                    url: 'libs/php/getCountryInfo.php',
+                    type: 'POST',
+                    dataType: 'json',
 
-  //         function onEachFeature(feature, layer) {
-  //           layer.on({
-  //             click: zoomToFeature,
-  //           });
-  //         }
+                    success: function (countryResult) {
+                      countryResult.data.country.forEach(country => {
+                        // console.log(element)
+                        if (country.countryName === element.properties.name) {
+                          $("#modal-description").html(`
+                          <p>Capital: ${country.capital}</p>
+                          <p>Population: ${country.population}</p>
+                          <p>CurrencyCode: ${country.currencyCode}</p>`)
+                          
+                          $.ajax({
+                            url: 'libs/php/getCountryWeather.php',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {north: country.north, south: country.south, east: country.east, west: country.west},
 
-  //         function onEachFeature(feature, layer) {
-  //           if (feature.geometry.type === 'MultiPolygon') {
-  //             layer.bindPopup(feature.geometry.coordinates.join(', '));
-  //           }
-  //         }
+                            success: function (weatherResult) {
+                              // console.log(weatherResult.data)
 
-  //         const filterData = result.data.features.filter(
-  //           (country) => country.properties.iso_a2 === 'AF'
-  //         );
-  //         if (border) {
-  //           border.remove();
-  //         }
+                              weatherResult.data.forEach(countryWeather => {
+                                $("#modal-description2").html(`
+                                <p>Temperature: ${countryWeather.temperature}</p>`)
 
-  //         border = L.geoJSON(filterData[0], {
-  //           style: { color: '#0d89d6' },
-  //           onEachFeature: onEachFeature,
-  //         }).addTo(myMap);
-  //         myMap.fitBounds(border.getBounds());
-  //       }
-  //     },
-  //     error: function (jqXHR, textStatus, errorThrown) {
-  //       console.log(textStatus);
-  //     },
-  //   });
-  // });
+                                $.ajax({
+                                  url: 'libs/php/getCountryWiki.php',
+                                  type: 'POST',
+                                  dataType: 'json',
+                                  data: {city: country.capital},
+
+                                  success: function (wikiResult) {
+                                    // console.log(wikiResult)
+
+                                    wikiResult.data.forEach(countryWiki => {
+                                      // console.log(countryWiki)
+                                      if (country.capital === countryWiki.title) {
+                                        $("#modal-description3").html(`
+                                        <p>Wikipedia: <a href="https://${countryWiki.wikipediaUrl}">${countryWiki.wikipediaUrl}</a></p>`)
+                                      }
+                                    })
+                                  },
+                                  error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(textStatus);
+                                  },
+                                })
+                              })
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                              console.log(textStatus);
+                            },
+                          }) 
+                        }
+                      })
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                      console.log(textStatus);
+                    },
+                  })
+                }
+              });
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          },
+        })
+  });
 });

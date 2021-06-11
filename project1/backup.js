@@ -100,3 +100,53 @@ setInterval(locate, 1000);
 //   errorCallback,
 //   { options }
 // );
+
+
+
+
+// geoJson map countryborders extraction
+// myMap.on('click', function (e) {
+//   console.log(e);
+//   $.ajax({
+//     url: 'libs/php/getCountryBorders.php',
+//     type: 'POST',
+//     dataType: 'json',
+//     data: {},
+//     success: function (result) {
+//       console.log(JSON.stringify(result.data));
+//       if (result.status.name == 'ok') {
+//         function zoomToFeature(e) {
+//           myMap.fitBounds(e.target.getBounds());
+//         }
+
+//         function onEachFeature(feature, layer) {
+//           layer.on({
+//             click: zoomToFeature,
+//           });
+//         }
+
+//         function onEachFeature(feature, layer) {
+//           if (feature.geometry.type === 'MultiPolygon') {
+//             layer.bindPopup(feature.geometry.coordinates.join(', '));
+//           }
+//         }
+
+//         const filterData = result.data.features.filter(
+//           (country) => country.properties.iso_a2 === 'AF'
+//         );
+//         if (border) {
+//           border.remove();
+//         }
+
+//         border = L.geoJSON(filterData[0], {
+//           style: { color: '#0d89d6' },
+//           onEachFeature: onEachFeature,
+//         }).addTo(myMap);
+//         myMap.fitBounds(border.getBounds());
+//       }
+//     },
+//     error: function (jqXHR, textStatus, errorThrown) {
+//       console.log(textStatus);
+//     },
+//   });
+// });
