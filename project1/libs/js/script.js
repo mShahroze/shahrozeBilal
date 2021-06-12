@@ -17,11 +17,24 @@ $(document).ready(function () {
         // console.log(JSON.stringify(result));
         // console.log(result.data.features[3].properties.iso_a3);
         if (result.status.name == 'ok') {
-          for (var i = 0; i < result.data.features.length; i++) {
+
+          function compare( a, b ) {
+            if ( a.properties.name < b.properties.name ){
+              return -1;
+            }
+            if ( a.properties.name > b.properties.name ){
+              return 1;
+            }
+            return 0;
+          }
+          
+          const sortedResult = result.data.features.sort( compare );
+
+          for (var i = 0; i < sortedResult.length; i++) {
             $('#selCountry').append(
               $('<option>', {
-                value: result.data.features[i].properties.iso_a3,
-                text: result.data.features[i].properties.name,
+                value: sortedResult[i].properties.iso_a3,
+                text: sortedResult[i].properties.name,
               })
             );
           }
@@ -81,14 +94,14 @@ $(document).ready(function () {
         myMap.removeLayer(current_accuracy);
       }
 
-      const radius = e.accuracy / 4;
+      // const radius = e.accuracy / 4;
 
-      current_position = L.marker(e.latlng, { icon: redIcon })
-        .addTo(myMap)
+      // current_position = L.marker(e.latlng, { icon: redIcon })
+      //   .addTo(myMap)
         // .bindPopup('You are within ' + radius + ' meters from this point')
         // .openPopup();
 
-      current_accuracy = L.circle(e.latlng, radius).addTo(myMap);
+      // current_accuracy = L.circle(e.latlng, radius).addTo(myMap);
     }
 
     function onLocationError(e) {
@@ -99,7 +112,7 @@ $(document).ready(function () {
     myMap.on('locationerror', onLocationError);
 
     function locate() {
-      myMap.locate({ setView: true, zoom: 13 });
+      myMap.locate({ });
     }
     // const marker = L.marker([53.50296, -2.23643], { icon: redIcon }).addTo(
     //   myMap
@@ -225,7 +238,7 @@ $(document).ready(function () {
     });
   }).addTo(myMap);
 
-  $(document).on('click', '#btnSearch', function () {
+  $(document).on('click', '#selCountry', function () {
     $('#output').html('hello world');
     let name = $('#selCountry').val();
     $.ajax({
@@ -266,11 +279,11 @@ $(document).ready(function () {
             });
           }
 
-          function onEachFeature(feature, layer) {
-            if (feature.geometry.type === 'MultiPolygon') {
-              layer.bindPopup(feature.geometry.coordinates.join(', '));
-            }
-          }
+          // function onEachFeature(feature, layer) {
+          //   if (feature.geometry.type === 'MultiPolygon') {
+          //     layer.bindPopup(feature.geometry.coordinates.join(', '));
+          //   }
+          // }
 
           if (myMap.hasLayer(border)) {
             myMap.removeLayer(border);
