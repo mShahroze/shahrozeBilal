@@ -4,16 +4,17 @@ body {
 }
 
 #geomap {
-  width: 99vw;
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid black;
-  z-index: 0;
+  z-index: 2;
 }
 
 .container-fluid {
-  display: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 .navbar {
@@ -51,4 +52,45 @@ body {
 
 p {
   padding: 0px;
+}
+
+#selCountry {
+  width: 30%;
+  position: relative;
+  z-index: 0;
+  border-radius: 20px;
+  border: 2px solid;
+}
+
+.dropdown-overlay {
+  position: absolute;
+  width: 800px;
+  left: 20px;
+  bottom: 650px;
+  opacity: 1;
+  z-index: 1000;
+}
+
+.form-select {
+  display: inline;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  top: 70px;
+  border: 2px solid;
+}
+
+.leaflet-bar.easy-button-container.leaflet-control {
+  left: 12px;
+}
+
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
+  left: 12px;
+}
+
+.leaflet-control-layers.leaflet-control {
+  position: relative;
+  right: 30px !important;
+  top: 620px;
 }
