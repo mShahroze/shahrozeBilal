@@ -38,7 +38,7 @@
 
   });
 
-  $url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=1bc83138eb5d1328d858c1722e6666da";
+  $url = "https://api.openweathermap.org/data/2.5/weather?id=524901&appid=1bc83138eb5d1328d858c1722e6666da";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -50,6 +50,7 @@
   $decode = json_decode($result,true);
 
 
+
   $output['status']['code'] = "200";
   $output['status']['name'] = "ok";
   $output['status']['description'] = "success";
@@ -57,7 +58,7 @@
   $output['countryFeatures'] = $countryData;
   $output['countryNames'] = $countryNames;
   $output['countryBorders'] = $countryBorders;
-  $output['countryWeatherList'] = $decode['list'];
+  $output['countryWeatherList'] = $decode;
 
   
   header('Content-Type: application/json; charset=UTF-8');
