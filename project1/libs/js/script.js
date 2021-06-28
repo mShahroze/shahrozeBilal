@@ -146,7 +146,7 @@ $(document).ready(function () {
     setCurrentLocation();
 
     L.easyButton(
-      '<img src="libs/images/location.png" style="width:25px; position: absolute; right: -4px; top: 1.5px;">',
+      '<img src="libs/images/location.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
       function (btn, myMap) {
         const home = [53.50296, -2.23643];
         myMap.setView(home, 5);
@@ -155,7 +155,7 @@ $(document).ready(function () {
     ).addTo(myMap);
 
     L.easyButton(
-      '<img src="libs/images/information.png" style="width:25px; position: absolute; right: -4px; top: 1.5px;">',
+      '<img src="libs/images/information.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
       function (btn, myMap) {
         let name = $('#selCountry').val();
         // let markers = L.markerClusterGroup();
@@ -185,11 +185,12 @@ $(document).ready(function () {
     ).addTo(myMap);
 
     L.easyButton(
-      '<img src="libs/images/weather.png" style="width:25px; position: absolute; right: -4px; top: 1.5px;">',
+      '<img src="libs/images/weather.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
       function (btn, myMap) {
         // let markers = L.markerClusterGroup();
         // markers.addLayer(L.marker(getRandomLatLng(myMap), { icon: homeIcon }));
         // myMap.addLayer(markers);
+        let markers = L.markerClusterGroup();
 
         $.ajax({
           url: 'libs/php/getCountryData.php',
@@ -197,37 +198,53 @@ $(document).ready(function () {
           dataType: 'json',
           success: function (result) {
             console.log(result.countryWeatherList);
+
+            // result.countryWeatherList.country.forEach(country => {}
+            markers.addLayer(
+              new L.marker(
+                [
+                  result.countryWeatherList.coord.lat,
+                  result.countryWeatherList.coord.lon,
+                ],
+                {
+                  icon: weatherIcon,
+                  crossOrigin: true,
+                }
+              )
+            );
+
+            myMap.addLayer(markers);
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);
           },
         });
 
-        const addressPoints = [
-          [51.706111, -1.387246],
-          [52.692663, -2.412393],
-          [51.980725, -3.55541],
-          [54.77295, -1.818904],
-          [50.675789, -4.1489],
-          [53.55498, -0.707306],
-          [52.570306, 0.40222],
-          [56.911107, -4.836182],
-          [56.381304, -3.146485],
-          [55.332547, -3.915528],
-          [54.473032, -6.596192],
-        ];
+        // const addressPoints = [
+        //   [51.706111, -1.387246],
+        //   [52.692663, -2.412393],
+        //   [51.980725, -3.55541],
+        //   [54.77295, -1.818904],
+        //   [50.675789, -4.1489],
+        //   [53.55498, -0.707306],
+        //   [52.570306, 0.40222],
+        //   [56.911107, -4.836182],
+        //   [56.381304, -3.146485],
+        //   [55.332547, -3.915528],
+        //   [54.473032, -6.596192],
+        // ];
 
-        let markers = L.markerClusterGroup();
+        // let markers = L.markerClusterGroup();
 
-        for (let i = 0; i < addressPoints.length; i++) {
-          let a = addressPoints[i];
-          let marker = L.marker(new L.LatLng(a[0], a[1]), {
-            icon: weatherIcon,
-          });
-          markers.addLayer(marker);
-        }
+        // for (let i = 0; i < addressPoints.length; i++) {
+        //   let a = addressPoints[i];
+        //   let marker = L.marker(new L.LatLng(a[0], a[1]), {
+        //     icon: weatherIcon,
+        //   });
+        //   markers.addLayer(marker);
+        // }
 
-        myMap.addLayer(markers);
+        // myMap.addLayer(markers);
 
         yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
@@ -408,7 +425,7 @@ $(document).ready(function () {
     ).addTo(myMap);
 
     L.easyButton(
-      '<img src="libs/images/covid.png" style="width:25px; position: absolute; right: -4px; top: 1.5px;">',
+      '<img src="libs/images/covid.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
       function (btn, myMap) {
         const home = [53.50296, -2.23643];
         myMap.setView(home, 5);
