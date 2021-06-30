@@ -2,18 +2,18 @@ let mapOptions;
 let myMap;
 let border;
 
-function getRandomLatLng(myMap) {
-  var bounds = myMap.getBounds(),
-    southWest = bounds.getSouthWest(),
-    northEast = bounds.getNorthEast(),
-    lngSpan = northEast.lng - southWest.lng,
-    latSpan = northEast.lat - southWest.lat;
+// function getRandomLatLng(myMap) {
+//   let bounds = myMap.getBounds(),
+//     southWest = bounds.getSouthWest(),
+//     northEast = bounds.getNorthEast(),
+//     lngSpan = northEast.lng - southWest.lng,
+//     latSpan = northEast.lat - southWest.lat;
 
-  return new L.LatLng(
-    southWest.lat + latSpan * Math.random(),
-    southWest.lng + lngSpan * Math.random()
-  );
-}
+//   return new L.LatLng(
+//     southWest.lat + latSpan * Math.random(),
+//     southWest.lng + lngSpan * Math.random()
+//   );
+// }
 
 // Added Map, MapTile
 
@@ -233,8 +233,7 @@ $(document).ready(function () {
             type: 'POST',
             dataType: 'json',
             success: function (result) {
-              console.log(result.countryWeatherList);
-
+              // console.log(result.countryWeatherList);
               // result.countryWeatherList.country.forEach(country => {}
               // markers.addLayer(
               //   new L.marker(
@@ -248,7 +247,6 @@ $(document).ready(function () {
               //     }
               //   )
               // );
-
               // myMap.addLayer(markers);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -256,37 +254,37 @@ $(document).ready(function () {
             },
           });
 
-          const addressPoints = [
-            [51.706111, -1.387246],
-            [52.692663, -2.412393],
-            [51.980725, -3.55541],
-            [54.77295, -1.818904],
-            [50.675789, -4.1489],
-            [53.55498, -0.707306],
-            [52.570306, 0.40222],
-            [56.911107, -4.836182],
-            [56.381304, -3.146485],
-            [55.332547, -3.915528],
-            [54.473032, -6.596192],
-          ];
+          // const addressPoints = [
+          //   [51.706111, -1.387246],
+          //   [52.692663, -2.412393],
+          //   [51.980725, -3.55541],
+          //   [54.77295, -1.818904],
+          //   [50.675789, -4.1489],
+          //   [53.55498, -0.707306],
+          //   [52.570306, 0.40222],
+          //   [56.911107, -4.836182],
+          //   [56.381304, -3.146485],
+          //   [55.332547, -3.915528],
+          //   [54.473032, -6.596192],
+          // ];
 
-          let markers = L.markerClusterGroup();
+          // let markers = L.markerClusterGroup();
 
-          for (let i = 0; i < addressPoints.length; i++) {
-            let a = addressPoints[i];
-            let marker = L.marker(new L.LatLng(a[0], a[1]), {
-              icon: weatherIcon,
-            });
-            markers.addLayer(marker);
-          }
+          // for (let i = 0; i < addressPoints.length; i++) {
+          //   let a = addressPoints[i];
+          //   let marker = L.marker(new L.LatLng(a[0], a[1]), {
+          //     icon: weatherIcon,
+          //   });
+          //   markers.addLayer(marker);
+          // }
 
-          myMap.addLayer(markers);
+          // myMap.addLayer(markers);
 
           yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
           const popup = L.popup();
 
-          markers.on('click', onClick);
+          // markers.on('click', onClick);
 
           function onClick(e) {
             const weathermarker = L.marker(e.latlng, { icon: weatherIcon })
@@ -517,21 +515,50 @@ $(document).ready(function () {
                 };
               },
             }).addTo(myMap);
+            console.log(border);
             myMap.fitBounds(border.getBounds().pad(0.5));
-            function getPolygonBounds() {
-              var polygons = [];
-              myMap.eachLayer(function (layer) {
-                if (
-                  layer instanceof L.Polygon &&
-                  !(layer instanceof L.Rectangle)
-                ) {
-                  polygons.push(layer.getLatLngs()); //Returns an array of arrays of geographical points in each polygon.
-                  polygons.push(layer.getBounds()); //Returns a GeoJSON representation of the polygon (GeoJSON Polygon Feature).
-                }
-              });
-              return polygons;
-            }
-            getPolygonBounds();
+            // let countryBounds = border.getBounds();
+            // let markers = L.markerClusterGroup();
+            // markers.addLayer(
+            //   L.marker(getRandomLatLng(myMap), { icon: weatherIcon })
+            // );
+            // myMap.addLayer(markers);
+            // markers.on('click', onClick);
+            // define the function
+            randomPointInPoly = function (border) {
+              var bounds = border.getBounds();
+              var x_min = bounds.getEast();
+              var x_max = bounds.getWest();
+              var y_min = bounds.getSouth();
+              var y_max = bounds.getNorth();
+
+              var lat = y_min + Math.random() * (y_max - y_min);
+              var lng = x_min + Math.random() * (x_max - x_min);
+
+              var point = turf.point([lng, lat]);
+              // var poly = border.toGeoJSON();
+              var poly = border;
+              var inside = turf.inside(point, poly);
+
+              if (inside) {
+                return point;
+              } else {
+                return randomPointInPoly(border);
+              }
+            };
+
+            // create a poly
+            // var polygon = L.polygon([
+            //   [51.509, -0.08],
+            //   [51.503, -0.06],
+            //   [51.51, -0.047],
+            // ]).addTo(map);
+
+            // get a geojson point from the function
+            // var point = randomPointInPoly(border);
+
+            // .. or add it to the map directly from the result
+            L.geoJson(randomPointInPoly(border)).addTo(myMap);
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);

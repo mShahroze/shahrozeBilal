@@ -96,6 +96,9 @@ p {
   border: solid;
   flex-direction: row;
   background-color: ghostwhite;
+  position: absolute;
+  width: 70vw;
+  max-width: 50vw;
 }
 
 .modal-footer {
@@ -134,14 +137,15 @@ button.close {
 }
 
 #myModal {
-  padding-top: 33rem;
-  padding-right: 48rem;
+  padding-top: 25rem;
+  padding-right: 55rem;
   height: 140vh;
 }
 
-@media screen and (max-width: 2000px) {
-  #myModal {
-    padding-top: 20rem;
-    padding-right: 35rem;
+@media screen and (max-width: 800px) {
+  .modal-content {
+    flex-direction: column;
+    position: absolute;
+    width: 70vw;
   }
 }

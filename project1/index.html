@@ -53,50 +53,52 @@
       </div>
 
       <!-- The Modal -->
-      <div
-        class="modal fade"
-        id="myModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="myModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title" id="Country-Name">Country Name</h4>
-            </div>
+      <div id="modal-container">
+        <div
+          class="modal fade"
+          id="myModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="myModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title" id="Country-Name">Country Name</h4>
+              </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-              <table class="table table-striped">
-                <tbody>
-                  <button
-                    type="button"
-                    class="close"
-                    id="closeModal"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <div id="modal-description">
-                    <tr>
-                      <td id="td1">Capital</td>
-                      <td id="td2">Country Information...</td>
-                    </tr>
-                    <tr>
-                      <td id="td4">Population</td>
-                      <td id="td5">Country Information...</td>
-                    </tr>
-                    <tr>
-                      <td id="td7">Currency Code</td>
-                      <td id="td8">Country Information...</td>
-                    </tr>
-                  </div>
-                </tbody>
-              </table>
+              <!-- Modal body -->
+              <div class="modal-body">
+                <table class="table table-striped">
+                  <tbody>
+                    <button
+                      type="button"
+                      class="close"
+                      id="closeModal"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div id="modal-description">
+                      <tr>
+                        <td id="td1">Capital</td>
+                        <td id="td2">Country Information...</td>
+                      </tr>
+                      <tr>
+                        <td id="td4">Population</td>
+                        <td id="td5">Country Information...</td>
+                      </tr>
+                      <tr>
+                        <td id="td7">Currency Code</td>
+                        <td id="td8">Country Information...</td>
+                      </tr>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -130,6 +132,7 @@
       type="application/javascript"
       src="vendors/js/leaflet.ajax.js"
     ></script>
+    <script src="vendors/js/turf.min.js" charset="utf-8"></script>
     <script type="application/javascript" src="libs/js/script.js"></script>
   </body>
 </html>
