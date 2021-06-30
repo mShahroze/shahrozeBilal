@@ -79,7 +79,61 @@ p {
 }
 
 .leaflet-control-layers.leaflet-control {
-  position: absolute;
+  position: relative;
   right: 2vw !important;
   top: 90vh;
+  overflow: hidden;
+}
+
+.modal-header {
+  background-color: #a534ff;
+  color: white;
+  border-top-left-radius: calc(9.3rem - 1px);
+}
+
+.modal-content {
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 1.23);
+  border: solid;
+  flex-direction: row;
+  background-color: ghostwhite;
+}
+
+.modal-footer {
+  border-top: 0;
+}
+
+.close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 0.5px 0 #000;
+  opacity: 0.5;
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.modal-header .close {
+  padding: 1rem;
+}
+
+button.close {
+  background-color: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+.close:hover {
+  filter: brightness(50%);
+  transition: all 0.5s;
+}
+
+.modal-body {
+  padding: 1rem 0;
+}
+
+#myModal {
+  padding-top: 33rem;
+  padding-right: 48rem;
 }

@@ -7,6 +7,8 @@
 
   $countryData = json_decode(file_get_contents("../data/countryBorders.geo.json"), true);
 
+  $countryInfo = json_decode(file_get_contents("../data/countryInfo.json"), true);
+
   $countryNames = [];
 
   $countryBorders = [];
@@ -58,6 +60,7 @@
   $output['countryFeatures'] = $countryData;
   $output['countryNames'] = $countryNames;
   $output['countryBorders'] = $countryBorders;
+  $output['countryInfo'] = $countryInfo['geonames'];
   $output['countryWeatherList'] = $decode;
 
   
