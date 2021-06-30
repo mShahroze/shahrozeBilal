@@ -136,4 +136,12 @@ button.close {
 #myModal {
   padding-top: 33rem;
   padding-right: 48rem;
+  height: 140vh;
+}
+
+@media screen and (max-width: 2000px) {
+  #myModal {
+    padding-top: 20rem;
+    padding-right: 35rem;
+  }
 }
