@@ -203,3 +203,29 @@ setInterval(locate, 1000);
 //   </div>
 // </div>
 // <!--  End Modal -->
+
+// const addressPoints = [
+//   [51.706111, -1.387246],
+//   [52.692663, -2.412393],
+//   [51.980725, -3.55541],
+//   [54.77295, -1.818904],
+//   [50.675789, -4.1489],
+//   [53.55498, -0.707306],
+//   [52.570306, 0.40222],
+//   [56.911107, -4.836182],
+//   [56.381304, -3.146485],
+//   [55.332547, -3.915528],
+//   [54.473032, -6.596192],
+// ];
+
+// let markers = L.markerClusterGroup();
+
+// for (let i = 0; i < addressPoints.length; i++) {
+//   let a = addressPoints[i];
+//   let marker = L.marker(new L.LatLng(a[0], a[1]), {
+//     icon: weatherIcon,
+//   });
+//   markers.addLayer(marker);
+// }
+
+// myMap.addLayer(markers);

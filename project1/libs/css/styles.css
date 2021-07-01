@@ -89,6 +89,9 @@ p {
   background-color: #a534ff;
   color: white;
   border-top-left-radius: calc(9.3rem - 1px);
+  min-width: 15vw;
+  display: flex;
+  flex: 1;
 }
 
 .modal-content {
@@ -97,8 +100,9 @@ p {
   flex-direction: row;
   background-color: ghostwhite;
   position: absolute;
-  width: 70vw;
+  width: 35vw;
   max-width: 50vw;
+  min-width: 35vw;
 }
 
 .modal-footer {
@@ -134,12 +138,15 @@ button.close {
 
 .modal-body {
   padding: 1rem 0;
+  min-width: 20vw;
 }
 
 #myModal {
   padding-top: 25rem;
   padding-right: 55rem;
   height: 140vh;
+  margin-left: 5rem;
+  max-width: 40vw;
 }
 
 @media screen and (max-width: 800px) {
@@ -147,5 +154,27 @@ button.close {
     flex-direction: column;
     position: absolute;
     width: 70vw;
+    max-width: 70vw;
   }
+  #modal-container {
+    padding-left: 10rem;
+    padding-bottom: 20rem;
+  }
+  h4#Country-Name {
+    padding-left: 2rem;
+  }
+  #myModal {
+    padding-bottom: 40rem;
+    width: auto;
+  }
+  #selCountry {
+    width: 55%;
+  }
+  #myModal {
+    padding-bottom: 20rem;
+  }
+}
+
+td {
+  max-width: 10vw;
 }

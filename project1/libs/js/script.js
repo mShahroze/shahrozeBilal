@@ -1,6 +1,7 @@
 let mapOptions;
 let myMap;
 let border;
+var arrMarkers = new Array(0);
 
 // function getRandomLatLng(myMap) {
 //   let bounds = myMap.getBounds(),
@@ -223,6 +224,7 @@ $(document).ready(function () {
       L.easyButton(
         '<img src="libs/images/weather.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
+          let name = $('#selCountry').val();
           // let markers = L.markerClusterGroup();
           // markers.addLayer(L.marker(getRandomLatLng(myMap), { icon: homeIcon }));
           // myMap.addLayer(markers);
@@ -234,227 +236,275 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
               // console.log(result.countryWeatherList);
-              // result.countryWeatherList.country.forEach(country => {}
-              // markers.addLayer(
-              //   new L.marker(
-              //     [
-              //       result.countryWeatherList.coord.lat,
-              //       result.countryWeatherList.coord.lon,
-              //     ],
-              //     {
-              //       icon: weatherIcon,
-              //       crossOrigin: true,
-              //     }
-              //   )
-              // );
-              // myMap.addLayer(markers);
+              const filterData = result.countryFeatures.features.filter(
+                (country) => country.properties.iso_a2 === name
+              );
+
+              let markers = L.markerClusterGroup();
+
+              yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
+
+              const popup = L.popup();
+
+              function onClick(e) {
+                const weathermarker = L.marker(e.latlng, { icon: weatherIcon })
+                  .addTo(myMap)
+                  .bindPopup(
+                    popup
+                      .setLatLng(e.latlng)
+                      .setContent(
+                        'You clicked the map at ' + e.latlng.toString()
+                      ) //esample from leaflet, will be immediately replaced by weatherpopup...
+                      .openOn(myMap)
+                  );
+
+                //getting weather data
+                $.ajax({
+                  url:
+                    'https://api.openweathermap.org/data/2.5/weather?lat=' +
+                    e.latlng.lat +
+                    '&lon=' +
+                    e.latlng.lng +
+                    '&appid=' +
+                    yourApiKey,
+                  dataType: 'json',
+                  success: function (result) {
+                    // storing json data in variables
+                    weatherlocation_lon = result.coord.lon; // lon WGS84
+                    weatherlocation_lat = result.coord.lat; // lat WGS84
+                    weatherstationname = result.name; // Name of Weatherstation
+                    weatherstationid = result.id; // ID of Weatherstation
+                    weathertime = result.dt; // Time of weatherresult (UTC)
+                    temperature = result.main.temp; // Kelvin
+                    airpressure = result.main.pressure; // hPa
+                    airhumidity = result.main.humidity; // %
+                    temperature_min = result.main.temp_min; // Kelvin
+                    temperature_max = result.main.temp_max; // Kelvin
+                    windspeed = result.wind.speed; // Meter per second
+                    winddirection = result.wind.deg; // Wind from direction x degree from north
+                    cloudcoverage = result.clouds.all; // Cloudcoverage in %
+                    weatherconditionid = result.weather[0].id; // ID
+                    weatherconditionstring = result.weather[0].main; // Weatheartype
+                    weatherconditiondescription = result.weather[0].description; // Weatherdescription
+                    weatherconditionicon = result.weather[0].icon; // ID of weathericon
+
+                    // Converting Unix UTC Time
+                    const utctimecalc = new Date(weathertime * 1000);
+                    const months = [
+                      '01',
+                      '02',
+                      '03',
+                      '04',
+                      '05',
+                      '06',
+                      '07',
+                      '08',
+                      '09',
+                      '10',
+                      '11',
+                      '12',
+                    ];
+                    const year = utctimecalc.getFullYear();
+                    const month = months[utctimecalc.getMonth()];
+                    const date = utctimecalc.getDate();
+                    const hour = utctimecalc.getHours();
+                    const min = utctimecalc.getMinutes();
+                    const sec = utctimecalc.getSeconds();
+                    const time =
+                      date +
+                      '.' +
+                      month +
+                      '.' +
+                      year +
+                      ' ' +
+                      hour +
+                      ':' +
+                      min +
+                      ' Uhr';
+
+                    // recalculating
+                    const weathercondtioniconhtml =
+                      'http://openweathermap.org/img/w/' +
+                      weatherconditionicon +
+                      '.png';
+                    const weathertimenormal = time; // reallocate time const....
+                    const temperaturecelsius =
+                      Math.round((temperature - 273) * 100) / 100; // Converting Kelvin to Celsius
+                    const windspeedknots =
+                      Math.round(windspeed * 1.94 * 100) / 100; // Windspeed from m/s in Knots; Round to 2 decimals
+                    const windspeedkmh =
+                      Math.round(windspeed * 3.6 * 100) / 100; // Windspeed from m/s in km/h; Round to 2 decimals
+                    let winddirectionstring = 'Im the wind from direction'; // Wind from direction x as text
+                    if (winddirection > 348.75 && winddirection <= 11.25) {
+                      winddirectionstring = 'North';
+                    } else if (
+                      winddirection > 11.25 &&
+                      winddirection <= 33.75
+                    ) {
+                      winddirectionstring = 'Northnortheast';
+                    } else if (
+                      winddirection > 33.75 &&
+                      winddirection <= 56.25
+                    ) {
+                      winddirectionstring = 'Northeast';
+                    } else if (
+                      winddirection > 56.25 &&
+                      winddirection <= 78.75
+                    ) {
+                      winddirectionstring = 'Eastnortheast';
+                    } else if (
+                      winddirection > 78.75 &&
+                      winddirection <= 101.25
+                    ) {
+                      winddirectionstring = 'East';
+                    } else if (
+                      winddirection > 101.25 &&
+                      winddirection <= 123.75
+                    ) {
+                      winddirectionstring = 'Eastsoutheast';
+                    } else if (
+                      winddirection > 123.75 &&
+                      winddirection <= 146.25
+                    ) {
+                      winddirectionstring = 'Southeast';
+                    } else if (
+                      winddirection > 146.25 &&
+                      winddirection <= 168.75
+                    ) {
+                      winddirectionstring = 'Southsoutheast';
+                    } else if (
+                      winddirection > 168.75 &&
+                      winddirection <= 191.25
+                    ) {
+                      winddirectionstring = 'South';
+                    } else if (
+                      winddirection > 191.25 &&
+                      winddirection <= 213.75
+                    ) {
+                      winddirectionstring = 'Southsouthwest';
+                    } else if (
+                      winddirection > 213.75 &&
+                      winddirection <= 236.25
+                    ) {
+                      winddirectionstring = 'Southwest';
+                    } else if (
+                      winddirection > 236.25 &&
+                      winddirection <= 258.75
+                    ) {
+                      winddirectionstring = 'Westsouthwest';
+                    } else if (
+                      winddirection > 258.75 &&
+                      winddirection <= 281.25
+                    ) {
+                      winddirectionstring = 'West';
+                    } else if (
+                      winddirection > 281.25 &&
+                      winddirection <= 303.75
+                    ) {
+                      winddirectionstring = 'Westnorthwest';
+                    } else if (
+                      winddirection > 303.75 &&
+                      winddirection <= 326.25
+                    ) {
+                      winddirectionstring = 'Northwest';
+                    } else if (
+                      winddirection > 326.25 &&
+                      winddirection <= 348.75
+                    ) {
+                      winddirectionstring = 'Northnorthwest';
+                    } else {
+                      winddirectionstring =
+                        ' - currently no winddata available - ';
+                    }
+
+                    //Popup with content
+                    const fontsizesmall = 1;
+                    popup.setContent(
+                      'Weatherdata:<br>' +
+                        '<img src=' +
+                        weathercondtioniconhtml +
+                        '><br>' +
+                        weatherconditionstring +
+                        ' (Weather-ID: ' +
+                        weatherconditionid +
+                        '): ' +
+                        weatherconditiondescription +
+                        '<br><br>Temperature: ' +
+                        temperaturecelsius +
+                        '°C<br>Airpressure: ' +
+                        airpressure +
+                        ' hPa<br>Humidityt: ' +
+                        airhumidity +
+                        '%' +
+                        '<br>Cloudcoverage: ' +
+                        cloudcoverage +
+                        '%<br><br>Windspeed: ' +
+                        windspeedkmh +
+                        ' km/h<br>Wind from direction: ' +
+                        winddirectionstring +
+                        ' (' +
+                        winddirection +
+                        '°)' +
+                        '<br><br><font size=' +
+                        fontsizesmall +
+                        '>Datasource:<br>openweathermap.org<br>Measure time: ' +
+                        weathertimenormal +
+                        '<br>Weatherstation: ' +
+                        weatherstationname +
+                        '<br>Weatherstation-ID: ' +
+                        weatherstationid +
+                        '<br>Weatherstation Coordinates: ' +
+                        weatherlocation_lon +
+                        ', ' +
+                        weatherlocation_lat
+                    );
+                  },
+                  error: function () {
+                    alert('error receiving wind data from openweathermap');
+                  },
+                });
+                markers.on('click', onClick);
+              }
+
+              function plotrandom(number) {
+                bounds = border.getBounds();
+                let southWest = bounds.getSouthWest();
+                let northEast = bounds.getNorthEast();
+                let lngSpan = northEast.lng - southWest.lng;
+                let latSpan = northEast.lat - southWest.lat;
+                pointsrand = [];
+
+                for (let i = 0; i < number; ++i) {
+                  let point = [
+                    southWest.lat + latSpan * Math.random(),
+                    southWest.lng + lngSpan * Math.random(),
+                  ];
+                  pointsrand.push(point);
+                }
+
+                for (let i = 0; i < number; ++i) {
+                  let str_text = i + ' : ' + pointsrand[i];
+                  let marker = placeMarker(pointsrand[i], str_text);
+                  marker.addTo(myMap);
+                  arrMarkers.push(marker);
+                }
+              }
+
+              function placeMarker(location) {
+                let marker = L.marker(location, { icon: weatherIcon });
+                return marker;
+              }
+
+              plotrandom(7);
+
+              arrMarkers.map((marker) => {
+                marker.on('click', onClick);
+              });
             },
             error: function (jqXHR, textStatus, errorThrown) {
               console.log(textStatus);
             },
           });
-
-          // const addressPoints = [
-          //   [51.706111, -1.387246],
-          //   [52.692663, -2.412393],
-          //   [51.980725, -3.55541],
-          //   [54.77295, -1.818904],
-          //   [50.675789, -4.1489],
-          //   [53.55498, -0.707306],
-          //   [52.570306, 0.40222],
-          //   [56.911107, -4.836182],
-          //   [56.381304, -3.146485],
-          //   [55.332547, -3.915528],
-          //   [54.473032, -6.596192],
-          // ];
-
-          // let markers = L.markerClusterGroup();
-
-          // for (let i = 0; i < addressPoints.length; i++) {
-          //   let a = addressPoints[i];
-          //   let marker = L.marker(new L.LatLng(a[0], a[1]), {
-          //     icon: weatherIcon,
-          //   });
-          //   markers.addLayer(marker);
-          // }
-
-          // myMap.addLayer(markers);
-
-          yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
-
-          const popup = L.popup();
-
-          // markers.on('click', onClick);
-
-          function onClick(e) {
-            const weathermarker = L.marker(e.latlng, { icon: weatherIcon })
-              .addTo(myMap)
-              .bindPopup(
-                popup
-                  .setLatLng(e.latlng)
-                  .setContent('You clicked the map at ' + e.latlng.toString()) //esample from leaflet, will be immediately replaced by weatherpopup...
-                  .openOn(myMap)
-              );
-
-            //getting json function
-            $.ajax({
-              url:
-                'https://api.openweathermap.org/data/2.5/weather?lat=' +
-                e.latlng.lat +
-                '&lon=' +
-                e.latlng.lng +
-                '&appid=' +
-                yourApiKey,
-              dataType: 'json',
-              success: function (result) {
-                // storing json data in variables
-                weatherlocation_lon = result.coord.lon; // lon WGS84
-                weatherlocation_lat = result.coord.lat; // lat WGS84
-                weatherstationname = result.name; // Name of Weatherstation
-                weatherstationid = result.id; // ID of Weatherstation
-                weathertime = result.dt; // Time of weatherresult (UTC)
-                temperature = result.main.temp; // Kelvin
-                airpressure = result.main.pressure; // hPa
-                airhumidity = result.main.humidity; // %
-                temperature_min = result.main.temp_min; // Kelvin
-                temperature_max = result.main.temp_max; // Kelvin
-                windspeed = result.wind.speed; // Meter per second
-                winddirection = result.wind.deg; // Wind from direction x degree from north
-                cloudcoverage = result.clouds.all; // Cloudcoverage in %
-                weatherconditionid = result.weather[0].id; // ID
-                weatherconditionstring = result.weather[0].main; // Weatheartype
-                weatherconditiondescription = result.weather[0].description; // Weatherdescription
-                weatherconditionicon = result.weather[0].icon; // ID of weathericon
-
-                // Converting Unix UTC Time
-                const utctimecalc = new Date(weathertime * 1000);
-                const months = [
-                  '01',
-                  '02',
-                  '03',
-                  '04',
-                  '05',
-                  '06',
-                  '07',
-                  '08',
-                  '09',
-                  '10',
-                  '11',
-                  '12',
-                ];
-                const year = utctimecalc.getFullYear();
-                const month = months[utctimecalc.getMonth()];
-                const date = utctimecalc.getDate();
-                const hour = utctimecalc.getHours();
-                const min = utctimecalc.getMinutes();
-                const sec = utctimecalc.getSeconds();
-                const time =
-                  date +
-                  '.' +
-                  month +
-                  '.' +
-                  year +
-                  ' ' +
-                  hour +
-                  ':' +
-                  min +
-                  ' Uhr';
-
-                // recalculating
-                const weathercondtioniconhtml =
-                  'http://openweathermap.org/img/w/' +
-                  weatherconditionicon +
-                  '.png';
-                const weathertimenormal = time; // reallocate time const....
-                const temperaturecelsius =
-                  Math.round((temperature - 273) * 100) / 100; // Converting Kelvin to Celsius
-                const windspeedknots = Math.round(windspeed * 1.94 * 100) / 100; // Windspeed from m/s in Knots; Round to 2 decimals
-                const windspeedkmh = Math.round(windspeed * 3.6 * 100) / 100; // Windspeed from m/s in km/h; Round to 2 decimals
-                let winddirectionstring = 'Im the wind from direction'; // Wind from direction x as text
-                if (winddirection > 348.75 && winddirection <= 11.25) {
-                  winddirectionstring = 'North';
-                } else if (winddirection > 11.25 && winddirection <= 33.75) {
-                  winddirectionstring = 'Northnortheast';
-                } else if (winddirection > 33.75 && winddirection <= 56.25) {
-                  winddirectionstring = 'Northeast';
-                } else if (winddirection > 56.25 && winddirection <= 78.75) {
-                  winddirectionstring = 'Eastnortheast';
-                } else if (winddirection > 78.75 && winddirection <= 101.25) {
-                  winddirectionstring = 'East';
-                } else if (winddirection > 101.25 && winddirection <= 123.75) {
-                  winddirectionstring = 'Eastsoutheast';
-                } else if (winddirection > 123.75 && winddirection <= 146.25) {
-                  winddirectionstring = 'Southeast';
-                } else if (winddirection > 146.25 && winddirection <= 168.75) {
-                  winddirectionstring = 'Southsoutheast';
-                } else if (winddirection > 168.75 && winddirection <= 191.25) {
-                  winddirectionstring = 'South';
-                } else if (winddirection > 191.25 && winddirection <= 213.75) {
-                  winddirectionstring = 'Southsouthwest';
-                } else if (winddirection > 213.75 && winddirection <= 236.25) {
-                  winddirectionstring = 'Southwest';
-                } else if (winddirection > 236.25 && winddirection <= 258.75) {
-                  winddirectionstring = 'Westsouthwest';
-                } else if (winddirection > 258.75 && winddirection <= 281.25) {
-                  winddirectionstring = 'West';
-                } else if (winddirection > 281.25 && winddirection <= 303.75) {
-                  winddirectionstring = 'Westnorthwest';
-                } else if (winddirection > 303.75 && winddirection <= 326.25) {
-                  winddirectionstring = 'Northwest';
-                } else if (winddirection > 326.25 && winddirection <= 348.75) {
-                  winddirectionstring = 'Northnorthwest';
-                } else {
-                  winddirectionstring = ' - currently no winddata available - ';
-                }
-
-                //Popup with content
-                const fontsizesmall = 1;
-                popup.setContent(
-                  'Weatherdata:<br>' +
-                    '<img src=' +
-                    weathercondtioniconhtml +
-                    '><br>' +
-                    weatherconditionstring +
-                    ' (Weather-ID: ' +
-                    weatherconditionid +
-                    '): ' +
-                    weatherconditiondescription +
-                    '<br><br>Temperature: ' +
-                    temperaturecelsius +
-                    '°C<br>Airpressure: ' +
-                    airpressure +
-                    ' hPa<br>Humidityt: ' +
-                    airhumidity +
-                    '%' +
-                    '<br>Cloudcoverage: ' +
-                    cloudcoverage +
-                    '%<br><br>Windspeed: ' +
-                    windspeedkmh +
-                    ' km/h<br>Wind from direction: ' +
-                    winddirectionstring +
-                    ' (' +
-                    winddirection +
-                    '°)' +
-                    '<br><br><font size=' +
-                    fontsizesmall +
-                    '>Datasource:<br>openweathermap.org<br>Measure time: ' +
-                    weathertimenormal +
-                    '<br>Weatherstation: ' +
-                    weatherstationname +
-                    '<br>Weatherstation-ID: ' +
-                    weatherstationid +
-                    '<br>Weatherstation Coordinates: ' +
-                    weatherlocation_lon +
-                    ', ' +
-                    weatherlocation_lat
-                );
-              },
-              error: function () {
-                alert('error receiving wind data from openweathermap');
-              },
-            });
-            markers.on('click', onClick);
-          }
         }
       ).addTo(myMap);
 
@@ -483,10 +533,15 @@ $(document).ready(function () {
           console.log(textStatus);
         },
       });
-
-      // Select Country - Highlights Country on Map
     });
+    // Select Country - Highlights Country on Map
+
     $(document).on('click', '#selCountry', function () {
+      const weatherIcon = L.icon({
+        iconUrl: 'libs/images/weather-marker.png',
+        iconSize: [48, 48],
+        iconAnchor: [24, 10],
+      });
       let name = $('#selCountry').val();
       // const myLayer = L.geoJSON().addTo(myMap);
       if (name) {
@@ -515,50 +570,7 @@ $(document).ready(function () {
                 };
               },
             }).addTo(myMap);
-            console.log(border);
             myMap.fitBounds(border.getBounds().pad(0.5));
-            // let countryBounds = border.getBounds();
-            // let markers = L.markerClusterGroup();
-            // markers.addLayer(
-            //   L.marker(getRandomLatLng(myMap), { icon: weatherIcon })
-            // );
-            // myMap.addLayer(markers);
-            // markers.on('click', onClick);
-            // define the function
-            randomPointInPoly = function (border) {
-              var bounds = border.getBounds();
-              var x_min = bounds.getEast();
-              var x_max = bounds.getWest();
-              var y_min = bounds.getSouth();
-              var y_max = bounds.getNorth();
-
-              var lat = y_min + Math.random() * (y_max - y_min);
-              var lng = x_min + Math.random() * (x_max - x_min);
-
-              var point = turf.point([lng, lat]);
-              // var poly = border.toGeoJSON();
-              var poly = border;
-              var inside = turf.inside(point, poly);
-
-              if (inside) {
-                return point;
-              } else {
-                return randomPointInPoly(border);
-              }
-            };
-
-            // create a poly
-            // var polygon = L.polygon([
-            //   [51.509, -0.08],
-            //   [51.503, -0.06],
-            //   [51.51, -0.047],
-            // ]).addTo(map);
-
-            // get a geojson point from the function
-            // var point = randomPointInPoly(border);
-
-            // .. or add it to the map directly from the result
-            L.geoJson(randomPointInPoly(border)).addTo(myMap);
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);

@@ -1,138 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <meta name="author" content="Shahroze Bilal" />
-    <meta name="description" content="Geographic Profiles" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <link
-      rel="shortcut icon"
-      href="libs/images/google-favicon.png"
-      type="image/png"
-    />
-    <link rel="stylesheet" href="vendors/css/leaflet.css" />
-    <link rel="stylesheet" href="vendors/css/easybutton.css" />
-    <link rel="stylesheet" href="vendors/css/MarkerCluster.css" />
-    <link rel="stylesheet" href="vendors/css/MarkerCluster.Default.css" />
-    <link
-      rel="stylesheet"
-      href="vendors/fontawesome-free-5.15.3-web/css/all.css"
-    />
+  <meta name="author" content="Shahroze Bilal" />
+  <meta name="description" content="Geographic Profiles" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="vendors/css/bootstrap.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="libs/images/google-favicon.png" type="image/png" />
+  <link rel="stylesheet" href="vendors/css/leaflet.css" />
+  <link rel="stylesheet" href="vendors/css/easybutton.css" />
+  <link rel="stylesheet" href="vendors/css/MarkerCluster.css" />
+  <link rel="stylesheet" href="vendors/css/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="vendors/fontawesome-free-5.15.3-web/css/all.css" />
 
-    <link rel="stylesheet" type="text/css" href="libs/css/styles.css" />
+  <link href="vendors/css/bootstrap.css" rel="stylesheet" />
 
-    <title>GAZETTEER</title>
-  </head>
+  <link rel="stylesheet" type="text/css" href="libs/css/styles.css" />
 
-  <body>
-    <div class="loader">
-      <div></div>
-    </div>
+  <title>GAZETTEER</title>
+</head>
 
-    <div class="wrapper">
-      <div class="container-fluid">
-        <div class="col">
-          <div id="geomap">
-            <div class="dropdown-overlay">
-              <!-- Navbar -->
-              <nav>
-                <select name="sel-country" class="form-select" id="selCountry">
-                  <option selected disabled hidden>Choose here</option>
-                </select>
-                <!-- <button id="btnSearch" data-modal-target="#modal">Search</button> -->
-              </nav>
-              <!-- End Navbar -->
-            </div>
-          </div>
-        </div>
-      </div>
+<body>
+  <div class="loader">
+    <div></div>
+  </div>
 
-      <!-- The Modal -->
-      <div id="modal-container">
-        <div
-          class="modal fade"
-          id="myModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="myModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <!-- Modal Header -->
-              <div class="modal-header">
-                <h4 class="modal-title" id="Country-Name">Country Name</h4>
-              </div>
-
-              <!-- Modal body -->
-              <div class="modal-body">
-                <table class="table table-striped">
-                  <tbody>
-                    <button
-                      type="button"
-                      class="close"
-                      id="closeModal"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <div id="modal-description">
-                      <tr>
-                        <td id="td1">Capital</td>
-                        <td id="td2">Country Information...</td>
-                      </tr>
-                      <tr>
-                        <td id="td4">Population</td>
-                        <td id="td5">Country Information...</td>
-                      </tr>
-                      <tr>
-                        <td id="td7">Currency Code</td>
-                        <td id="td8">Country Information...</td>
-                      </tr>
-                    </div>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+  <div class="wrapper">
+    <div class="container-fluid">
+      <div class="col">
+        <div id="geomap">
+          <div class="dropdown-overlay">
+            <!-- Navbar -->
+            <nav>
+              <select name="sel-country" class="form-select" id="selCountry">
+                <option selected disabled hidden>Choose here</option>
+              </select>
+              <!-- <button id="btnSearch" data-modal-target="#modal">Search</button> -->
+            </nav>
+            <!-- End Navbar -->
           </div>
         </div>
       </div>
     </div>
 
-    <div id="”preloader”"></div>
+    <!-- The Modal -->
+    <div id="modal-container">
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" id="Country-Name">Country Name</h4>
+            </div>
 
-    <script
-      type="application/javascript"
-      src="vendors/js/jquery-3.6.0.min.js"
-    ></script>
-    <script src="vendors/js/leaflet.js"></script>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <table class="table table-striped">
+                <tbody>
+                  <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div id="modal-description">
+                    <tr>
+                      <td id="td1">Capital</td>
+                      <td id="td2">Country Information...</td>
+                    </tr>
+                    <tr>
+                      <td id="td4">Population</td>
+                      <td id="td5">Country Information...</td>
+                    </tr>
+                    <tr>
+                      <td id="td7">Currency Code</td>
+                      <td id="td8">Country Information...</td>
+                    </tr>
+                  </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script src="vendors/js/popper.min.js"></script>
-    <script src="vendors/js/bootstrap.min.js"></script>
+  <div id="”preloader”"></div>
 
-    <script
-      type="application/javascript"
-      src="vendors/js/easybutton.js"
-    ></script>
-    <script
-      type="application/javascript"
-      src="vendors/js/leaflet.markercluster.js"
-    ></script>
-    <script
-      type="application/javascript"
-      src="vendors/js/leaflet-pip.js"
-    ></script>
-    <script
-      type="application/javascript"
-      src="vendors/js/leaflet.ajax.js"
-    ></script>
-    <script src="vendors/js/turf.min.js" charset="utf-8"></script>
-    <script type="application/javascript" src="libs/js/script.js"></script>
-  </body>
+  <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
+  <script src="vendors/js/leaflet.js"></script>
+
+  <script src="vendors/js/popper.min.js"></script>
+  <script src="vendors/js/bootstrap.min.js"></script>
+
+  <script type="application/javascript" src="vendors/js/easybutton.js"></script>
+  <script type="application/javascript" src="vendors/js/leaflet.markercluster.js"></script>
+  <script type="application/javascript" src="vendors/js/leaflet-pip.js"></script>
+  <script type="application/javascript" src="vendors/js/leaflet.ajax.js"></script>
+  <script type="application/javascript" src="libs/js/script.js"></script>
+</body>
+
 </html>

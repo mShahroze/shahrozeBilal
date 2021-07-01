@@ -40,7 +40,9 @@
 
   });
 
-  $url = "https://api.openweathermap.org/data/2.5/weather?id=524901&appid=1bc83138eb5d1328d858c1722e6666da";
+  
+
+  $url = "https://openexchangerates.org/api/latest.json?app_id=955bc45d748747a398e589d9390f8e9f";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -61,7 +63,7 @@
   $output['countryNames'] = $countryNames;
   $output['countryBorders'] = $countryBorders;
   $output['countryInfo'] = $countryInfo['geonames'];
-  $output['countryWeatherList'] = $decode;
+  $output['countryExchangeRates'] = $decode['rates'];
 
   
   header('Content-Type: application/json; charset=UTF-8');
