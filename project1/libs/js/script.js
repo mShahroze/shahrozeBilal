@@ -3,19 +3,6 @@ let myMap;
 let border;
 var arrMarkers = new Array(0);
 
-// function getRandomLatLng(myMap) {
-//   let bounds = myMap.getBounds(),
-//     southWest = bounds.getSouthWest(),
-//     northEast = bounds.getNorthEast(),
-//     lngSpan = northEast.lng - southWest.lng,
-//     latSpan = northEast.lat - southWest.lat;
-
-//   return new L.LatLng(
-//     southWest.lat + latSpan * Math.random(),
-//     southWest.lng + lngSpan * Math.random()
-//   );
-// }
-
 // Added Map, MapTile
 
 const Topo = L.tileLayer(
@@ -56,6 +43,17 @@ $(document).ready(function () {
     $('.container-fluid').fadeIn(2000);
   });
 
+  function wiki() {
+    L.layerGroup
+      .wikipediaLayer({
+        // target: '_blank',
+        images: 'vendors/css/images',
+        limit: 1,
+        clearOutsideBounds: true,
+      })
+      .addTo(myMap);
+  }
+
   // on Load - Current Location
 
   if (navigator.geolocation) {
@@ -84,7 +82,7 @@ $(document).ready(function () {
 
       const homeIcon = L.icon({
         iconUrl: 'libs/images/home-marker.png',
-        iconSize: [48, 48],
+        iconSize: [36, 36],
         iconAnchor: [24, 10],
       });
 
@@ -94,7 +92,9 @@ $(document).ready(function () {
         iconAnchor: [24, 10],
       });
 
-      const homeMarker = L.marker(latlng, { icon: homeIcon }).addTo(myMap);
+      const homeMarker = L.marker(latlng, { icon: homeIcon })
+        .bindPopup(`<b>You Are Here!</b><br>${myMap.getCenter()}.`)
+        .addTo(myMap);
 
       // myMap.on('click', function (e) {
       //   alert(e.latlng.toString());
@@ -137,6 +137,7 @@ $(document).ready(function () {
                 onEachFeature: onEachFeature,
               }).addTo(myMap);
               myMap.fitBounds(border.getBounds().pad(0.5));
+              wiki();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -189,7 +190,6 @@ $(document).ready(function () {
                         success: function (countryResult) {
                           countryResult.countryInfo.country.forEach(
                             (country) => {
-                              // console.log(element)
                               if (
                                 country.countryName ===
                                 countryFeature.properties.name
@@ -207,6 +207,48 @@ $(document).ready(function () {
                               }
                             }
                           );
+
+                          for (const key in countryResult.countryExchangeRates) {
+                            if (
+                              key.substring(0, 2) ===
+                              countryFeature.properties.iso_a2
+                            ) {
+                              $('#td11').html(
+                                `${countryResult.countryExchangeRates[key]} /(£)`
+                              );
+                            }
+                          }
+
+                          $.ajax({
+                            url: 'libs/php/getMoreCountryInfo.php',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                              countryName: countryFeature.properties.iso_a2,
+                            },
+
+                            success: function (countryResult) {
+                              if (
+                                countryResult.restCountries.alpha2Code ===
+                                countryFeature.properties.iso_a2
+                              ) {
+                                $('#td14').html(
+                                  `${countryResult.restCountries.languages[0].name}`
+                                );
+                              }
+                              if (
+                                countryResult.restCountries.alpha2Code ===
+                                countryFeature.properties.iso_a2
+                              ) {
+                                $('#td17').html(
+                                  `<img src=${countryResult.restCountries.flag} style="width:30px;">`
+                                );
+                              }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                              console.log(textStatus);
+                            },
+                          });
                         },
                       });
                     }
@@ -228,19 +270,18 @@ $(document).ready(function () {
           // let markers = L.markerClusterGroup();
           // markers.addLayer(L.marker(getRandomLatLng(myMap), { icon: homeIcon }));
           // myMap.addLayer(markers);
-          // let markers = L.markerClusterGroup();
 
           $.ajax({
             url: 'libs/php/getCountryData.php',
             type: 'POST',
             dataType: 'json',
             success: function (result) {
-              // console.log(result.countryWeatherList);
+              // console.log(result);
               const filterData = result.countryFeatures.features.filter(
                 (country) => country.properties.iso_a2 === name
               );
 
-              let markers = L.markerClusterGroup();
+              // let markers = L.markerClusterGroup();
 
               yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
@@ -466,6 +507,8 @@ $(document).ready(function () {
                 markers.on('click', onClick);
               }
 
+              let markers = L.markerClusterGroup();
+
               function plotrandom(number) {
                 bounds = border.getBounds();
                 let southWest = bounds.getSouthWest();
@@ -482,9 +525,13 @@ $(document).ready(function () {
                   pointsrand.push(point);
                 }
 
+                console.log(pointsrand);
+                console.log(arrMarkers);
+
                 for (let i = 0; i < number; ++i) {
-                  let str_text = i + ' : ' + pointsrand[i];
-                  let marker = placeMarker(pointsrand[i], str_text);
+                  let strText = i + ' : ' + pointsrand[i];
+
+                  let marker = placeMarker(pointsrand[i], strText);
                   marker.addTo(myMap);
                   arrMarkers.push(marker);
                 }
@@ -492,8 +539,10 @@ $(document).ready(function () {
 
               function placeMarker(location) {
                 let marker = L.marker(location, { icon: weatherIcon });
-                return marker;
+                markers.addLayer(marker);
+                return markers;
               }
+              // myMap.addLayer(markers);
 
               plotrandom(7);
 
@@ -571,6 +620,7 @@ $(document).ready(function () {
               },
             }).addTo(myMap);
             myMap.fitBounds(border.getBounds().pad(0.5));
+            wiki();
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);
