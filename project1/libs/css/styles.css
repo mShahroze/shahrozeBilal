@@ -142,7 +142,7 @@ button.close {
 }
 
 #myModal {
-  padding-top: 25rem;
+  padding-top: 15rem;
   padding-right: 55rem;
   height: 140vh;
   margin-left: 5rem;
@@ -172,6 +172,12 @@ button.close {
   }
   #myModal {
     padding-bottom: 20rem;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .leaflet-control-layers.leaflet-control {
+    top: 86vh;
   }
 }
 

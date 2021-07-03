@@ -1,7 +1,9 @@
 let mapOptions;
 let myMap;
 let border;
-var arrMarkers = new Array(0);
+let markers;
+let arrMarkers = new Array(0);
+let lMarkers = new Array(0);
 
 // Added Map, MapTile
 
@@ -46,15 +48,16 @@ $(document).ready(function () {
   function wiki() {
     L.layerGroup
       .wikipediaLayer({
-        // target: '_blank',
+        target: '_blank',
         images: 'vendors/css/images',
         limit: 1,
         clearOutsideBounds: true,
+        popupOnMouseover: true,
       })
       .addTo(myMap);
   }
 
-  // on Load - Current Location
+  // on Load - Get Current Location
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (location) {
@@ -63,7 +66,6 @@ $(document).ready(function () {
         location.coords.longitude
       );
 
-      // console.log(latlng);
       myMap = L.map('geomap', mapOptions).setView(latlng, 13);
       setTimeout(function () {
         myMap.invalidateSize.bind(myMap);
@@ -95,10 +97,6 @@ $(document).ready(function () {
       const homeMarker = L.marker(latlng, { icon: homeIcon })
         .bindPopup(`<b>You Are Here!</b><br>${myMap.getCenter()}.`)
         .addTo(myMap);
-
-      // myMap.on('click', function (e) {
-      //   alert(e.latlng.toString());
-      // });
 
       function setCurrentLocation() {
         $.ajax({
@@ -158,11 +156,8 @@ $(document).ready(function () {
       ).addTo(myMap);
 
       L.easyButton(
-        '<img src="libs/images/information.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
+        '<img src="libs/images/Information.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
-          // let markers = L.markerClusterGroup();
-          // markers.addLayer(L.marker(getRandomLatLng(myMap), { icon: homeIcon }));
-          // myMap.addLayer(markers);
           $.ajax({
             url: 'libs/php/getCountryData.php',
             type: 'POST',
@@ -172,8 +167,8 @@ $(document).ready(function () {
                 const latlng = myMap.getCenter();
                 let filteredData = result.countryFeatures.features.forEach(
                   (countryFeature) => {
-                    var gjLayer = L.geoJson(countryFeature.geometry);
-                    var results = leafletPip.pointInLayer(
+                    let gjLayer = L.geoJson(countryFeature.geometry);
+                    let results = leafletPip.pointInLayer(
                       [latlng.lng, latlng.lat],
                       gjLayer
                     );
@@ -266,22 +261,23 @@ $(document).ready(function () {
       L.easyButton(
         '<img src="libs/images/weather.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
-          let name = $('#selCountry').val();
-          // let markers = L.markerClusterGroup();
-          // markers.addLayer(L.marker(getRandomLatLng(myMap), { icon: homeIcon }));
-          // myMap.addLayer(markers);
+          let name = $('#selCountry').val() || 'GB';
 
           $.ajax({
             url: 'libs/php/getCountryData.php',
             type: 'POST',
             dataType: 'json',
             success: function (result) {
-              // console.log(result);
-              const filterData = result.countryFeatures.features.filter(
-                (country) => country.properties.iso_a2 === name
+              lMarkers = [];
+              arrMarkers = [];
+              if (markers) {
+                myMap.removeLayer(markers);
+              }
+              const filterData = result.countryBorders.filter(
+                (country) => country.code === name
               );
 
-              // let markers = L.markerClusterGroup();
+              // console.log(filterData);
 
               yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
@@ -295,11 +291,11 @@ $(document).ready(function () {
                       .setLatLng(e.latlng)
                       .setContent(
                         'You clicked the map at ' + e.latlng.toString()
-                      ) //esample from leaflet, will be immediately replaced by weatherpopup...
+                      )
                       .openOn(myMap)
                   );
 
-                //getting weather data
+                // Obtaining weather data from API
                 $.ajax({
                   url:
                     'https://api.openweathermap.org/data/2.5/weather?lat=' +
@@ -310,24 +306,23 @@ $(document).ready(function () {
                     yourApiKey,
                   dataType: 'json',
                   success: function (result) {
-                    // storing json data in variables
-                    weatherlocation_lon = result.coord.lon; // lon WGS84
-                    weatherlocation_lat = result.coord.lat; // lat WGS84
-                    weatherstationname = result.name; // Name of Weatherstation
-                    weatherstationid = result.id; // ID of Weatherstation
-                    weathertime = result.dt; // Time of weatherresult (UTC)
-                    temperature = result.main.temp; // Kelvin
-                    airpressure = result.main.pressure; // hPa
-                    airhumidity = result.main.humidity; // %
-                    temperature_min = result.main.temp_min; // Kelvin
-                    temperature_max = result.main.temp_max; // Kelvin
-                    windspeed = result.wind.speed; // Meter per second
-                    winddirection = result.wind.deg; // Wind from direction x degree from north
-                    cloudcoverage = result.clouds.all; // Cloudcoverage in %
-                    weatherconditionid = result.weather[0].id; // ID
-                    weatherconditionstring = result.weather[0].main; // Weatheartype
-                    weatherconditiondescription = result.weather[0].description; // Weatherdescription
-                    weatherconditionicon = result.weather[0].icon; // ID of weathericon
+                    weatherlocation_lon = result.coord.lon;
+                    weatherlocation_lat = result.coord.lat;
+                    weatherstationname = result.name;
+                    weatherstationid = result.id;
+                    weathertime = result.dt;
+                    temperature = result.main.temp;
+                    airpressure = result.main.pressure;
+                    airhumidity = result.main.humidity;
+                    temperature_min = result.main.temp_min;
+                    temperature_max = result.main.temp_max;
+                    windspeed = result.wind.speed;
+                    winddirection = result.wind.deg;
+                    cloudcoverage = result.clouds.all;
+                    weatherconditionid = result.weather[0].id;
+                    weatherconditionstring = result.weather[0].main;
+                    weatherconditiondescription = result.weather[0].description;
+                    weatherconditionicon = result.weather[0].icon;
 
                     // Converting Unix UTC Time
                     const utctimecalc = new Date(weathertime * 1000);
@@ -368,14 +363,14 @@ $(document).ready(function () {
                       'http://openweathermap.org/img/w/' +
                       weatherconditionicon +
                       '.png';
-                    const weathertimenormal = time; // reallocate time const....
+                    const weathertimenormal = time;
                     const temperaturecelsius =
-                      Math.round((temperature - 273) * 100) / 100; // Converting Kelvin to Celsius
+                      Math.round((temperature - 273) * 100) / 100;
                     const windspeedknots =
-                      Math.round(windspeed * 1.94 * 100) / 100; // Windspeed from m/s in Knots; Round to 2 decimals
+                      Math.round(windspeed * 1.94 * 100) / 100;
                     const windspeedkmh =
-                      Math.round(windspeed * 3.6 * 100) / 100; // Windspeed from m/s in km/h; Round to 2 decimals
-                    let winddirectionstring = 'Im the wind from direction'; // Wind from direction x as text
+                      Math.round(windspeed * 3.6 * 100) / 100;
+                    let winddirectionstring = 'Im the wind from direction';
                     if (winddirection > 348.75 && winddirection <= 11.25) {
                       winddirectionstring = 'North';
                     } else if (
@@ -458,7 +453,6 @@ $(document).ready(function () {
                         ' - currently no winddata available - ';
                     }
 
-                    //Popup with content
                     const fontsizesmall = 1;
                     popup.setContent(
                       'Weatherdata:<br>' +
@@ -507,46 +501,53 @@ $(document).ready(function () {
                 markers.on('click', onClick);
               }
 
-              let markers = L.markerClusterGroup();
+              markers = L.markerClusterGroup();
 
-              function plotrandom(number) {
-                bounds = border.getBounds();
-                let southWest = bounds.getSouthWest();
-                let northEast = bounds.getNorthEast();
-                let lngSpan = northEast.lng - southWest.lng;
-                let latSpan = northEast.lat - southWest.lat;
-                pointsrand = [];
+              const a = filterData[0].coordinates;
 
-                for (let i = 0; i < number; ++i) {
-                  let point = [
-                    southWest.lat + latSpan * Math.random(),
-                    southWest.lng + lngSpan * Math.random(),
-                  ];
-                  pointsrand.push(point);
-                }
+              let polygon = L.polygon(a);
 
-                console.log(pointsrand);
-                console.log(arrMarkers);
+              function plotrandom(polygon) {
+                bounds = polygon.getBounds();
 
-                for (let i = 0; i < number; ++i) {
-                  let strText = i + ' : ' + pointsrand[i];
+                const x_max = bounds.getEast();
+                const x_min = bounds.getWest();
+                const y_max = bounds.getSouth();
+                const y_min = bounds.getNorth();
 
-                  let marker = placeMarker(pointsrand[i], strText);
-                  marker.addTo(myMap);
-                  arrMarkers.push(marker);
+                const lat = y_min + Math.random() * (y_max - y_min);
+                const lng = x_min + Math.random() * (x_max - x_min);
+
+                let point = turf.point([lng, lat]);
+                let poly = polygon.toGeoJSON();
+
+                let inside = turf.booleanPointInPolygon(point, poly);
+                if (inside) {
+                  return point;
+                } else {
+                  return plotrandom(polygon);
                 }
               }
 
-              function placeMarker(location) {
-                let marker = L.marker(location, { icon: weatherIcon });
+              for (let i = 0; i < 7; ++i) {
+                let randPlot = plotrandom(polygon);
+                arrMarkers.push(randPlot);
+              }
+
+              for (let i = 0; i < arrMarkers.length; i++) {
+                let addressPoint = arrMarkers[i].geometry.coordinates;
+                let marker = L.marker(
+                  new L.LatLng(addressPoint[0], addressPoint[1]),
+                  {
+                    icon: weatherIcon,
+                  }
+                );
+                lMarkers.push(marker);
                 markers.addLayer(marker);
-                return markers;
               }
-              // myMap.addLayer(markers);
 
-              plotrandom(7);
-
-              arrMarkers.map((marker) => {
+              myMap.addLayer(markers);
+              lMarkers.map((marker) => {
                 marker.on('click', onClick);
               });
             },
@@ -564,11 +565,10 @@ $(document).ready(function () {
         type: 'POST',
         dataType: 'json',
         success: function (result) {
-          // console.log(JSON.stringify(result));
           if (result.status.name == 'ok') {
             countryArray = result.countryNames;
 
-            for (var i = 0; i < countryArray.length; i++) {
+            for (let i = 0; i < countryArray.length; i++) {
               $('#selCountry').append(
                 $('<option>', {
                   value: countryArray[i].code,
@@ -583,6 +583,7 @@ $(document).ready(function () {
         },
       });
     });
+
     // Select Country - Highlights Country on Map
 
     $(document).on('click', '#selCountry', function () {
@@ -592,16 +593,12 @@ $(document).ready(function () {
         iconAnchor: [24, 10],
       });
       let name = $('#selCountry').val();
-      // const myLayer = L.geoJSON().addTo(myMap);
       if (name) {
         $.ajax({
           url: 'libs/php/getCountryData.php',
           type: 'POST',
           dataType: 'json',
           success: function (result) {
-            // console.log(JSON.stringify(result.countryBorders));
-            // myLayer.addData(result.countryBorders);
-
             if (myMap.hasLayer(border)) {
               myMap.removeLayer(border);
             }
