@@ -198,7 +198,8 @@ $(document).ready(function () {
                                       ','
                                     )} (million)`
                                 );
-                                $('#td8').html(`${country.currencyCode}`);
+                                // $('#td8').html(`${country.currencyCode}`);
+                                $('#td20').html(`${country.areaInSqKm} ㎢`);
                               }
                             }
                           );
@@ -237,6 +238,26 @@ $(document).ready(function () {
                               ) {
                                 $('#td17').html(
                                   `<img src=${countryResult.restCountries.flag} style="width:30px;">`
+                                );
+                              }
+                              if (
+                                countryResult.restCountries.alpha2Code ===
+                                countryFeature.properties.iso_a2
+                              ) {
+                                $('#td23').html(
+                                  `+${countryResult.restCountries.callingCodes}`
+                                );
+                              }
+                              if (
+                                countryResult.restCountries.alpha2Code ===
+                                countryFeature.properties.iso_a2
+                              ) {
+                                countryResult.restCountries.currencies.filter(
+                                  (curCode) => {
+                                    $('#td8').html(
+                                      `${curCode.symbol}${curCode.code}`
+                                    );
+                                  }
                                 );
                               }
                             },
