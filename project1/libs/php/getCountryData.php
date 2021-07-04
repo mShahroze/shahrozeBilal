@@ -37,16 +37,16 @@ usort($countryNames, function ($item1, $item2) {
   return $item1['name'] <=> $item2['name'];
 });
 
-$OER = "https://openexchangerates.org/api/latest.json?app_id=955bc45d748747a398e589d9390f8e9f";
+$fixerExhange = "http://data.fixer.io/api/latest?access_key=006d268d3dcc23e406cd02154c5130c9";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL, $OER);
+curl_setopt($ch, CURLOPT_URL, $fixerExhange);
 
-$oerResult = curl_exec($ch);
+$exchangeResult = curl_exec($ch);
 
-$oerDecode = json_decode($oerResult, true);
+$exchangeDecode = json_decode($exchangeResult, true);
 
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
@@ -56,7 +56,7 @@ $output['countryFeatures'] = $countryData;
 $output['countryNames'] = $countryNames;
 $output['countryBorders'] = $countryBorders;
 $output['countryInfo'] = $countryInfo['geonames'];
-$output['countryExchangeRates'] = $oerDecode['rates'];
+$output['countryExchangeRates'] = $exchangeDecode['rates'];
 
 header('Content-Type: application/json; charset=UTF-8');
 
