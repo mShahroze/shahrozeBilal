@@ -298,8 +298,6 @@ $(document).ready(function () {
                 (country) => country.code === name
               );
 
-              // console.log(filterData);
-
               yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
               const popup = L.popup();
