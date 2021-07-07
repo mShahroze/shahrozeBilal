@@ -25,9 +25,33 @@ const Sat = L.tileLayer(
   }
 );
 
+const Dark = L.tileLayer(
+  'https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=TYSKvo6e0lUYRYv5ujTkL8eta5s8dieFaH6MXVprzkPFc7X7JHZXfP5N4557o5dz',
+  {
+    attribution:
+      '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    minZoom: 0,
+    maxZoom: 22,
+    subdomains: 'abcd',
+    accessToken:
+      'TYSKvo6e0lUYRYv5ujTkL8eta5s8dieFaH6MXVprzkPFc7X7JHZXfP5N4557o5dz',
+  }
+);
+
+googleHybrid = L.tileLayer(
+  'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+  {
+    tileSize: 256,
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+  }
+);
+
 let baseMaps = {
   "<span style='color: tan'>Esri - World Topo Map</span>": Topo,
-  "<span style='color: darkgreen'>Esri - World Topo Map</span>": Sat,
+  "<span style='color: darkgreen'>World Sat Map</span>": Sat,
+  "<span style='color: black'>Dark Matrix</span>": Dark,
+  "<span style='color: black'>Google Hybrid</span>": googleHybrid,
 };
 
 mapOptions = {
@@ -35,7 +59,7 @@ mapOptions = {
   zoom: 5,
   minZoom: 3,
   maxZoom: 13,
-  attributionControl: false,
+  attributionControl: true,
 };
 
 $(document).ready(function () {
@@ -52,9 +76,17 @@ $(document).ready(function () {
         images: 'vendors/css/images',
         limit: 1,
         clearOutsideBounds: true,
-        popupOnMouseover: true,
       })
       .addTo(myMap);
+  }
+
+  function displayGeographs() {
+    let gph = L.geographPhotos({
+      api_key: 'geograph_demo',
+      autoZoomOnAdd: true,
+      query: 'canal',
+    });
+    gph.addTo(myMap);
   }
 
   // on Load - Get Current Location
@@ -94,17 +126,12 @@ $(document).ready(function () {
         iconAnchor: [24, 10],
       });
 
-      const homeMarker = L.marker(latlng, { icon: homeIcon })
-        .bindPopup(`<b>You Are Here!</b><br>${myMap.getCenter()}.`)
-        .addTo(myMap);
-
       function setCurrentLocation() {
         $.ajax({
-          url: 'libs/php/getCountryData.php',
+          url: 'libs/php/getCountryBorders.php',
           type: 'POST',
           dataType: 'json',
           success: function (result) {
-            console.log(result);
             if (result.status.name == 'ok') {
               function zoomToFeature(e) {
                 myMap.fitBounds(e.target.getBounds());
@@ -120,8 +147,8 @@ $(document).ready(function () {
                 myMap.removeLayer(border);
               }
 
-              const filterData = result.countryFeatures.features.filter(
-                (country) => country.properties.iso_a2 === 'GB'
+              const filterData = result.countryBorders.filter(
+                (country) => country.code === 'GB'
               );
 
               border = L.geoJSON(filterData[0], {
@@ -136,6 +163,7 @@ $(document).ready(function () {
               }).addTo(myMap);
               myMap.fitBounds(border.getBounds().pad(0.5));
               wiki();
+              displayGeographs();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -145,6 +173,18 @@ $(document).ready(function () {
       }
 
       setCurrentLocation();
+
+      L.control
+        .scale({
+          position: 'bottomleft',
+        })
+        .addTo(myMap);
+
+      var miniMap = new L.Control.MiniMap(Topo, {
+        toggleDisplay: true,
+        minimized: false,
+        position: 'bottomleft',
+      }).addTo(myMap);
 
       L.easyButton(
         '<img src="libs/images/location.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
@@ -159,13 +199,13 @@ $(document).ready(function () {
         '<img src="libs/images/Information.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
           $.ajax({
-            url: 'libs/php/getCountryData.php',
+            url: 'libs/php/getCountryBorders.php',
             type: 'POST',
             dataType: 'json',
             success: function (result) {
               if (result.status.name == 'ok') {
                 const latlng = myMap.getCenter();
-                let filteredData = result.countryFeatures.features.forEach(
+                let filteredData = result.countryBorders.forEach(
                   (countryFeature) => {
                     let gjLayer = L.geoJson(countryFeature.geometry);
                     let results = leafletPip.pointInLayer(
@@ -178,42 +218,52 @@ $(document).ready(function () {
                         countryFeature.properties.name.toUpperCase()
                       );
                       $.ajax({
-                        url: 'libs/php/getCountryData.php',
+                        url: 'libs/php/getCountryInfo.php',
                         type: 'POST',
                         dataType: 'json',
+                        data: { countryName: countryFeature.properties.iso_a2 },
 
                         success: function (countryResult) {
-                          countryResult.countryInfo.country.forEach(
-                            (country) => {
-                              if (
-                                country.countryName ===
-                                countryFeature.properties.name
-                              ) {
-                                $('#td2').html(`${country.capital}`);
-                                $('#td5').html(
-                                  `${country.population
-                                    .toString()
-                                    .replace(
-                                      /\B(?=(\d{3})+(?!\d))/g,
-                                      ','
-                                    )} (million)`
-                                );
-                                // $('#td8').html(`${country.currencyCode}`);
-                                $('#td20').html(`${country.areaInSqKm} ㎢`);
-                              }
-                            }
-                          );
-
-                          for (const key in countryResult.countryExchangeRates) {
+                          countryResult.countryInfo.forEach((country) => {
                             if (
-                              key.substring(0, 2) ===
-                              countryFeature.properties.iso_a2
+                              country.countryName ===
+                              countryFeature.properties.name
                             ) {
-                              $('#td11').html(
-                                `${countryResult.countryExchangeRates[key]} /(£)`
+                              $('#td2').html(`${country.capital}`);
+                              $('#td5').html(
+                                `${country.population
+                                  .toString()
+                                  .replace(
+                                    /\B(?=(\d{3})+(?!\d))/g,
+                                    ','
+                                  )} (million)`
                               );
+                              // $('#td8').html(`${country.currencyCode}`);
+                              $('#td20').html(`${country.areaInSqKm} ㎢`);
                             }
-                          }
+                          });
+
+                          $.ajax({
+                            url: 'libs/php/getCountryCurExchange.php',
+                            type: 'POST',
+                            dataType: 'json',
+
+                            success: function (countryResult) {
+                              for (const key in countryResult.countryExchangeRates) {
+                                if (
+                                  key.substring(0, 2) ===
+                                  countryFeature.properties.iso_a2
+                                ) {
+                                  $('#td11').html(
+                                    `${countryResult.countryExchangeRates[key]} /(£)`
+                                  );
+                                }
+                              }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                              console.log(textStatus);
+                            },
+                          });
 
                           $.ajax({
                             url: 'libs/php/getMoreCountryInfo.php',
@@ -285,7 +335,7 @@ $(document).ready(function () {
           let name = $('#selCountry').val() || 'GB';
 
           $.ajax({
-            url: 'libs/php/getCountryData.php',
+            url: 'libs/php/getCountryBorders.php',
             type: 'POST',
             dataType: 'json',
             success: function (result) {
@@ -548,7 +598,7 @@ $(document).ready(function () {
                 }
               }
 
-              for (let i = 0; i < 7; ++i) {
+              for (let i = 0; i < 20; ++i) {
                 let randPlot = plotrandom(polygon);
                 arrMarkers.push(randPlot);
               }
@@ -580,7 +630,7 @@ $(document).ready(function () {
       // Country Code and Country name in Select
 
       $.ajax({
-        url: 'libs/php/getCountryData.php',
+        url: 'libs/php/getCountryNames.php',
         type: 'POST',
         dataType: 'json',
         success: function (result) {
@@ -614,7 +664,7 @@ $(document).ready(function () {
       let name = $('#selCountry').val();
       if (name) {
         $.ajax({
-          url: 'libs/php/getCountryData.php',
+          url: 'libs/php/getCountryBorders.php',
           type: 'POST',
           dataType: 'json',
           success: function (result) {

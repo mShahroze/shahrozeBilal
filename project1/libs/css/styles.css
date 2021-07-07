@@ -184,3 +184,17 @@ button.close {
 td {
   max-width: 10vw;
 }
+
+.leaflet-control-minimap {
+  border-color: rgb(48, 52, 54);
+  box-shadow: rgb(0 0 0 / 65%) 0px 1px 5px;
+  background-image: initial;
+  background-color: rgb(28, 30, 31);
+}
+
+.leaflet-control-minimap-toggle-display {
+  background-image: url('../../vendors/css/images/toggle.svg');
+  background-size: cover;
+  position: absolute;
+  border-radius: 3px 0px 0px 0px;
+}
