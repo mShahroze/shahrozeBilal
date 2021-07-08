@@ -128,42 +128,54 @@ $(document).ready(function () {
 
       function setCurrentLocation() {
         $.ajax({
-          url: 'libs/php/getCountryBorders.php',
+          url: 'libs/php/getCountry.php',
           type: 'POST',
           dataType: 'json',
+          data: { lat: latlng.lat, lng: latlng.lng },
           success: function (result) {
             if (result.status.name == 'ok') {
-              function zoomToFeature(e) {
-                myMap.fitBounds(e.target.getBounds());
-              }
+              $.ajax({
+                url: 'libs/php/getCountryBorders.php',
+                type: 'POST',
+                dataType: 'json',
+                data: { countryName: result.country },
 
-              function onEachFeature(feature, layer) {
-                layer.on({
-                  click: zoomToFeature,
-                });
-              }
+                success: function (result) {
+                  countryBorder = result.countryBorder;
 
-              if (myMap.hasLayer(border)) {
-                myMap.removeLayer(border);
-              }
+                  if (myMap.hasLayer(border)) {
+                    myMap.removeLayer(border);
+                    markers.clearLayers();
+                  }
 
-              const filterData = result.countryBorders.filter(
-                (country) => country.code === 'GB'
-              );
+                  function zoomToFeature(e) {
+                    myMap.fitBounds(e.target.getBounds());
+                  }
 
-              border = L.geoJSON(filterData[0], {
-                style: function (feature) {
-                  return {
-                    color: '#33ADFF',
-                    weight: 5,
-                    opacity: 0.65,
-                  };
+                  function onEachFeature(feature, layer) {
+                    layer.on({
+                      click: zoomToFeature,
+                    });
+                  }
+
+                  border = L.geoJSON(countryBorder, {
+                    style: function (feature) {
+                      return {
+                        color: '#33ADFF',
+                        weight: 5,
+                        opacity: 0.65,
+                      };
+                    },
+                    onEachFeature: onEachFeature,
+                  }).addTo(myMap);
+                  myMap.fitBounds(border.getBounds().pad(0.5));
+                  wiki();
+                  // displayGeographs();
                 },
-                onEachFeature: onEachFeature,
-              }).addTo(myMap);
-              myMap.fitBounds(border.getBounds().pad(0.5));
-              wiki();
-              displayGeographs();
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                },
+              });
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -189,7 +201,7 @@ $(document).ready(function () {
       L.easyButton(
         '<img src="libs/images/location.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
-          const home = [53.50296, -2.23643];
+          const home = [latlng.lat, latlng.lng];
           myMap.setView(home, 5);
           setCurrentLocation();
         }
@@ -197,133 +209,124 @@ $(document).ready(function () {
 
       L.easyButton(
         '<img src="libs/images/Information.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
+
         function (btn, myMap) {
+          let name = $('#selCountry').val();
+          const latlng = myMap.getCenter();
+
           $.ajax({
-            url: 'libs/php/getCountryBorders.php',
+            url: 'libs/php/getCountry.php',
             type: 'POST',
             dataType: 'json',
+            data: { lat: latlng.lat, lng: latlng.lng },
             success: function (result) {
               if (result.status.name == 'ok') {
-                const latlng = myMap.getCenter();
-                let filteredData = result.countryBorders.forEach(
-                  (countryFeature) => {
-                    let gjLayer = L.geoJson(countryFeature.geometry);
-                    let results = leafletPip.pointInLayer(
-                      [latlng.lng, latlng.lat],
-                      gjLayer
-                    );
-                    if (results.length) {
-                      $('#myModal').modal('show');
-                      $('#Country-Name').html(
-                        countryFeature.properties.name.toUpperCase()
+                $.ajax({
+                  url: 'libs/php/getCountryBorders.php',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: { countryName: result.country },
+                  success: function (result) {
+                    if (result.status.name == 'ok') {
+                      countryFeature = result.countryBorder;
+                      let gjLayer = L.geoJson(countryFeature.geometry);
+                      let results = leafletPip.pointInLayer(
+                        [latlng.lng, latlng.lat],
+                        gjLayer
                       );
-                      $.ajax({
-                        url: 'libs/php/getCountryInfo.php',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { countryName: countryFeature.properties.iso_a2 },
 
-                        success: function (countryResult) {
-                          countryResult.countryInfo.forEach((country) => {
-                            if (
-                              country.countryName ===
-                              countryFeature.properties.name
-                            ) {
-                              $('#td2').html(`${country.capital}`);
-                              $('#td5').html(
-                                `${country.population
-                                  .toString()
-                                  .replace(
-                                    /\B(?=(\d{3})+(?!\d))/g,
-                                    ','
-                                  )} (million)`
+                      if (results.length) {
+                        $('#myModal').modal('show');
+                        $('#Country-Name').html(
+                          countryFeature.properties.name.toUpperCase()
+                        );
+
+                        $.ajax({
+                          url: 'libs/php/getCountryInfo.php',
+                          type: 'POST',
+                          dataType: 'json',
+                          data: {
+                            countryCode: countryFeature.properties.iso_a2,
+                          },
+
+                          success: function (result) {
+                            countryInfo = result.countryInfo[0];
+                            $('#td2').html(`${countryInfo.capital}`);
+                            $('#td5').html(
+                              `${countryInfo.population
+                                .toString()
+                                .replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ','
+                                )} (million)`
+                            );
+                            $('#td20').html(`${countryInfo.areaInSqKm} ㎢`);
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus);
+                          },
+                        });
+
+                        $.ajax({
+                          url: 'libs/php/getMoreCountryInfo.php',
+                          type: 'POST',
+                          dataType: 'json',
+                          data: {
+                            countryCode: countryFeature.properties.iso_a3,
+                          },
+
+                          success: function (moreCountryInfo) {
+                            if (result.status.name == 'ok') {
+                              $('#td14').html(
+                                `${moreCountryInfo.languages[0].name}`
                               );
-                              // $('#td8').html(`${country.currencyCode}`);
-                              $('#td20').html(`${country.areaInSqKm} ㎢`);
+                              $('#td17').html(
+                                `<img src=${moreCountryInfo.flag} style="width:30px;">`
+                              );
+                              $('#td23').html(
+                                `+${moreCountryInfo.callingCodes}`
+                              );
+                              moreCountryInfo.currencies.filter((curCode) => {
+                                $('#td8').html(
+                                  `${curCode.symbol}${curCode.code}`
+                                );
+                              });
                             }
-                          });
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus);
+                          },
+                        });
 
-                          $.ajax({
-                            url: 'libs/php/getCountryCurExchange.php',
-                            type: 'POST',
-                            dataType: 'json',
+                        $.ajax({
+                          url: 'libs/php/getCountryCurExchange.php',
+                          type: 'POST',
+                          dataType: 'json',
 
-                            success: function (countryResult) {
-                              for (const key in countryResult.countryExchangeRates) {
-                                if (
-                                  key.substring(0, 2) ===
-                                  countryFeature.properties.iso_a2
-                                ) {
-                                  $('#td11').html(
-                                    `${countryResult.countryExchangeRates[key]} /(£)`
-                                  );
-                                }
-                              }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                              console.log(textStatus);
-                            },
-                          });
-
-                          $.ajax({
-                            url: 'libs/php/getMoreCountryInfo.php',
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                              countryName: countryFeature.properties.iso_a2,
-                            },
-
-                            success: function (countryResult) {
+                          success: function (countryResult) {
+                            for (const key in countryResult.countryExchangeRates) {
                               if (
-                                countryResult.restCountries.alpha2Code ===
+                                key.substring(0, 2) ===
                                 countryFeature.properties.iso_a2
                               ) {
-                                $('#td14').html(
-                                  `${countryResult.restCountries.languages[0].name}`
+                                $('#td11').html(
+                                  `${countryResult.countryExchangeRates[key]} /(£)`
                                 );
                               }
-                              if (
-                                countryResult.restCountries.alpha2Code ===
-                                countryFeature.properties.iso_a2
-                              ) {
-                                $('#td17').html(
-                                  `<img src=${countryResult.restCountries.flag} style="width:30px;">`
-                                );
-                              }
-                              if (
-                                countryResult.restCountries.alpha2Code ===
-                                countryFeature.properties.iso_a2
-                              ) {
-                                $('#td23').html(
-                                  `+${countryResult.restCountries.callingCodes}`
-                                );
-                              }
-                              if (
-                                countryResult.restCountries.alpha2Code ===
-                                countryFeature.properties.iso_a2
-                              ) {
-                                countryResult.restCountries.currencies.filter(
-                                  (curCode) => {
-                                    $('#td8').html(
-                                      `${curCode.symbol}${curCode.code}`
-                                    );
-                                  }
-                                );
-                              }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                              console.log(textStatus);
-                            },
-                          });
-                        },
-                      });
+                            }
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus);
+                          },
+                        });
+                      }
                     }
-                  }
-                );
+                  },
+                  error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                  },
+                });
               }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-              console.log(textStatus);
             },
           });
         }
@@ -332,21 +335,21 @@ $(document).ready(function () {
       L.easyButton(
         '<img src="libs/images/weather.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
         function (btn, myMap) {
-          let name = $('#selCountry').val() || 'GB';
+          let name = $('#selCountry').val() || 'United Kingdom';
 
           $.ajax({
             url: 'libs/php/getCountryBorders.php',
             type: 'POST',
             dataType: 'json',
+            data: { countryName: name },
             success: function (result) {
+              countryBorder = result.countryBorder;
+
               lMarkers = [];
               arrMarkers = [];
               if (markers) {
                 myMap.removeLayer(markers);
               }
-              const filterData = result.countryBorders.filter(
-                (country) => country.code === name
-              );
 
               yourApiKey = '1bc83138eb5d1328d858c1722e6666da';
 
@@ -572,7 +575,7 @@ $(document).ready(function () {
 
               markers = L.markerClusterGroup();
 
-              const a = filterData[0].coordinates;
+              const a = countryBorder.geometry.coordinates;
 
               let polygon = L.polygon(a);
 
@@ -640,7 +643,7 @@ $(document).ready(function () {
             for (let i = 0; i < countryArray.length; i++) {
               $('#selCountry').append(
                 $('<option>', {
-                  value: countryArray[i].code,
+                  value: countryArray[i].name,
                   text: `(${countryArray[i].code}) ${countryArray[i].name}`,
                 })
               );
@@ -667,16 +670,15 @@ $(document).ready(function () {
           url: 'libs/php/getCountryBorders.php',
           type: 'POST',
           dataType: 'json',
+          data: { countryName: name },
           success: function (result) {
+            countryBorder = result.countryBorder;
+
             if (myMap.hasLayer(border)) {
               myMap.removeLayer(border);
             }
 
-            const filteredData = result.countryBorders.filter(
-              (countryBorder) => countryBorder.code === name
-            );
-
-            border = L.geoJSON(filteredData[0], {
+            border = L.geoJSON(countryBorder, {
               style: function (feature) {
                 return {
                   color: '#33ADFF',

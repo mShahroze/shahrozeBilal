@@ -198,3 +198,7 @@ td {
   position: absolute;
   border-radius: 3px 0px 0px 0px;
 }
+
+.leaflet-popup-photo a.leaflet-popup-close-button {
+  padding: 0;
+}

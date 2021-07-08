@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 $executionStartTime = microtime(true);
 
 
-$rest = "https://restcountries.eu/rest/v2/alpha/" . $_REQUEST['countryName'];
+$rest = "https://restcountries.eu/rest/v2/alpha/" . $_REQUEST['countryCode'];
 
 $ch1 = curl_init();
 curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
@@ -21,7 +21,7 @@ $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
 $output['status']['description'] = "success";
 $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-$output['restCountries'] = $restDecode;
+$output = $restDecode;
 
 header('Content-Type: application/json; charset=UTF-8');
 
