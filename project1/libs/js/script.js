@@ -630,6 +630,120 @@ $(document).ready(function () {
         }
       ).addTo(myMap);
 
+      // Covid Data
+
+      let name = $('#selCountry').val();
+
+      $.ajax({
+        url: 'libs/php/getCountry.php',
+        type: 'POST',
+        dataType: 'json',
+        data: { lat: latlng.lat, lng: latlng.lng },
+        success: function (result) {
+          if (result.status.name == 'ok') {
+            $.ajax({
+              url: 'libs/php/getCountryBorders.php',
+              type: 'POST',
+              dataType: 'json',
+              data: { countryName: result.country },
+              success: function (result) {
+                countryBorder = result.countryBorder;
+                $.ajax({
+                  url: 'libs/php/getCovidData.php',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: { countryName: name },
+
+                  success: function (covidResult) {
+                    if (result.status.name == 'ok') {
+                      const hasData =
+                        Array.isArray(covidResult) && covidResult.length > 0;
+
+                      if (!hasData) return;
+
+                      const geoJson = {
+                        type: 'FeatureCollection',
+                        features: covidResult.map((country = {}) => {
+                          const { countryInfo = {} } = country;
+                          const { lat, long: lng } = countryInfo;
+                          return {
+                            type: 'Feature',
+                            properties: {
+                              ...country,
+                            },
+                            geometry: {
+                              type: 'Point',
+                              coordinates: [lng, lat],
+                            },
+                          };
+                        }),
+                      };
+
+                      const geoJsonLayers = new L.GeoJSON(geoJson, {
+                        pointToLayer: (feature = {}, latlng) => {
+                          const { properties = {} } = feature;
+                          let updatedFormatted;
+                          let casesString;
+
+                          const { country, updated, cases, deaths, recovered } =
+                            properties;
+
+                          casesString = `${cases}`;
+
+                          if (cases > 1000) {
+                            casesString = `${casesString.slice(0, -3)}k+`;
+                          }
+
+                          if (updated) {
+                            updatedFormatted = new Date(
+                              updated
+                            ).toLocaleString();
+                          }
+
+                          const html = `
+                            <span class="icon-marker">
+                              <span class="icon-marker-tooltip">
+                                <h2>${country}</h2>
+                                <ul>
+                                  <li><strong>Confirmed:</strong> ${cases}</li>
+                                  <li><strong>Deaths:</strong> ${deaths}</li>
+                                  <li><strong>Recovered:</strong> ${recovered}</li>
+                                  <li><strong>Last Update:</strong> ${updatedFormatted}</li>
+                                </ul>
+                              </span>
+                              ${casesString}
+                            </span>
+                          `;
+
+                          return L.marker(latlng, {
+                            icon: L.divIcon({
+                              className: 'icon',
+                              html,
+                            }),
+                            riseOnHover: true,
+                          });
+                        },
+                      });
+
+                      geoJsonLayers.addTo(myMap);
+                    }
+                  },
+                  error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                  },
+                });
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+              },
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+        },
+      });
+
       // Country Code and Country name in Select
 
       $.ajax({
@@ -659,11 +773,6 @@ $(document).ready(function () {
     // Select Country - Highlights Country on Map
 
     $(document).on('click', '#selCountry', function () {
-      const weatherIcon = L.icon({
-        iconUrl: 'libs/images/weather-marker.png',
-        iconSize: [48, 48],
-        iconAnchor: [24, 10],
-      });
       let name = $('#selCountry').val();
       if (name) {
         $.ajax({
@@ -672,23 +781,25 @@ $(document).ready(function () {
           dataType: 'json',
           data: { countryName: name },
           success: function (result) {
-            countryBorder = result.countryBorder;
+            if (result.status.name == 'ok') {
+              countryBorder = result.countryBorder;
 
-            if (myMap.hasLayer(border)) {
-              myMap.removeLayer(border);
+              if (myMap.hasLayer(border)) {
+                myMap.removeLayer(border);
+              }
+
+              border = L.geoJSON(countryBorder, {
+                style: function (feature) {
+                  return {
+                    color: '#33ADFF',
+                    weight: 5,
+                    opacity: 0.65,
+                  };
+                },
+              }).addTo(myMap);
+              myMap.fitBounds(border.getBounds().pad(0.5));
+              wiki();
             }
-
-            border = L.geoJSON(countryBorder, {
-              style: function (feature) {
-                return {
-                  color: '#33ADFF',
-                  weight: 5,
-                  opacity: 0.65,
-                };
-              },
-            }).addTo(myMap);
-            myMap.fitBounds(border.getBounds().pad(0.5));
-            wiki();
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);
