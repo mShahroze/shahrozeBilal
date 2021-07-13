@@ -4,6 +4,8 @@ let border;
 let markers;
 let arrMarkers = new Array(0);
 let lMarkers = new Array(0);
+let geoJsonLayers;
+let covidGeoJson;
 
 // Added Map, MapTile
 
@@ -69,25 +71,18 @@ $(document).ready(function () {
     $('.container-fluid').fadeIn(2000);
   });
 
-  function wiki() {
-    L.layerGroup
-      .wikipediaLayer({
-        target: '_blank',
-        images: 'vendors/css/images',
-        limit: 1,
-        clearOutsideBounds: true,
-      })
-      .addTo(myMap);
-  }
+  let wiki = L.layerGroup.wikipediaLayer({
+    target: '_blank',
+    images: 'vendors/css/images',
+    limit: 1,
+    clearOutsideBounds: true,
+  });
 
-  function displayGeographs() {
-    let gph = L.geographPhotos({
-      api_key: 'geograph_demo',
-      autoZoomOnAdd: true,
-      query: 'canal',
-    });
-    gph.addTo(myMap);
-  }
+  let gph = L.geographPhotos({
+    api_key: 'geograph_demo',
+    autoZoomOnAdd: true,
+    query: 'canal',
+  });
 
   // on Load - Get Current Location
 
@@ -142,11 +137,15 @@ $(document).ready(function () {
 
                 success: function (result) {
                   countryBorder = result.countryBorder;
+                  $('#selCountry').val(countryBorder.properties.name).change();
 
-                  if (myMap.hasLayer(border)) {
-                    myMap.removeLayer(border);
-                    markers.clearLayers();
-                  }
+                  myMap.eachLayer(function (layer) {
+                    if (layer === markers) {
+                      myMap.removeLayer(markers);
+                    } else if (layer === border) {
+                      myMap.removeLayer(border);
+                    }
+                  });
 
                   function zoomToFeature(e) {
                     myMap.fitBounds(e.target.getBounds());
@@ -169,8 +168,8 @@ $(document).ready(function () {
                     onEachFeature: onEachFeature,
                   }).addTo(myMap);
                   myMap.fitBounds(border.getBounds().pad(0.5));
-                  wiki();
-                  // displayGeographs();
+                  wiki.addTo(myMap);
+                  gph.addTo(myMap);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                   console.log(textStatus);
@@ -630,119 +629,161 @@ $(document).ready(function () {
         }
       ).addTo(myMap);
 
-      // Covid Data
+      // Get Covid Data
 
-      let name = $('#selCountry').val();
+      L.easyButton(
+        '<img src="libs/images/covid.png" style="width:25px; position: absolute; right: 2px; top: 2.5px;">',
+        function (btn, myMap) {
+          let name = $('#selCountry').val();
+          const latlng = myMap.getCenter();
 
-      $.ajax({
-        url: 'libs/php/getCountry.php',
-        type: 'POST',
-        dataType: 'json',
-        data: { lat: latlng.lat, lng: latlng.lng },
-        success: function (result) {
-          if (result.status.name == 'ok') {
-            $.ajax({
-              url: 'libs/php/getCountryBorders.php',
-              type: 'POST',
-              dataType: 'json',
-              data: { countryName: result.country },
-              success: function (result) {
-                countryBorder = result.countryBorder;
+          $.ajax({
+            url: 'libs/php/getCountry.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { lat: latlng.lat, lng: latlng.lng },
+            success: function (result) {
+              if (result.status.name == 'ok') {
                 $.ajax({
-                  url: 'libs/php/getCovidData.php',
+                  url: 'libs/php/getCountryBorders.php',
                   type: 'POST',
                   dataType: 'json',
-                  data: { countryName: name },
+                  data: { countryName: result.country },
+                  success: function (result) {
+                    countryBorder = result.countryBorder;
+                    $.ajax({
+                      url: 'libs/php/getCovidData.php',
+                      type: 'POST',
+                      dataType: 'json',
+                      data: { countryName: name },
+                      success: function (covidResult) {
+                        if (result.status.name == 'ok') {
+                          countryFeature = result.countryBorder;
+                          let gjLayer = L.geoJson(countryFeature.geometry);
+                          let results = leafletPip.pointInLayer(
+                            [latlng.lng, latlng.lat],
+                            gjLayer
+                          );
 
-                  success: function (covidResult) {
-                    if (result.status.name == 'ok') {
-                      const hasData =
-                        Array.isArray(covidResult) && covidResult.length > 0;
+                          if (results.length) {
+                            let hasData =
+                              (Array.isArray(covidResult) &&
+                                covidResult.length > 0) ||
+                              typeof covidResult === 'object';
 
-                      if (!hasData) return;
+                            if (!hasData) return;
 
-                      const geoJson = {
-                        type: 'FeatureCollection',
-                        features: covidResult.map((country = {}) => {
-                          const { countryInfo = {} } = country;
-                          const { lat, long: lng } = countryInfo;
-                          return {
-                            type: 'Feature',
-                            properties: {
-                              ...country,
-                            },
-                            geometry: {
-                              type: 'Point',
-                              coordinates: [lng, lat],
-                            },
-                          };
-                        }),
-                      };
+                            if (typeof covidResult === 'object') {
+                              const { countryInfo = {} } = covidResult;
+                              const { lat, long: lng } = countryInfo;
+                              covidGeoJson = {
+                                type: 'FeatureCollection',
+                                features: [
+                                  {
+                                    type: 'Feature',
+                                    properties: {
+                                      ...covidResult,
+                                    },
+                                    geometry: {
+                                      type: 'Point',
+                                      coordinates: [lng, lat],
+                                    },
+                                  },
+                                ],
+                              };
+                            } else {
+                              covidGeoJson = {
+                                type: 'FeatureCollection',
+                                features: covidResult.map((country = {}) => {
+                                  const { countryInfo = {} } = country;
+                                  const { lat, long: lng } = countryInfo;
+                                  if (country.properties)
+                                    return {
+                                      type: 'Feature',
+                                      properties: {
+                                        ...country,
+                                      },
+                                      geometry: {
+                                        type: 'Point',
+                                        coordinates: [lng, lat],
+                                      },
+                                    };
+                                }),
+                              };
+                            }
 
-                      const geoJsonLayers = new L.GeoJSON(geoJson, {
-                        pointToLayer: (feature = {}, latlng) => {
-                          const { properties = {} } = feature;
-                          let updatedFormatted;
-                          let casesString;
+                            geoJsonLayers = new L.GeoJSON(covidGeoJson, {
+                              pointToLayer: (feature = {}, latlng) => {
+                                const { properties = {} } = feature;
+                                let updatedFormatted;
+                                let casesString;
 
-                          const { country, updated, cases, deaths, recovered } =
-                            properties;
+                                const {
+                                  country,
+                                  updated,
+                                  cases,
+                                  deaths,
+                                  recovered,
+                                } = properties;
 
-                          casesString = `${cases}`;
+                                casesString = `${cases}`;
 
-                          if (cases > 1000) {
-                            casesString = `${casesString.slice(0, -3)}k+`;
+                                if (cases > 1000) {
+                                  casesString = `${casesString.slice(0, -3)}k+`;
+                                }
+
+                                if (updated) {
+                                  updatedFormatted = new Date(
+                                    updated
+                                  ).toLocaleString();
+                                }
+
+                                const html = `
+                                <span class="icon-marker">
+                                  <span class="icon-marker-tooltip">
+                                    <h2>${country}</h2>
+                                    <ul>
+                                      <li><strong>Confirmed:</strong> ${cases}</li>
+                                      <li><strong>Deaths:</strong> ${deaths}</li>
+                                      <li><strong>Recovered:</strong> ${recovered}</li>
+                                      <li><strong>Last Update:</strong> ${updatedFormatted}</li>
+                                    </ul>
+                                  </span>
+                                  ${casesString}
+                                </span>
+                              `;
+
+                                return L.marker(latlng, {
+                                  icon: L.divIcon({
+                                    className: 'icon',
+                                    html,
+                                  }),
+                                  riseOnHover: true,
+                                });
+                              },
+                            });
+
+                            geoJsonLayers.addTo(myMap);
                           }
-
-                          if (updated) {
-                            updatedFormatted = new Date(
-                              updated
-                            ).toLocaleString();
-                          }
-
-                          const html = `
-                            <span class="icon-marker">
-                              <span class="icon-marker-tooltip">
-                                <h2>${country}</h2>
-                                <ul>
-                                  <li><strong>Confirmed:</strong> ${cases}</li>
-                                  <li><strong>Deaths:</strong> ${deaths}</li>
-                                  <li><strong>Recovered:</strong> ${recovered}</li>
-                                  <li><strong>Last Update:</strong> ${updatedFormatted}</li>
-                                </ul>
-                              </span>
-                              ${casesString}
-                            </span>
-                          `;
-
-                          return L.marker(latlng, {
-                            icon: L.divIcon({
-                              className: 'icon',
-                              html,
-                            }),
-                            riseOnHover: true,
-                          });
-                        },
-                      });
-
-                      geoJsonLayers.addTo(myMap);
-                    }
+                        }
+                      },
+                      error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                      },
+                    });
                   },
                   error: function (jqXHR, textStatus, errorThrown) {
                     console.log(textStatus);
                   },
                 });
-              },
-              error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-              },
-            });
-          }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(textStatus);
-        },
-      });
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              console.log(textStatus);
+            },
+          });
+        }
+      ).addTo(myMap);
 
       // Country Code and Country name in Select
 
@@ -758,7 +799,7 @@ $(document).ready(function () {
               $('#selCountry').append(
                 $('<option>', {
                   value: countryArray[i].name,
-                  text: `(${countryArray[i].code}) ${countryArray[i].name}`,
+                  text: `${countryArray[i].name}`,
                 })
               );
             }
@@ -784,8 +825,26 @@ $(document).ready(function () {
             if (result.status.name == 'ok') {
               countryBorder = result.countryBorder;
 
-              if (myMap.hasLayer(border)) {
-                myMap.removeLayer(border);
+              myMap.eachLayer(function (layer) {
+                if (layer === 'markers') {
+                  myMap.removeLayer(markers);
+                } else if (layer === border) {
+                  myMap.removeLayer(border);
+                } else if (layer === gph) {
+                  myMap.removeLayer(gph);
+                } else if (layer === geoJsonLayers) {
+                  myMap.removeLayer(geoJsonLayers);
+                }
+              });
+
+              function zoomToFeature(e) {
+                myMap.fitBounds(e.target.getBounds());
+              }
+
+              function onEachFeature(feature, layer) {
+                layer.on({
+                  click: zoomToFeature,
+                });
               }
 
               border = L.geoJSON(countryBorder, {
@@ -796,9 +855,10 @@ $(document).ready(function () {
                     opacity: 0.65,
                   };
                 },
+                onEachFeature: onEachFeature,
               }).addTo(myMap);
               myMap.fitBounds(border.getBounds().pad(0.5));
-              wiki();
+              wiki.addTo(myMap);
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
