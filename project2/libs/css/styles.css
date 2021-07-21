@@ -1,0 +1,108 @@
+* {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin: 0 auto;
+  background: #2c3e50 !important; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #eef2f3,
+    #8e9eab
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #eef2f3,
+    #8e9eab
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#searchBar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 15px;
+  margin-bottom: 30px;
+  margin-top: 9px;
+  padding: 0;
+}
+
+#advanced-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 4px;
+  margin-bottom: 30px;
+  margin-top: 37px;
+  padding: 0;
+  color: #212529;
+  background-color: #fff;
+}
+
+#navBar1 {
+  height: 50px;
+}
+
+#navBar2 {
+  height: 71px;
+}
+
+.card-box {
+  border: 1px solid rgb(212, 202, 202);
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  background-color: white;
+}
+
+.update-btn {
+  position: relative;
+  max-height: 630px;
+}
+
+.update-bottom {
+  background: #0275d8;
+  color: #fff;
+  right: 0.1px;
+  position: absolute;
+  top: 0;
+  width: 90px;
+  font-size: 15px;
+  height: 30px;
+  text-align: center;
+  line-height: 1.8;
+  padding: -10px;
+  border-radius: 5px;
+}
+
+.update-bottom:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.updDelBox {
+  display: inline;
+}
+
+.img-thumbnail {
+  padding: 2rem;
+  margin-bottom: 20px;
+}
+
+.btn-default {
+  border-color: #d1e0ee;
+}
+
+.btn {
+  display: inline-block;
+}
+
+.row-employeeData-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-box {
+  margin: 10px 15px;
+}
