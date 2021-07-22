@@ -32,7 +32,7 @@
 
 	}	
 
-	$query = 'SELECT p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.firstName, p.lastName, d.name, l.name';
+	$query = 'SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.firstName, p.lastName, d.name, l.name';
 
 	$result = $conn->query($query);
 	
@@ -51,7 +51,7 @@
 
 	}
 
-  	$data = [];
+	$data = [];
 
 	while ($row = mysqli_fetch_assoc($result)) {
 

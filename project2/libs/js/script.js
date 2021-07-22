@@ -1,4 +1,4 @@
-let content = '';
+let empContent = '';
 
 function getAll() {
   $.ajax({
@@ -9,13 +9,13 @@ function getAll() {
       if (result.status.name === 'ok') {
         console.log(result.data);
         result.data.forEach((emp) => {
-          content += `
+          empContent += `
           <div class="col-lg-4 col-md-5 col-sm-6">
           <div class="card-box">
-            <div class="update-btn">
+            <div class="update-btn" onclick>
               <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
               <!-- Edit Button trigger modal -->
-              <a href="#" class="update-bottom" id="editEmp" data-id="" data-toggle="modal" data-target="#exampleModal">
+              <a href="#" class="btn btn-primary update-bottom" id="editEmp" data-id="${emp.id}" data-toggle="modal" data-target="#exampleModal">
                 <i class="fa fa-fw fa-edit"></i>Update
               </a>
             </div>
@@ -51,12 +51,42 @@ function getAll() {
         </div>
           `;
         });
-
         document.querySelector('.row-employeeData-container').innerHTML =
-          content;
+          empContent;
       }
     },
   });
 }
 
 getAll();
+$('#editEmp').on('click', function () {
+  $('#myModal').modal('show');
+});
+
+// Function to  fill the input boxes with an employees current data. This is done for two reasons, one so the  user can easily see what they change and also
+// so that the data does not have to be re-typed if it is the same.
+function showModal(data) {
+  $.ajax({
+    url: 'php/editEmployee.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: data,
+    },
+    success: function (result) {
+      // Appends each input value to their respective data
+      $('#editID').val(result['id']);
+      $('#editName').val(result['firstName']);
+      $('#editLast').val(result['lastName']);
+      $('#editEmail').val(result['email']);
+      $('#editJob').val(result['job']);
+      $('#editDep').val(result['department']);
+      $('#editLoc').val(result['location']);
+      $('#edit-modal').modal();
+    },
+    error: function (jqXHR, exception) {
+      errorajx(jqXHR, exception);
+      console.log('Edit Employee');
+    },
+  });
+}

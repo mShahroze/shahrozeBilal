@@ -21,10 +21,6 @@
     <?php include('header.php'); ?>
     <!--//header-->
 
-    <!-- short -->
-    <div class="using-border py-5"></div>
-    <!-- //short-->
-
     <!-- Section Start-->
     <section class="py-lg-4 py-md-3 py-sm-3 py-3">
       <!-- Get data dynamically on cards -->
@@ -33,9 +29,66 @@
       </div>
     </section>
     <!-- //Section End-->
+
+    <!-- Update Pop up Modal Start -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel">Update Employee Record</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+            <!-- Edit Form Start -->
+            <form>
+              <!-- <div class="form-group">
+                          <label for="#">ID</label>
+                          <input type="text" class="form-control" id="eid" aria-describedby="eid" readonly>
+                      </div> -->
+              <div class="form-group">
+                <label for="#">First Name</label>
+                <input type="text" class="form-control" id="firstname" aria-describedby="firstname">
+              </div>
+              <div class="form-group">
+                <label for="#">Last Name</label>
+                <input type="text" class="form-control" id="lastname" aria-describedby="lastname">
+              </div>
+
+              <div class="form-group">
+                <label for="#">Job Title</label>
+                <input type="text" class="form-control" id="jobtitle" aria-describedby="jobtitle" placeholder="Enter Job Title">
+              </div>
+              <div class="form-group">
+                <label for="#">Email</label>
+                <input type="email" class="form-control" id="email" aria-describedby="email">
+              </div>
+
+              <div class="form-group">
+                <label>Department</label>
+                <!-- <input type="text" class="form-control" id="department" aria-describedby="department"> -->
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <!-- <input type="text" class="form-control" id="location" aria-describedby="location"> -->
+              </div>
+              <button type="submit" id="updateEmp" class="btn btn-primary">Update</button>
+            </form>
+            <!-- Edit Form End-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Update Pop up Modal End -->
   </div>
 
   <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
+  <script src="vendors/js/popper.min.js"></script>
   <script src="vendors/js/bootstrap.min.js"></script>
   <script type="application/javascript" src="libs/js/script.js"></script>
 </body>

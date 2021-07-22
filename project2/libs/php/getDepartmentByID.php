@@ -51,8 +51,8 @@
 		exit;
 
 	}
-   
-   	$data = [];
+
+  $data = [];
 
 	while ($row = mysqli_fetch_assoc($result)) {
 

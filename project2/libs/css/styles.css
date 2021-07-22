@@ -106,3 +106,23 @@ body {
 .card-box {
   margin: 10px 15px;
 }
+
+.update-bottom {
+  background: #0275d8;
+  color: #fff;
+  right: 0.1px;
+  position: absolute;
+  top: 0;
+  width: 100px;
+  font-size: 15px;
+  height: 38px;
+  text-align: center;
+  line-height: 1.8;
+  padding: -10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.update-bottom:hover {
+  color: #fff;
+}

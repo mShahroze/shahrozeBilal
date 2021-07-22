@@ -52,8 +52,8 @@
 		exit;
 
 	}
-   
-   	$personnel = [];
+
+  $personnel = [];
 
 	while ($row = mysqli_fetch_assoc($result)) {
 
@@ -81,8 +81,8 @@
 		exit;
 
 	}
-   
-   	$department = [];
+
+  $department = [];
 
 	while ($row = mysqli_fetch_assoc($result)) {
 

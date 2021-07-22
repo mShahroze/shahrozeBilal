@@ -73,10 +73,10 @@ CREATE TABLE IF NOT EXISTS `personnel` (
 
 -- Dumping data for table companydirectory.personnel: ~100 rows (approximately)
 /*!40000 ALTER TABLE `personnel` DISABLE KEYS */;
-INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `departmentID`) VALUES
+INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `departmentID`, `location`) VALUES
 	(1, 'Robert', 'Heffron', '', 'rheffron0@ibm.com', 1, ''),
 	(2, 'Kris', 'Kovnot', '', 'kkovnot1@google.nl', 2, ''),
-	(3, 'Vera', 'Kisbee', '', 'vkisbee2@nih.gov', 2), '',
+	(3, 'Vera', 'Kisbee', '', 'vkisbee2@nih.gov', 2, ''),
 	(4, 'Aveline', 'Edgson', '', 'aedgson3@wikispaces.com', 3, ''),
 	(5, 'Bertie', 'Wittke', '', 'bwittke4@yahoo.com', 4, ''),
 	(6, 'Demetre', 'Cossam', '', 'dcossam5@washington.edu', 5, ''),
