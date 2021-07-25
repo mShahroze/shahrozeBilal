@@ -246,6 +246,35 @@
     </div>
     <!-- Add Location Pop up Modal End  -->
 
+    <!-- Update Location Pop up Modal Start -->
+    <div class="modal" tabindex="-1" role="dialog" id="UpdateLocation">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Update Location</h3>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <select id="prevLocation" class='form-control'>
+                </select>
+                <br>
+                <input type="text" class="form-control" id="newLocation" value="" placeholder="Update Location Name">
+              </div>
+              <button type="submit" class="btn btn-primary" id="updateLocation">Update</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Update Location Pop up Modal End  -->
+
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>
     <script src="vendors/js/sweetalert2.all.min.js"></script>

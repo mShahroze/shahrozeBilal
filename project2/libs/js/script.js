@@ -2,6 +2,7 @@ let empContent = '';
 let empDeptInfo = '';
 let empUpdDeptInfo = '';
 let empLocInfo = '';
+let empUpdLocInfo = '';
 
 function getAll() {
   $.ajax({
@@ -105,14 +106,19 @@ function getLocations() {
       // console.log(result);
       if (result.status.name === 'ok') {
         empLocInfo += `<option value="">Select Location</option>`;
+        empUpdLocInfo += `<option value="">Select Location</option>`;
         result.data.forEach((loc) => {
           empLocInfo += `
           <option value=${loc.id}>${loc.name}</option>
+          `;
+          empUpdLocInfo += `
+          <option value=${loc.name}>${loc.name}</option>
           `;
         });
         document.querySelector('#location').innerHTML = empLocInfo;
         document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
+        document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
       }
     },
   });
@@ -292,6 +298,42 @@ $(document).on('click', '#addLocation', function (e) {
           position: 'top-end',
           type: 'success',
           title: 'Location has been saved',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showUpdLocModal() {
+  $('#UpdateLocation').modal('show');
+}
+
+$(document).on('click', '#updateLocation', function (e) {
+  e.preventDefault();
+  //  alert("Add Location Clicked");
+  let prevLocation = $('#prevLocation').val();
+  let newLocation = $('#newLocation').val();
+  // alert(prevLocation);
+  // alert(newLocation);
+  $.ajax({
+    url: 'libs/php/editLocation.php',
+    data: {
+      prevLocation: prevLocation,
+      newLocation: newLocation,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (result.status.description == 'success') {
+        $('#UpdateLocation').modal('hide');
+        // getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Location has been Updated',
           showConfirmButton: false,
           timer: 1500,
         });
