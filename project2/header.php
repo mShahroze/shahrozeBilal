@@ -36,7 +36,7 @@
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation" onclick="showAddLocModal()">Add</a>
                 <a class="dropdown-item" href="#UpdateLocation" data-toggle="modal" data-target="#UpdateLocation" onclick="showUpdLocModal()">Update</a>
-                <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation">Delete</a>
+                <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation" onclick="showDelLocModal()">Delete</a>
             </div>
         </div>
         &nbsp;

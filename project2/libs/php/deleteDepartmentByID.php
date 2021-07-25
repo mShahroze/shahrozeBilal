@@ -36,9 +36,9 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['deleteDepartment'])) {
 	$deleteDepartment = (int)$_POST['deleteDepartment'];
 
-	$deleteQuery = "DELETE FROM department WHERE id =" . $deleteDepartment;
+	$deleteDeptQuery = "DELETE FROM department WHERE id =" . $deleteDepartment;
 
-	$result = $conn->query($deleteQuery);
+	$result = $conn->query($deleteDeptQuery);
 
 	if (!$result) {
 

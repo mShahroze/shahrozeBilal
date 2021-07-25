@@ -119,6 +119,7 @@ function getLocations() {
         document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
         document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
+        document.querySelector('#deleteLoc').innerHTML = empLocInfo;
       }
     },
   });
@@ -334,6 +335,39 @@ $(document).on('click', '#updateLocation', function (e) {
           position: 'top-end',
           type: 'success',
           title: 'Location has been Updated',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showDelLocModal() {
+  $('#DeleteLocation').modal('show');
+}
+
+$(document).on('click', '#deleteLocation', function (e) {
+  e.preventDefault();
+  //  alert("Add Location Clicked");
+  let deleteLocation = $('#deleteLoc').val();
+  // alert(deleteLoc);
+  $.ajax({
+    url: 'libs/php/deleteLocationByID.php',
+    data: {
+      deleteLocation: deleteLocation,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (result.status.description == 'success') {
+        $('#DeleteLocation').modal('hide');
+        // getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Location has been Deleted',
           showConfirmButton: false,
           timer: 1500,
         });
