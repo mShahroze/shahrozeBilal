@@ -105,6 +105,7 @@ function getLocations() {
         });
         document.querySelector('#location').innerHTML = empLocInfo;
         document.querySelector('#loc').innerHTML = empLocInfo;
+        document.querySelector('#loca').innerHTML = empLocInfo;
       }
     },
   });
@@ -116,7 +117,7 @@ function showAddEmpModal() {
   $('#AddEmployee').modal('show');
 }
 
-$(document).on('click', '#add_employee', function (e) {
+$(document).on('click', '#addEmployee', function (e) {
   e.preventDefault();
   // alert('Add Employee Clicked');
   let fname = $('#emp_firstname').val();
@@ -147,6 +148,41 @@ $(document).on('click', '#add_employee', function (e) {
           position: 'top-end',
           type: 'success',
           title: 'Employee has been Added',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showAddDeptModal() {
+  $('#AddDepartment').modal('show');
+}
+
+$(document).on('click', '#addDepartment', function (e) {
+  e.preventDefault();
+  // alert("Add Department Clicked");
+  let department = $('#departmentAdd').val();
+  let location = $('#loca').val();
+  // alert('Details Saved');
+  $.ajax({
+    url: 'libs/php/insertDepartment.php',
+    data: {
+      department: department,
+      location: location,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (result.status.description == 'success') {
+        $('#AddDepartment').modal('hide');
+        getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Department has been saved',
           showConfirmButton: false,
           timer: 1500,
         });

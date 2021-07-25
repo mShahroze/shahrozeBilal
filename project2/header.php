@@ -18,11 +18,11 @@
         &nbsp;
 
         <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Departments
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment">Add </a>
+                <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
                 <a class="dropdown-item" href="#UpdateDepartment" data-toggle="modal" data-target="#UpdateDepartment">Update </a>
                 <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment">Delete </a>
             </div>
@@ -30,7 +30,7 @@
         &nbsp;
 
         <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Locations
             </button>
             <div class="dropdown-menu">

@@ -70,14 +70,12 @@
               <div class="form-group" id="updDepartment">
                 <label>Department</label>
                 <select id='department' class='form-control'>
-                  <option value=''>Select Department</option>
                 </select>
                 <!-- <input type="text" class="form-control" id="department" aria-describedby="department"> -->
               </div>
               <div class="form-group" id="updLocation">
                 <label>Location</label>
                 <select id='location' class='form-control'>
-                  <option value=''>Select Location</option>
                 </select>
                 <!-- <input type="text" class="form-control" id="location" aria-describedby="location"> -->
               </div>
@@ -116,14 +114,12 @@
                 <input type="text" class="form-control" id="emp_email" value="" placeholder="Email">
                 <br>
                 <select id="dept" class='form-control'>
-                  <option value=''>Select Department</option>
                 </select>
                 <br>
                 <select id="loc" class='form-control'>
-                  <option value=''>Select Location</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-primary" id="add_employee">Add</button>
+              <button type="submit" class="btn btn-primary" id="addEmployee">Add</button>
             </form>
           </div>
           <div class="modal-footer">
@@ -134,6 +130,36 @@
     </div>
     <!-- Add Employee Details Pop up Modal End -->
 
+    <!-- Add Department Pop up Modal Start -->
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="AddDepartment">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Add Department</h3>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post">
+              <div class="form-group">
+                <label for="#">Department</label>
+                <input type="text" class="form-control" id="departmentAdd" value="" placeholder="Add New Department Name">
+                <br>
+                <select id="loca" class='form-control'>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary" id="addDepartment">Add</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add Department Pop up Modal End  -->
 
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>
