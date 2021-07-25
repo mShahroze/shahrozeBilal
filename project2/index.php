@@ -161,6 +161,37 @@
     </div>
     <!-- Add Department Pop up Modal End  -->
 
+    <!-- Update Department Pop up Modal Start -->
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="UpdateDepartment">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Update Department</h3>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <select id="prevDept" class='form-control'>
+                </select>
+                <br>
+                <input type="text" class="form-control" id="newDept" value="" placeholder="Update Department Name">
+                <br>
+              </div>
+              <button type="submit" class="btn btn-primary" id="updateDepartment">Update</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Update Department Pop up Modal End  -->
+
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>
     <script src="vendors/js/sweetalert2.all.min.js"></script>

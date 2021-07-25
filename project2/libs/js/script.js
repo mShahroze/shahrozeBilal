@@ -1,5 +1,6 @@
 let empContent = '';
 let empDeptInfo = '';
+let empUpdDeptInfo = '';
 let empLocInfo = '';
 
 function getAll() {
@@ -75,13 +76,18 @@ function getDepartments() {
       // console.log(result);
       if (result.status.name === 'ok') {
         empDeptInfo += `<option value="">Select Department</option>`;
-        result.data.forEach((emp) => {
+        empUpdDeptInfo += `<option value="">Select Department</option>`;
+        result.data.forEach((dpt) => {
           empDeptInfo += `
-          <option value=${emp.id}>${emp.name}</option>";
+          <option value=${dpt.id}>${dpt.name}</option>";
+          `;
+          empUpdDeptInfo += `
+          <option value=${dpt.name}>${dpt.name}</option>";
           `;
         });
         document.querySelector('#department').innerHTML = empDeptInfo;
         document.querySelector('#dept').innerHTML = empDeptInfo;
+        document.querySelector('#prevDept').innerHTML = empUpdDeptInfo;
       }
     },
   });
@@ -98,9 +104,9 @@ function getLocations() {
       // console.log(result);
       if (result.status.name === 'ok') {
         empLocInfo += `<option value="">Select Location</option>`;
-        result.data.forEach((emp) => {
+        result.data.forEach((loc) => {
           empLocInfo += `
-          <option value=${emp.id}>${emp.name}</option>
+          <option value=${loc.id}>${loc.name}</option>
           `;
         });
         document.querySelector('#location').innerHTML = empLocInfo;
@@ -175,7 +181,7 @@ $(document).on('click', '#addDepartment', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
+      console.log(result);
       if (result.status.description == 'success') {
         $('#AddDepartment').modal('hide');
         getAll();
@@ -183,6 +189,42 @@ $(document).on('click', '#addDepartment', function (e) {
           position: 'top-end',
           type: 'success',
           title: 'Department has been saved',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showUpdDeptModal() {
+  $('#UpdateDepartment').modal('show');
+}
+
+$(document).on('click', '#updateDepartment', function (e) {
+  e.preventDefault();
+  // alert('Add Department Clicked');
+  let prevDepartment = $('#prevDept').val();
+  let newDepartment = $('#newDept').val();
+  // alert(prevDepartment);
+  // alert(newDepartment);
+  $.ajax({
+    url: 'libs/php/editDepartment.php',
+    data: {
+      prevDepartment: prevDepartment,
+      newDepartment: newDepartment,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      console.log(result);
+      if (result.status.description == 'success') {
+        $('#UpdateDepartment').modal('hide');
+        // getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Department has been Updated Successfully',
           showConfirmButton: false,
           timer: 1500,
         });
