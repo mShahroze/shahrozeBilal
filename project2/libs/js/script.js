@@ -95,6 +95,22 @@ function getDepartments() {
   });
 }
 
+function getDepartmentByID() {
+  $.ajax({
+    url: 'libs/php/getAllDepartments.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      deptID: deptID,
+    },
+    success: function (result) {
+      // console.log(result);
+      if (result.status.name === 'ok') {
+      }
+    },
+  });
+}
+
 getDepartments();
 
 function getLocations() {
@@ -212,10 +228,10 @@ function showUpdDeptModal() {
 $(document).on('click', '#updateDepartment', function (e) {
   e.preventDefault();
   // alert('Add Department Clicked');
-  let prevDepartment = $('#prevDept').val();
+  let prevDepartment = $('#prevDept option:selected').text();
   let newDepartment = $('#newDept').val();
-  // alert(prevDepartment);
-  // alert(newDepartment);
+  alert(prevDepartment);
+  alert(newDepartment);
   $.ajax({
     url: 'libs/php/editDepartment.php',
     data: {
@@ -225,7 +241,7 @@ $(document).on('click', '#updateDepartment', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result);
+      // console.log(result);
       if (result.status.description == 'success') {
         $('#UpdateDepartment').modal('hide');
         // getAll();

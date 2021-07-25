@@ -34,7 +34,7 @@ if (isset($_POST['prevDepartment'])) {
 
 
   $updDeptQuery = "UPDATE department SET name = '$newDepartment' WHERE name = '$prevDepartment'";
-  $result = mysqli_query($conn, $updDeptQuery);
+  $result = $conn->query($updDeptQuery);
 
   if (!$result) {
 
