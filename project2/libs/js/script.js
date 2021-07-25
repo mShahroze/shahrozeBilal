@@ -1,4 +1,6 @@
 let empContent = '';
+let empDeptInfo = '';
+let empLocInfo = '';
 
 function getAll() {
   $.ajax({
@@ -7,7 +9,7 @@ function getAll() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name === 'ok') {
-        console.log(result.data);
+        // console.log(result.data);
         result.data.forEach((emp) => {
           empContent += `
           <div class="col-lg-4 col-md-5 col-sm-6">
@@ -15,7 +17,7 @@ function getAll() {
             <div class="update-btn" onclick>
               <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
               <!-- Edit Button trigger modal -->
-              <a href="#" class="btn btn-primary update-bottom" id="editEmp" data-id="${emp.id}" data-toggle="modal" data-target="#exampleModal">
+              <a href="#" class="btn btn-primary update-bottom" id="editEmp" data-id="${emp.id}" data-toggle="modal" data-target="#updModal" onclick="showUpdModal(${emp.id})">
                 <i class="fa fa-fw fa-edit"></i>Update
               </a>
             </div>
@@ -59,34 +61,96 @@ function getAll() {
 }
 
 getAll();
-$('#editEmp').on('click', function () {
-  $('#myModal').modal('show');
-});
 
-// Function to  fill the input boxes with an employees current data. This is done for two reasons, one so the  user can easily see what they change and also
-// so that the data does not have to be re-typed if it is the same.
-function showModal(data) {
+function showUpdModal() {
+  $('#updEmpModal').modal('show');
+}
+
+function getDepartments() {
   $.ajax({
-    url: 'php/editEmployee.php',
+    url: 'libs/php/getAllDepartments.php',
     type: 'POST',
     dataType: 'json',
-    data: {
-      id: data,
-    },
     success: function (result) {
-      // Appends each input value to their respective data
-      $('#editID').val(result['id']);
-      $('#editName').val(result['firstName']);
-      $('#editLast').val(result['lastName']);
-      $('#editEmail').val(result['email']);
-      $('#editJob').val(result['job']);
-      $('#editDep').val(result['department']);
-      $('#editLoc').val(result['location']);
-      $('#edit-modal').modal();
-    },
-    error: function (jqXHR, exception) {
-      errorajx(jqXHR, exception);
-      console.log('Edit Employee');
+      // console.log(result);
+      if (result.status.name === 'ok') {
+        empDeptInfo += `<option value="">Select Department</option>`;
+        result.data.forEach((emp) => {
+          empDeptInfo += `
+          <option value=${emp.id}>${emp.name}</option>";
+          `;
+        });
+        document.querySelector('#department').innerHTML = empDeptInfo;
+        document.querySelector('#dept').innerHTML = empDeptInfo;
+      }
     },
   });
 }
+
+getDepartments();
+
+function getLocations() {
+  $.ajax({
+    url: 'libs/php/getAllLocations.php',
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (result.status.name === 'ok') {
+        empLocInfo += `<option value="">Select Location</option>`;
+        result.data.forEach((emp) => {
+          empLocInfo += `
+          <option value=${emp.id}>${emp.name}</option>
+          `;
+        });
+        document.querySelector('#location').innerHTML = empLocInfo;
+        document.querySelector('#loc').innerHTML = empLocInfo;
+      }
+    },
+  });
+}
+
+getLocations();
+
+function showAddEmpModal() {
+  $('#AddEmployee').modal('show');
+}
+
+$(document).on('click', '#add_employee', function (e) {
+  e.preventDefault();
+  // alert('Add Employee Clicked');
+  let fname = $('#emp_firstname').val();
+  let lname = $('#emp_lastname').val();
+  let job_title = $('#emp_jobTitle').val();
+  let email = $('#emp_email').val();
+  let dept = $('#dept').val();
+  let location = $('#location').val();
+  // alert('Details Saved');
+  $.ajax({
+    url: 'libs/php/insertPersonnel.php',
+    data: {
+      fname: fname,
+      lname: lname,
+      job_title: job_title,
+      email: email,
+      dept: dept,
+      location: location,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (res.status.description == 'success') {
+        $('#AddEmployee').modal('hide');
+        getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Employee has been Added',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});

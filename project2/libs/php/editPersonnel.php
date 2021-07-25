@@ -13,7 +13,7 @@ header('Content-Type: application/json; charset=UTF-8');
 $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
 if (mysqli_connect_errno()) {
-  
+
   $output['status']['code'] = "300";
   $output['status']['name'] = "failure";
   $output['status']['description'] = "database unavailable";
@@ -25,29 +25,27 @@ if (mysqli_connect_errno()) {
   echo json_encode($output);
 
   exit;
-
-}	
+}
 
 // fetching data from table personel 
-$sqlQuery = "SELECT id, firstName, lastName, jobTitle, email, departmentID, FROM personnel WHERE id = ".$_REQUEST['id'];
+$sqlQuery = "SELECT id, firstName, lastName, jobTitle, email, departmentID, FROM personnel WHERE id = " . $_REQUEST['id'];
 $result = $conn->query($sqlQuery);
 
 if (!$result) {
-  
+
   $output['status']['code'] = "400";
   $output['status']['name'] = "executed";
-  $output['status']['description'] = "query failed";	
+  $output['status']['description'] = "query failed";
   $output['data'] = [];
-  
+
   mysqli_close($conn);
-  
-  echo json_encode($output); 
-  
+
+  echo json_encode($output);
+
   exit;
-  
 }
 
-$editeditEmployee =  mysqli_fetch_assoc($result);
+$editEmployee =  mysqli_fetch_assoc($result);
 
 // Assign information to varibale
 $tempHolder['id'] = $editEmployee['id'];
@@ -55,7 +53,7 @@ $tempHolder['firstName'] = $editEmployee['firstName'];
 $tempHolder['lastName'] = $editEmployee['lastName'];
 $tempHolder['email'] = $editEmployee['email'];
 
-if (isset($editEmployee['departmentID'])){
+if (isset($editEmployee['departmentID'])) {
   $tempHolder['department'] = $editEmployee['departmentID'];
 } else {
   $tempHolder['department'] =  "No Department";
@@ -67,7 +65,5 @@ if (isset($department['locationID'])) {
 }
 $tempHolder['job'] = $editEmployee['jobTitle'];
 
-  // return data
-  echo json_encode($tempHolder, true);
-
-?>
+// return data
+echo json_encode($tempHolder, true);
