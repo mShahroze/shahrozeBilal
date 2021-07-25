@@ -34,7 +34,7 @@
                 Locations
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation">Add</a>
+                <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation" onclick="showAddLocModal()">Add</a>
                 <a class="dropdown-item" href="#UpdateLocation" data-toggle="modal" data-target="#UpdateLocation">Update</a>
                 <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation">Delete</a>
             </div>

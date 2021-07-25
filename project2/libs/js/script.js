@@ -257,8 +257,41 @@ $(document).on('click', '#deleteDepartment', function (e) {
         // getAll();
         Swal.fire({
           position: 'top-end',
-          icon: 'success',
+          type: 'success',
           title: 'Department has been Deleted Successfully',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showAddLocModal() {
+  $('#AddLocation').modal('show');
+}
+
+$(document).on('click', '#addLocation', function (e) {
+  e.preventDefault();
+  //  alert("Add Location Clicked");
+  let location = $('#locationAdd').val();
+  // alert(location);
+  $.ajax({
+    url: 'libs/php/insertLocation.php',
+    data: {
+      location: location,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      // console.log(result);
+      if (result.status.description == 'success') {
+        $('#AddLocation').modal('hide');
+        // getAll();
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Location has been saved',
           showConfirmButton: false,
           timer: 1500,
         });
