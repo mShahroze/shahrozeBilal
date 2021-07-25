@@ -88,6 +88,7 @@ function getDepartments() {
         document.querySelector('#department').innerHTML = empDeptInfo;
         document.querySelector('#dept').innerHTML = empDeptInfo;
         document.querySelector('#prevDept').innerHTML = empUpdDeptInfo;
+        document.querySelector('#deleteDept').innerHTML = empDeptInfo;
       }
     },
   });
@@ -225,6 +226,39 @@ $(document).on('click', '#updateDepartment', function (e) {
           position: 'top-end',
           type: 'success',
           title: 'Department has been Updated Successfully',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    },
+  });
+});
+
+function showDelDeptModal() {
+  $('#DeleteDepartment').modal('show');
+}
+
+$(document).on('click', '#deleteDepartment', function (e) {
+  e.preventDefault();
+  // alert("Add Department Clicked");
+  let deleteDepartment = $('#deleteDept').val();
+  // alert(deleteDepartment);
+  $.ajax({
+    url: 'libs/php/deleteDepartmentByID.php',
+    data: {
+      deleteDepartment: deleteDepartment,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      console.log(result);
+      if (result.status.description == 'success') {
+        $('#DeleteDepartment').modal('hide');
+        // getAll();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Department has been Deleted Successfully',
           showConfirmButton: false,
           timer: 1500,
         });

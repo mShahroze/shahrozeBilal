@@ -24,7 +24,7 @@
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
                 <a class="dropdown-item" href="#UpdateDepartment" data-toggle="modal" data-target="#UpdateDepartment" onclick="showUpdDeptModal()">Update </a>
-                <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment">Delete </a>
+                <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment" onclick="showDelDeptModal()">Delete </a>
             </div>
         </div>
         &nbsp;
