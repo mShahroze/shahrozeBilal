@@ -11,6 +11,7 @@
   <link href="vendors/css/bootstrap.css" rel="stylesheet" />
   <link rel="stylesheet" href="vendors/fontawesome-free-5.15.3-web/css/all.css" />
   <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="vendors/css/floating-totop-button.min.css">
   <link rel="stylesheet" href="vendors/css/sweetalert2.min.css">
 
   <title>Company Directory</title>
@@ -44,10 +45,10 @@
           <div class="modal-body">
             <!-- Edit Form Start -->
             <form>
-              <!-- <div class="form-group">
-                            <label for="#">ID</label>
-                            <input type="text" class="form-control" id="eid" aria-describedby="eid" readonly>
-                        </div> -->
+              <div class="form-group">
+                <label for="#">ID</label>
+                <input type="text" class="form-control" id="empid" aria-describedby="empid" readonly>
+              </div>
               <div class="form-group">
                 <label for="#">First Name</label>
                 <input type="text" class="form-control" id="firstname" aria-describedby="firstname">
@@ -304,8 +305,12 @@
 
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>
-    <script src="vendors/js/sweetalert2.all.min.js"></script>
     <script type="application/javascript" src="libs/js/script.js"></script>
+    <script src="vendors/js/floating-totop-button.min.js"></script>
+    <script src="vendors/js/sweetalert2.all.min.js"></script>
+    <script>
+      $("body").toTopButton({});
+    </script>
 </body>
 
 </html>

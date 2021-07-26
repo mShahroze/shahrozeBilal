@@ -19,7 +19,7 @@ function getAll() {
             <div class="update-btn" onclick>
               <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
               <!-- Edit Button trigger modal -->
-              <a href="#" class="btn btn-primary update-bottom" id="editEmp" data-id="${emp.id}" data-toggle="modal" data-target="#updModal" onclick="showUpdModal(${emp.id})">
+              <a href="#" class="btn btn-primary update-bottom" id="editEmployee" data-id="${emp.id}" data-toggle="modal" data-target="#updModal" onclick="showUpdModal(${emp.id})">
                 <i class="fa fa-fw fa-edit"></i>Update
               </a>
             </div>
@@ -46,7 +46,7 @@ function getAll() {
               </div>
               <hr>
               <div class="mt-1">
-                <button type="submit" data-id="" class="btn btn-danger deleteEmp" value="Delete" name="">
+                <button type="submit" data-id="${emp.id}" class="btn btn-danger deleteEmp" value="Delete" name="">
                   <i class="fa fa-fw fa-trash"></i> Delete</button>
               </div>
             </div>
@@ -90,22 +90,6 @@ function getDepartments() {
         document.querySelector('#dept').innerHTML = empDeptInfo;
         document.querySelector('#prevDept').innerHTML = empUpdDeptInfo;
         document.querySelector('#deleteDept').innerHTML = empDeptInfo;
-      }
-    },
-  });
-}
-
-function getDepartmentByID() {
-  $.ajax({
-    url: 'libs/php/getAllDepartments.php',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      deptID: deptID,
-    },
-    success: function (result) {
-      // console.log(result);
-      if (result.status.name === 'ok') {
       }
     },
   });
@@ -171,7 +155,7 @@ $(document).on('click', '#addEmployee', function (e) {
     dataType: 'json',
     success: function (result) {
       // console.log(result);
-      if (res.status.description == 'success') {
+      if (result.status.description == 'success') {
         $('#AddEmployee').modal('hide');
         getAll();
         Swal.fire({
@@ -390,4 +374,136 @@ $(document).on('click', '#deleteLocation', function (e) {
       }
     },
   });
+});
+
+$(document).on('click', '#editEmployee', function () {
+  //alert('Edit Button Clicked');
+  let getEmpID = $(this).data('id');
+  // alert('Employee ID: ' + getEmpID);
+  $.ajax({
+    url: 'libs/php/getPersonnelByID.php',
+    data: {
+      empID: getEmpID,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      console.log(result.data);
+      let id = result.data.id;
+      let firstName = result.data.firstName;
+      let lastName = result.data.lastName;
+      let jobTitle = result.data.jobTitle;
+      let email = result.data.email;
+      let department = result.data.department;
+      let location = result.data.location;
+
+      $('#empid').val(id);
+      $('#lastname').val(lastName);
+      $('#firstname').val(firstName);
+      $('#jobtitle').val(jobTitle);
+      $('#email').val(email);
+      $('#department').val(department);
+      $('#location').val(location);
+    },
+  });
+});
+
+$(document).on('click', '#updateEmp', function (e) {
+  // alert("Update Button Clicked");
+  e.preventDefault(); //  prevent page default behavior
+
+  let empID = $('#empid').val();
+  let firstname = $('#firstname').val();
+  let lastname = $('#lastname').val();
+  let jobtitle = $('#jobtitle').val();
+  let email = $('#email').val();
+  let department = $('#department').val();
+  let location = $('#location').val();
+  // console.log(
+  //   empID,
+  //   firstname,
+  //   lastname,
+  //   jobtitle,
+  //   email,
+  //   department,
+  //   location
+  // );
+  $.ajax({
+    url: 'libs/php/editPersonnel.php',
+    data: {
+      empID: empID,
+      firstName: firstname,
+      lastName: lastname,
+      jobTitle: jobtitle,
+      email: email,
+      department: department,
+      location: location,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      console.log(result);
+      if (result.status.description == 'success') {
+        getAll();
+        $('#updEmpModal').modal('hide');
+      }
+    },
+  });
+});
+
+$(document).on('click', '.deleteEmp', function () {
+  getAll();
+  // alert("Delete Button Clicked");
+  let empID = $(this).data('id');
+  console.log(empID);
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false,
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'libs/php/deletePersonnelByID.php',
+          data: {
+            empID: empID,
+          },
+          type: 'POST',
+          success: function (result) {
+            if (result.status.description == 'success') {
+              console.log(result);
+              getAll();
+            }
+          },
+        });
+        swalWithBootstrapButtons.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
 });

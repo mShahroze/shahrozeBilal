@@ -212,3 +212,7 @@ textarea {
   -ms-transition: 0.5s all;
   letter-spacing: 1px;
 }
+
+button.swal2-confirm.btn.btn-success {
+  margin-left: 10px;
+}

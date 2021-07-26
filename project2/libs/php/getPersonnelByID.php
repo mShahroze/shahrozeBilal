@@ -5,8 +5,7 @@ error_reporting(E_ALL);
 
 $executionStartTime = microtime(true);
 
-// Include the preset username, password etc. for database
-include("config.php");
+include('config.php');
 
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -27,30 +26,16 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-// fetching data from table personel 
 if (isset($_POST['empID'])) {
   $empID = $_POST['empID'];
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $jobTitle = $_POST['jobTitle'];
-  $email = $_POST['email'];
-  $location = $_POST['location'];
-  $department = $_POST['department'];
+  $query = "SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
+  as location FROM personnel p 
+  LEFT JOIN department d ON (d.id = p.departmentID) 
+  LEFT JOIN location l ON (l.id = d.locationID) 
+  WHERE p.id = $empID
+  ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name";
 
-  $updateEmpQuery = "UPDATE personnel, department, location 
-  SET personnel.firstname = '$firstName',
-      personnel.lastname =  '$lastName', 
-      personnel.jobtitle = '$jobTitle',
-      personnel.email = '$email',
-      -- personnel.location = '$location',
-      department.name = '$department',
-  location.name = '$location'
-  WHERE personnel.departmentID = department.id AND
-  department.locationID = location.id AND
-  personnel.id = '$empID'";
-
-  $result = $conn->query($updateEmpQuery);
-
+  $result = $conn->query($query);
 
   if (!$result) {
 
@@ -66,9 +51,20 @@ if (isset($_POST['empID'])) {
     exit;
   }
 
-  $output['status']['code'] = "204";
+  $data = [];
+
+  // $resultObj = $result->fetch_object();
+
+  while ($row = mysqli_fetch_assoc($result)) {
+
+    array_push($data, $row);
+  }
+
+  $output['status']['code'] = "200";
   $output['status']['name'] = "ok";
   $output['status']['description'] = "success";
+  $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+  $output['data'] = $data[0];
 
   mysqli_close($conn);
 
