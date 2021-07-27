@@ -25,7 +25,7 @@ function getAll() {
               </a>
             </div>
             <div class="updDelBox">
-              <h2 data-first=${emp.lastName} data-last=${emp.lastName}>
+              <h2 data-first=${emp.firstName} data-last=${emp.lastName}>
               ${emp.firstName} ${emp.lastName}
               </h2>
               <hr>
@@ -510,40 +510,66 @@ $(document).on('click', '.deleteEmp', function () {
     });
 });
 
-$('#searchDept').change(function () {
+$('.searchDept').change(function () {
   select();
 });
 $('#search').keyup(function () {
   select();
 });
-$('#searchLoc').change(function () {
+$('.searchLoc').change(function () {
   select();
 });
 
 function select() {
-  var department = $('#searchDept').val();
-  var search = $('#search').val();
-  var location = $('#searchLoc').val();
+  let department = $('.searchDept option:selected').text();
+  let search = $('#search').val();
+  let location = $('.searchLoc option:selected').text();
+
+  console.log(department);
 
   $('.empCardBox').hide();
-  var boxes = $('.empCardBox').filter(function (index) {
+  let boxes = $('.empCardBox').filter(function (index) {
     return (
       (department === 'all' ||
-        $(this).attr('data-department') === department) &&
+        $(this)
+          .children('.card-box')
+          .children('.updDelBox')
+          .children('.mt-1')
+          .children('span')
+          .children('.titleHead')
+          .attr('data-department'.toLowerCase()) === department) &&
       (!search ||
         $(this)
+          .children('.card-box')
+          .children('.updDelBox')
+          .children('h2')
           .attr('data-first')
           .toLowerCase()
           .indexOf(search.toLowerCase()) >= 0 ||
         !search ||
-        $(this).attr('data-last').toLowerCase().indexOf(search.toLowerCase()) >=
-          0 ||
-        !search ||
         $(this)
-          .attr('data-email')
+          .children('.card-box')
+          .children('.updDelBox')
+          .children('h2')
+          .attr('data-last')
           .toLowerCase()
-          .indexOf(search.toLowerCase()) >= 0) &&
-      (location === 'all' || $(this).attr('data-location') === location)
+          .indexOf(search.toLowerCase()) >= 0 ||
+        ((!search ||
+          $(this)
+            .children('.card-box')
+            .children('.updDelBox')
+            .children('.mt-1')
+            .children('.titleHead')
+            .attr('data-email')
+            .indexOf(search.toLowerCase()) >= 0) &&
+          (location === 'all' ||
+            $(this)
+              .children('.card-box')
+              .children('.updDelBox')
+              .children('.mt-1')
+              .children('span')
+              .children('.titleHead')
+              .attr('data-location') === location)))
     );
   });
   boxes.show();
