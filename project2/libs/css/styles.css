@@ -34,6 +34,11 @@ body .modal-open {
   padding: 0;
 }
 
+#search {
+  width: 500px;
+  border-radius: 100px;
+}
+
 #advanced-button {
   position: absolute;
   right: 0;
@@ -44,6 +49,62 @@ body .modal-open {
   padding: 0;
   color: #212529;
   background-color: #fff;
+}
+
+#return-button {
+  display: none;
+}
+
+#advancedRow {
+  display: none;
+  margin-left: 150px;
+}
+
+.advanced {
+  display: none;
+}
+
+.advcontainer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 4px;
+  margin-bottom: 30px;
+  margin-top: 37px;
+  padding-top: 2px;
+}
+
+#advancedRow {
+  width: 500px;
+}
+
+#searchdept {
+  border-radius: 10px;
+}
+
+#searchloca {
+  border-radius: 10px;
+}
+
+#return-button {
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+#return-button:hover {
+  cursor: pointer;
+}
+
+select.searchDept {
+  border-radius: 10px;
+  cursor: pointer;
+  width: 195px;
+}
+
+select.searchLoc {
+  border-radius: 10px;
+  cursor: pointer;
+  width: 195px;
 }
 
 #navBar1 {
@@ -66,7 +127,7 @@ body .modal-open {
   max-height: 630px;
 }
 
-.update-bottom {
+/* .update-bottom {
   background: #0275d8;
   color: #fff;
   right: 0.1px;
@@ -79,7 +140,7 @@ body .modal-open {
   line-height: 1.8;
   padding: -10px;
   border-radius: 5px;
-}
+} */
 
 .update-bottom:hover {
   color: #fff;
@@ -110,6 +171,10 @@ body .modal-open {
 
 .card-box {
   margin: 10px 15px;
+}
+
+.empCardBox {
+  /* flex: 0 0 20px !important; */
 }
 
 .update-bottom {
@@ -215,4 +280,19 @@ textarea {
 
 button.swal2-confirm.btn.btn-success {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  #search {
+    width: 400px;
+  }
+  select.searchDept {
+    width: 194px;
+  }
+  select.searchLoc {
+    width: 167px;
+  }
+  #advancedRow {
+    padding-left: 71px;
+  }
 }

@@ -46,9 +46,20 @@
 
         <ul class="navbar-nav mr-auto" id="searchBar">
             <form class="form-inline my-2 my-lg-0">
-                <input style="width: 380px; border-radius: 100px;" class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name, Department, Location & Email">
+                <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name, Department, Location & Email">
             </form>
             <a class="btn btn-secondary btn-sm mr-sm-2" id="advanced-button" style="width: 150px; border-radius: 100px;">Advanced search</a>
+            <div class="advcontainer">
+                <div class="row justify-content-md-center" id="advancedRow">
+                    <select class="col-sm-2 col-md-4 searchDept" id="department">
+                        <option value="all">Departments</option>
+                    </select>
+                    <select class="col-sm-2 col-md-4 searchLoc" id="location">
+                        <option value="all">Locations</option>
+                    </select>
+                    <a class="btn-secondary btn-sm" id="return-button">Return</a>
+                </div>
+            </div>
         </ul>
 
     </div>

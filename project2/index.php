@@ -11,14 +11,17 @@
   <link href="vendors/css/bootstrap.css" rel="stylesheet" />
   <link rel="stylesheet" href="vendors/fontawesome-free-5.15.3-web/css/all.css" />
   <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="vendors/css/floating-totop-button.min.css">
+  <link rel="shortcut icon" href="./libs/images/favicon-16x16.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./libs/images/favicon-32x32.png" type="image/x-icon">
+  <link rel="manifest" href="./libs/images/site.webmanifest">
+  <link rel="apple-touch-icon" href="./libs/images/apple-touch-icon.png">
   <link rel="stylesheet" href="vendors/css/sweetalert2.min.css">
 
   <title>Company Directory</title>
 </head>
 
 <body>
-  <div class="container ">
+  <div class="container">
     <!--header-->
     <?php include('header.php'); ?>
     <!--//header-->
@@ -306,11 +309,11 @@
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>
     <script type="application/javascript" src="libs/js/script.js"></script>
-    <script src="vendors/js/floating-totop-button.min.js"></script>
-    <script src="vendors/js/sweetalert2.all.min.js"></script>
-    <script>
-      $("body").toTopButton({});
+    <script type="application/javascript" src="vendors/js/scrolls.js"></script>
+    <script type="text/javascript">
+      scroller.init();
     </script>
+    <script src="vendors/js/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

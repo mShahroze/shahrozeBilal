@@ -13,8 +13,9 @@ function getAll() {
       if (result.status.name === 'ok') {
         // console.log(result.data);
         result.data.forEach((emp) => {
+          // console.log(emp);
           empContent += `
-          <div class="col-lg-4 col-md-5 col-sm-6">
+          <div class="col-lg-4 col-md-5 col-sm-6 empCardBox">
           <div class="card-box">
             <div class="update-btn" onclick>
               <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
@@ -24,7 +25,7 @@ function getAll() {
               </a>
             </div>
             <div class="updDelBox">
-              <h2>
+              <h2 data-first=${emp.lastName} data-last=${emp.lastName}>
               ${emp.firstName} ${emp.lastName}
               </h2>
               <hr>
@@ -34,15 +35,15 @@ function getAll() {
               </div>
               <div class="mt-1">
                 Email:
-                <span class="titleHead ">${emp.email}</span>
+                <span class="titleHead" data-email=${emp.email}>${emp.email}</span>
               </div>
               <div class="mt-1">
                 Department:
-                <span class="titleHead ">${emp.department}</span>
+                <span class="titleHead" data-department=${emp.department}>${emp.department}</span>
               </div>
               <div class="mt-1">
                 Location:
-                <span class="titleHead ">${emp.location}</span>
+                <span class="titleHead" data-location=${emp.location}>${emp.location}</span>
               </div>
               <hr>
               <div class="mt-1">
@@ -54,6 +55,7 @@ function getAll() {
           </div>
         </div>
           `;
+          // console.log(empContent);
         });
         document.querySelector('.row-employeeData-container').innerHTML =
           empContent;
@@ -417,8 +419,8 @@ $(document).on('click', '#updateEmp', function (e) {
   let lastname = $('#lastname').val();
   let jobtitle = $('#jobtitle').val();
   let email = $('#email').val();
-  let department = $('#department').val();
-  let location = $('#location').val();
+  let department = $('#department option:selected').text();
+  let location = $('#location option:selected').text();
   // console.log(
   //   empID,
   //   firstname,
@@ -507,3 +509,93 @@ $(document).on('click', '.deleteEmp', function () {
       }
     });
 });
+
+$('#searchDept').change(function () {
+  select();
+});
+$('#search').keyup(function () {
+  select();
+});
+$('#searchLoc').change(function () {
+  select();
+});
+
+function select() {
+  var department = $('#searchDept').val();
+  var search = $('#search').val();
+  var location = $('#searchLoc').val();
+
+  $('.empCardBox').hide();
+  var boxes = $('.empCardBox').filter(function (index) {
+    return (
+      (department === 'all' ||
+        $(this).attr('data-department') === department) &&
+      (!search ||
+        $(this)
+          .attr('data-first')
+          .toLowerCase()
+          .indexOf(search.toLowerCase()) >= 0 ||
+        !search ||
+        $(this).attr('data-last').toLowerCase().indexOf(search.toLowerCase()) >=
+          0 ||
+        !search ||
+        $(this)
+          .attr('data-email')
+          .toLowerCase()
+          .indexOf(search.toLowerCase()) >= 0) &&
+      (location === 'all' || $(this).attr('data-location') === location)
+    );
+  });
+  boxes.show();
+}
+
+$('#advanced-button').on('click', function () {
+  $('#advanced-button').hide();
+  $('#advancedRow').is(':visible')
+    ? $('#advancedRow').hide()
+    : $('#advancedRow').show();
+  $('#return-button').is(':visible')
+    ? $('#return-button').hide()
+    : $('#return-button').show();
+});
+
+$('#return-button').on('click', function () {
+  $('#return-button').hide();
+  $('#advancedRow').is(':visible')
+    ? $('#advancedRow').hide()
+    : $('#advancedRow').show();
+  $('#advanced-button').is(':visible')
+    ? $('#advanced-button').hide()
+    : $('#advanced-button').show();
+  $('.searchLoc').val('all').trigger('change');
+  $('.searchDept').val('all').trigger('change');
+});
+
+// $(document).on('keyup', '#search', function () {
+//   // console.log("Data loaded");
+
+//   let empName = $(this).val(); // Renders whatever we type on the search field
+//   //console.log(empName);
+//   createRecord(empName);
+// });
+
+// function createRecord(empName) {
+//   console.log(empName);
+//   $.ajax({
+//     url: 'libs/php/getPersonnelByName2.php',
+//     data: {
+//       emp: empName,
+//     },
+//     type: 'POST',
+//     success: function (result) {
+//       console.log(result);
+//       $('.row-employeeData-container').html(result);
+//     },
+//   });
+// }
+
+let conf = {
+  bgColor: 'rgb(31, 43, 49)',
+  hoverColor: '#212529',
+  opacity: 0.5,
+};
