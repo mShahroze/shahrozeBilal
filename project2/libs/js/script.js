@@ -7,6 +7,77 @@ let search = '';
 let searchDept = '';
 let searchLoc = '';
 
+function reload() {
+  function reload() {
+    setTimeout(function () {
+      window.location.reload(1);
+    }, 1600);
+  }
+}
+
+$('#search').keyup(function () {
+  search = $(this).val();
+  select(search);
+});
+$('.searchDept').change(function () {
+  searchDept = $('.searchDept option:selected').text() || '';
+  select(searchDept);
+});
+$('.searchLoc').change(function () {
+  searchLoc = $('.searchLoc option:selected').text() || '';
+  select(searchLoc);
+});
+
+function select(searchName) {
+  if (searchName != '') {
+    $.ajax({
+      url: 'libs/php/getPersonnelByName.php',
+      type: 'POST',
+      data: {
+        search: searchName,
+        dept: searchName,
+        loca: searchName,
+      },
+      success: function (result) {
+        empContent = '';
+        if (result['data'].length > 0) {
+          renderEmps(result['data']);
+        } else {
+          getAll();
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+    });
+  } else {
+    empContent = '';
+    getAll();
+  }
+}
+
+$('#advanced-button').on('click', function () {
+  $('#advanced-button').hide();
+  $('#advancedRow').is(':visible')
+    ? $('#advancedRow').hide()
+    : $('#advancedRow').show();
+  $('#return-button').is(':visible')
+    ? $('#return-button').hide()
+    : $('#return-button').show();
+});
+
+$('#return-button').on('click', function () {
+  $('#return-button').hide();
+  $('#advancedRow').is(':visible')
+    ? $('#advancedRow').hide()
+    : $('#advancedRow').show();
+  $('#advanced-button').is(':visible')
+    ? $('#advanced-button').hide()
+    : $('#advanced-button').show();
+  $('.searchLoc').val('all').trigger('change');
+  $('.searchDept').val('all').trigger('change');
+});
+
 function renderEmps(empArray) {
   empArray.forEach((emp) => {
     empContent += `
@@ -166,7 +237,7 @@ $(document).on('click', '#addEmployee', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#AddEmployee').modal('hide');
-        getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -201,7 +272,7 @@ $(document).on('click', '#addDepartment', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#AddDepartment').modal('hide');
-        getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -238,7 +309,7 @@ $(document).on('click', '#updateDepartment', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#UpdateDepartment').modal('hide');
-        // getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -271,7 +342,7 @@ $(document).on('click', '#deleteDepartment', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#DeleteDepartment').modal('hide');
-        // getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -304,7 +375,7 @@ $(document).on('click', '#addLocation', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#AddLocation').modal('hide');
-        // getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -339,6 +410,7 @@ $(document).on('click', '#updateLocation', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#UpdateLocation').modal('hide');
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -371,7 +443,7 @@ $(document).on('click', '#deleteLocation', function (e) {
     success: function (result) {
       if (result.status.description == 'success') {
         $('#DeleteLocation').modal('hide');
-        // getAll();
+        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -444,7 +516,7 @@ $(document).on('click', '#updateEmp', function (e) {
     dataType: 'json',
     success: function (result) {
       if (result.status.description == 'success') {
-        getAll();
+        reload();
         $('#updEmpModal').modal('hide');
       }
     },
@@ -486,7 +558,7 @@ $(document).on('click', '.deleteEmp', function () {
           type: 'POST',
           success: function (result) {
             if (result.status.description == 'success') {
-              getAll();
+              reload();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -506,69 +578,6 @@ $(document).on('click', '.deleteEmp', function () {
         );
       }
     });
-});
-
-$('#search').keyup(function () {
-  search = $(this).val();
-  select(search);
-});
-$('.searchDept').change(function () {
-  searchDept = $('.searchDept option:selected').text() || '';
-  select(searchDept);
-});
-$('.searchLoc').change(function () {
-  searchLoc = $('.searchLoc option:selected').text() || '';
-  select(searchLoc);
-});
-
-function select(searchName) {
-  if (searchName != '') {
-    $.ajax({
-      url: 'libs/php/getPersonnelByName.php',
-      type: 'POST',
-      data: {
-        search: searchName,
-        dept: searchName,
-        loca: searchName,
-      },
-      success: function (result) {
-        empContent = '';
-        if (result['data'].length > 0) {
-          renderEmps(result['data']);
-        } else {
-          getAll();
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-      },
-    });
-  } else {
-    empContent = '';
-    getAll();
-  }
-}
-
-$('#advanced-button').on('click', function () {
-  $('#advanced-button').hide();
-  $('#advancedRow').is(':visible')
-    ? $('#advancedRow').hide()
-    : $('#advancedRow').show();
-  $('#return-button').is(':visible')
-    ? $('#return-button').hide()
-    : $('#return-button').show();
-});
-
-$('#return-button').on('click', function () {
-  $('#return-button').hide();
-  $('#advancedRow').is(':visible')
-    ? $('#advancedRow').hide()
-    : $('#advancedRow').show();
-  $('#advanced-button').is(':visible')
-    ? $('#advanced-button').hide()
-    : $('#advanced-button').show();
-  $('.searchLoc').val('all').trigger('change');
-  $('.searchDept').val('all').trigger('change');
 });
 
 let conf = {
