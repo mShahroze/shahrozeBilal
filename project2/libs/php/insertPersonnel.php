@@ -34,7 +34,7 @@ if (isset($_POST['fname'])) {
   $dept = $_POST['dept'];
   $location = $_POST['location'];
 
-  $insertPersonnel = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, location) VALUES('$fname','$lname','$job_title','$email','$dept','$location')";
+  $insertPersonnel = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES('$fname','$lname','$job_title','$email','$dept')";
 
   $result = $conn->query($insertPersonnel);
 

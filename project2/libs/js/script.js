@@ -8,23 +8,21 @@ let searchDept = '';
 let searchLoc = '';
 
 function reload() {
-  function reload() {
-    setTimeout(function () {
-      window.location.reload(1);
-    }, 1600);
-  }
+  setTimeout(function () {
+    window.location.reload(1);
+  }, 1600);
 }
 
 $('#search').keyup(function () {
   search = $(this).val();
   select(search);
 });
-$('.searchDept').change(function () {
-  searchDept = $('.searchDept option:selected').text() || '';
+$('#searchDept').change(function () {
+  searchDept = $('#searchDept option:selected').text() || '';
   select(searchDept);
 });
-$('.searchLoc').change(function () {
-  searchLoc = $('.searchLoc option:selected').text() || '';
+$('#searchLoc').change(function () {
+  searchLoc = $('#searchLoc option:selected').text() || '';
   select(searchLoc);
 });
 
@@ -74,8 +72,8 @@ $('#return-button').on('click', function () {
   $('#advanced-button').is(':visible')
     ? $('#advanced-button').hide()
     : $('#advanced-button').show();
-  $('.searchLoc').val('all').trigger('change');
-  $('.searchDept').val('all').trigger('change');
+  $('#searchLoc').val('all').trigger('change');
+  $('#searchDept').val('all').trigger('change');
 });
 
 function renderEmps(empArray) {
@@ -164,7 +162,8 @@ function getDepartments() {
           <option value=${dpt.name}>${dpt.name}</option>";
           `;
         });
-        document.querySelector('#department').innerHTML = empDeptInfo;
+        document.querySelector('#searchDept').innerHTML = empDeptInfo;
+        document.querySelector('#empUpdDept').innerHTML = empUpdDeptInfo;
         document.querySelector('#dept').innerHTML = empDeptInfo;
         document.querySelector('#prevDept').innerHTML = empUpdDeptInfo;
         document.querySelector('#deleteDept').innerHTML = empDeptInfo;
@@ -195,7 +194,8 @@ function getLocations() {
           <option value=${loc.name}>${loc.name}</option>
           `;
         });
-        document.querySelector('#location').innerHTML = empLocInfo;
+        document.querySelector('#searchLoc').innerHTML = empLocInfo;
+        document.querySelector('#empUpdLoc').innerHTML = empUpdLocInfo;
         document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
         document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
@@ -251,6 +251,127 @@ $(document).on('click', '#addEmployee', function (e) {
       console.log(textStatus);
     },
   });
+});
+
+$(document).on('click', '#editEmployee', function () {
+  let getEmpID = $(this).data('id');
+  $.ajax({
+    url: 'libs/php/getPersonnelByID.php',
+    data: {
+      empID: getEmpID,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      let id = result.data.id;
+      let firstName = result.data.firstName;
+      let lastName = result.data.lastName;
+      let jobTitle = result.data.jobTitle;
+      let email = result.data.email;
+      let department = result.data.department;
+      let location = result.data.location;
+
+      $('#empid').val(id);
+      $('#lastname').val(lastName);
+      $('#firstname').val(firstName);
+      $('#jobtitle').val(jobTitle);
+      $('#email').val(email);
+      $('#empUpdDept').val(department);
+      $('#empUpdLoc').val(location);
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+  });
+});
+
+$(document).on('click', '#updateEmp', function (e) {
+  e.preventDefault();
+
+  let empID = $('#empid').val();
+  let firstname = $('#firstname').val();
+  let lastname = $('#lastname').val();
+  let jobtitle = $('#jobtitle').val();
+  let email = $('#email').val();
+  let department = $('#department option:selected').text();
+  let location = $('#location option:selected').text();
+  $.ajax({
+    url: 'libs/php/editPersonnel.php',
+    data: {
+      empID: empID,
+      firstName: firstname,
+      lastName: lastname,
+      jobTitle: jobtitle,
+      email: email,
+      department: department,
+      location: location,
+    },
+    type: 'POST',
+    dataType: 'json',
+    success: function (result) {
+      if (result.status.description == 'success') {
+        reload();
+        $('#updEmpModal').modal('hide');
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+  });
+});
+
+$(document).on('click', '.deleteEmp', function () {
+  getAll();
+  let empID = $(this).data('id');
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false,
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'libs/php/deletePersonnelByID.php',
+          data: {
+            empID: empID,
+          },
+          type: 'POST',
+          success: function (result) {
+            if (result.status.description == 'success') {
+              reload();
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          },
+        });
+        swalWithBootstrapButtons.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
 });
 
 function showAddDeptModal() {
@@ -457,127 +578,6 @@ $(document).on('click', '#deleteLocation', function (e) {
       console.log(textStatus);
     },
   });
-});
-
-$(document).on('click', '#editEmployee', function () {
-  let getEmpID = $(this).data('id');
-  $.ajax({
-    url: 'libs/php/getPersonnelByID.php',
-    data: {
-      empID: getEmpID,
-    },
-    type: 'POST',
-    dataType: 'json',
-    success: function (result) {
-      let id = result.data.id;
-      let firstName = result.data.firstName;
-      let lastName = result.data.lastName;
-      let jobTitle = result.data.jobTitle;
-      let email = result.data.email;
-      let department = result.data.department;
-      let location = result.data.location;
-
-      $('#empid').val(id);
-      $('#lastname').val(lastName);
-      $('#firstname').val(firstName);
-      $('#jobtitle').val(jobTitle);
-      $('#email').val(email);
-      $('#department').val(department);
-      $('#location').val(location);
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
-  });
-});
-
-$(document).on('click', '#updateEmp', function (e) {
-  e.preventDefault();
-
-  let empID = $('#empid').val();
-  let firstname = $('#firstname').val();
-  let lastname = $('#lastname').val();
-  let jobtitle = $('#jobtitle').val();
-  let email = $('#email').val();
-  let department = $('#department option:selected').text();
-  let location = $('#location option:selected').text();
-  $.ajax({
-    url: 'libs/php/editPersonnel.php',
-    data: {
-      empID: empID,
-      firstName: firstname,
-      lastName: lastname,
-      jobTitle: jobtitle,
-      email: email,
-      department: department,
-      location: location,
-    },
-    type: 'POST',
-    dataType: 'json',
-    success: function (result) {
-      if (result.status.description == 'success') {
-        reload();
-        $('#updEmpModal').modal('hide');
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
-  });
-});
-
-$(document).on('click', '.deleteEmp', function () {
-  getAll();
-  let empID = $(this).data('id');
-
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger',
-    },
-    buttonsStyling: false,
-  });
-
-  swalWithBootstrapButtons
-    .fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true,
-    })
-    .then((result) => {
-      if (result.value) {
-        $.ajax({
-          url: 'libs/php/deletePersonnelByID.php',
-          data: {
-            empID: empID,
-          },
-          type: 'POST',
-          success: function (result) {
-            if (result.status.description == 'success') {
-              reload();
-            }
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
-          },
-        });
-        swalWithBootstrapButtons.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire(
-          'Cancelled',
-          'Your imaginary file is safe :)',
-          'error'
-        );
-      }
-    });
 });
 
 let conf = {

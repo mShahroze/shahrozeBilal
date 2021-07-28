@@ -88,14 +88,14 @@ body .modal-open {
   cursor: pointer;
 }
 
-select.searchDept {
+select#searchDept {
   border-radius: 10px;
   cursor: pointer;
   width: 195px;
   outline: 0px;
 }
 
-select.searchLoc {
+select#searchLoc {
   border-radius: 10px;
   cursor: pointer;
   width: 195px;
@@ -265,10 +265,10 @@ button.swal2-confirm.btn.btn-success {
   #search {
     width: 400px;
   }
-  select.searchDept {
+  select#searchDept {
     width: 194px;
   }
-  select.searchLoc {
+  select#searchLoc {
     width: 167px;
   }
   #advancedRow {
