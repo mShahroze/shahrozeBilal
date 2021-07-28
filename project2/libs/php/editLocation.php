@@ -29,7 +29,6 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-// Establish a statement to use in SQL where we are getting data from the table personnel 
 if (isset($_POST['prevLocation'])) {
   $prevLocation = $_POST['prevLocation'];
   $newLocation = $_POST['newLocation'];

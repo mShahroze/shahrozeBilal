@@ -53,8 +53,6 @@ if (isset($_POST['empID'])) {
 
   $data = [];
 
-  // $resultObj = $result->fetch_object();
-
   while ($row = mysqli_fetch_assoc($result)) {
 
     array_push($data, $row);

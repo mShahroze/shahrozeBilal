@@ -26,7 +26,6 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-// Establish a statement to use in SQL where we are deleting the location table
 if (isset($_POST['deleteLocation'])) {
   $deleteLocation = (int)$_POST['deleteLocation'];
 

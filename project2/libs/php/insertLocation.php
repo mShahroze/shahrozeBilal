@@ -31,7 +31,6 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-// $_REQUEST used for development / debugging. Remember to cange to $_POST for production
 if (isset($_POST['location'])) {
 	$location = $_POST['location'];
 

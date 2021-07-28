@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 $executionStartTime = microtime(true);
 
-// Include the preset username, password etc. for database
 include("config.php");
 
 header('Content-Type: application/json; charset=UTF-8');
@@ -27,7 +26,6 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-// Establish a statement to use in SQL where we are getting data from the table personnel 
 if (isset($_POST['prevDepartment'])) {
   $prevDepartment = $_POST['prevDepartment'];
   $newDepartment = $_POST['newDepartment'];

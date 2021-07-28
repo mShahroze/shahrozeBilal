@@ -22,20 +22,20 @@
 
 <body>
   <div class="container">
-    <!--header-->
+    <!--header start-->
     <?php include('header.php'); ?>
-    <!--//header-->
+    <!--header end-->
 
-    <!-- Section Start-->
+    <!-- Main Section Start-->
     <section class="py-lg-4 py-md-3 py-sm-3 py-3">
       <!-- Get data dynamically on cards -->
       <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
         <div class="row-employeeData-container"></div>
     </section>
-    <!-- //Section End-->
+    <!-- Main Section End-->
 
 
-    <!-- Update Pop up Modal Start -->
+    <!-- Update Personnel Pop up Modal Start -->
     <div class="modal fade" id="updEmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -46,7 +46,6 @@
             </button>
           </div>
           <div class="modal-body">
-            <!-- Edit Form Start -->
             <form>
               <div class="form-group">
                 <label for="#">ID</label>
@@ -60,7 +59,6 @@
                 <label for="#">Last Name</label>
                 <input type="text" class="form-control" id="lastname" aria-describedby="lastname">
               </div>
-
               <div class="form-group">
                 <label for="#">Job Title</label>
                 <input type="text" class="form-control" id="jobtitle" aria-describedby="jobtitle" placeholder="Enter Job Title">
@@ -69,8 +67,6 @@
                 <label for="#">Email</label>
                 <input type="email" class="form-control" id="email" aria-describedby="email">
               </div>
-
-
               <div class="form-group" id="updDepartment">
                 <label>Department</label>
                 <select id='department' class='form-control'>
@@ -85,7 +81,6 @@
               </div>
               <button type="submit" id="updateEmp" class="btn btn-primary">Update</button>
             </form>
-            <!-- Edit Form End-->
           </div>
           <div class="modal-footer">
             <button id='closeModal' type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -93,9 +88,9 @@
         </div>
       </div>
     </div>
-    <!-- Update Pop up Modal End -->
+    <!-- Update Personnel Pop up Modal End -->
 
-    <!-- Add Employee Details Pop up Modal Start -->
+    <!-- Add Personnel Details Pop up Modal Start -->
     <div class="modal fade" tabindex="-1" role="dialog" id="AddEmployee" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -132,9 +127,9 @@
         </div>
       </div>
     </div>
-    <!-- Add Employee Details Pop up Modal End -->
+    <!-- Add Personnel Details Pop up Modal End -->
 
-    <!-- Add Department Pop up Modal Start -->
+    <!-- Add Department Details Pop up Modal Start -->
     <!-- Modal -->
     <div class="modal" tabindex="-1" role="dialog" id="AddDepartment">
       <div class="modal-dialog" role="document">
@@ -163,10 +158,9 @@
         </div>
       </div>
     </div>
-    <!-- Add Department Pop up Modal End  -->
+    <!-- Add Department Details Pop up Modal End  -->
 
-    <!-- Update Department Pop up Modal Start -->
-    <!-- Modal -->
+    <!-- Update Department Details Pop up Modal Start -->
     <div class="modal" tabindex="-1" role="dialog" id="UpdateDepartment">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -194,9 +188,9 @@
         </div>
       </div>
     </div>
-    <!-- Update Department Pop up Modal End  -->
+    <!-- Update Department Details Pop up Modal End  -->
 
-    <!-- Delete Department Pop up Modal Start -->
+    <!-- Delete Department Details Pop up Modal Start -->
     <div class="modal" tabindex="-1" role="dialog" id="DeleteDepartment">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -221,9 +215,9 @@
         </div>
       </div>
     </div>
-    <!-- Delete Department Pop up Modal End  -->
+    <!-- Delete Department Details Pop up Modal End  -->
 
-    <!-- Add Location Pop up Modal Start -->
+    <!-- Add Location Details Pop up Modal Start -->
     <div class="modal" tabindex="-1" role="dialog" id="AddLocation">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -248,7 +242,7 @@
         </div>
       </div>
     </div>
-    <!-- Add Location Pop up Modal End  -->
+    <!-- Add Location Details Pop up Modal End  -->
 
     <!-- Update Location Pop up Modal Start -->
     <div class="modal" tabindex="-1" role="dialog" id="UpdateLocation">
@@ -277,9 +271,9 @@
         </div>
       </div>
     </div>
-    <!-- Update Location Pop up Modal End  -->
+    <!-- Update Location Details Pop up Modal End  -->
 
-    <!-- Delete Location Pop up Modal Start -->
+    <!-- Delete Location Details Pop up Modal Start -->
     <div class="modal" tabindex="-1" role="dialog" id="DeleteLocation">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -304,7 +298,7 @@
         </div>
       </div>
     </div>
-    <!-- Delete Location Pop up Modal End -->
+    <!-- Delete Location Details Pop up Modal End -->
 
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>

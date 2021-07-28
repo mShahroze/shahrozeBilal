@@ -3,6 +3,56 @@ let empDeptInfo = '';
 let empUpdDeptInfo = '';
 let empLocInfo = '';
 let empUpdLocInfo = '';
+let search = '';
+let searchDept = '';
+let searchLoc = '';
+
+function renderEmps(empArray) {
+  empArray.forEach((emp) => {
+    empContent += `
+    <div class="col-lg-4 col-md-5 col-sm-6 empCardBox">
+    <div class="card-box">
+      <div class="update-btn" onclick>
+        <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
+        <!-- Edit Button trigger modal -->
+        <a href="#" class="btn btn-primary update-bottom" id="editEmployee" data-id="${emp.id}" data-toggle="modal" data-target="#updModal" onclick="showUpdModal(${emp.id})">
+          <i class="fa fa-fw fa-edit"></i>Update
+        </a>
+      </div>
+      <div class="updDelBox">
+        <h2 data-first=${emp.firstName} data-last=${emp.lastName}>
+        ${emp.firstName} ${emp.lastName}
+        </h2>
+        <hr>
+        <div class="mt-1">
+          Job Title:
+          <span class="titleHead">${emp.jobTitle}</span>
+        </div>
+        <div class="mt-1">
+          Email:
+          <span class="titleHead" data-email=${emp.email}>${emp.email}</span>
+        </div>
+        <div class="mt-1">
+          Department:
+          <span class="titleHead" data-department=${emp.department}>${emp.department}</span>
+        </div>
+        <div class="mt-1">
+          Location:
+          <span class="titleHead" data-location=${emp.location}>${emp.location}</span>
+        </div>
+        <hr>
+        <div class="mt-1">
+          <button type="submit" data-id="${emp.id}" class="btn btn-danger deleteEmp" value="Delete" name="">
+            <i class="fa fa-fw fa-trash"></i> Delete</button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+    `;
+  });
+  document.querySelector('.row-employeeData-container').innerHTML = empContent;
+}
 
 function getAll() {
   $.ajax({
@@ -11,55 +61,11 @@ function getAll() {
     dataType: 'json',
     success: function (result) {
       if (result.status.name === 'ok') {
-        // console.log(result.data);
-        result.data.forEach((emp) => {
-          // console.log(emp);
-          empContent += `
-          <div class="col-lg-4 col-md-5 col-sm-6 empCardBox">
-          <div class="card-box">
-            <div class="update-btn" onclick>
-              <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
-              <!-- Edit Button trigger modal -->
-              <a href="#" class="btn btn-primary update-bottom" id="editEmployee" data-id="${emp.id}" data-toggle="modal" data-target="#updModal" onclick="showUpdModal(${emp.id})">
-                <i class="fa fa-fw fa-edit"></i>Update
-              </a>
-            </div>
-            <div class="updDelBox">
-              <h2 data-first=${emp.firstName} data-last=${emp.lastName}>
-              ${emp.firstName} ${emp.lastName}
-              </h2>
-              <hr>
-              <div class="mt-1">
-                Job Title:
-                <span class="titleHead">${emp.jobTitle}</span>
-              </div>
-              <div class="mt-1">
-                Email:
-                <span class="titleHead" data-email=${emp.email}>${emp.email}</span>
-              </div>
-              <div class="mt-1">
-                Department:
-                <span class="titleHead" data-department=${emp.department}>${emp.department}</span>
-              </div>
-              <div class="mt-1">
-                Location:
-                <span class="titleHead" data-location=${emp.location}>${emp.location}</span>
-              </div>
-              <hr>
-              <div class="mt-1">
-                <button type="submit" data-id="${emp.id}" class="btn btn-danger deleteEmp" value="Delete" name="">
-                  <i class="fa fa-fw fa-trash"></i> Delete</button>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-          `;
-          // console.log(empContent);
-        });
-        document.querySelector('.row-employeeData-container').innerHTML =
-          empContent;
+        renderEmps(result['data']);
       }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
     },
   });
 }
@@ -76,7 +82,6 @@ function getDepartments() {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.name === 'ok') {
         empDeptInfo += `<option value="">Select Department</option>`;
         empUpdDeptInfo += `<option value="">Select Department</option>`;
@@ -94,6 +99,9 @@ function getDepartments() {
         document.querySelector('#deleteDept').innerHTML = empDeptInfo;
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 }
 
@@ -105,7 +113,6 @@ function getLocations() {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.name === 'ok') {
         empLocInfo += `<option value="">Select Location</option>`;
         empUpdLocInfo += `<option value="">Select Location</option>`;
@@ -124,6 +131,9 @@ function getLocations() {
         document.querySelector('#deleteLoc').innerHTML = empLocInfo;
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 }
 
@@ -135,14 +145,12 @@ function showAddEmpModal() {
 
 $(document).on('click', '#addEmployee', function (e) {
   e.preventDefault();
-  // alert('Add Employee Clicked');
   let fname = $('#emp_firstname').val();
   let lname = $('#emp_lastname').val();
   let job_title = $('#emp_jobTitle').val();
   let email = $('#emp_email').val();
   let dept = $('#dept').val();
   let location = $('#location').val();
-  // alert('Details Saved');
   $.ajax({
     url: 'libs/php/insertPersonnel.php',
     data: {
@@ -156,7 +164,6 @@ $(document).on('click', '#addEmployee', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.description == 'success') {
         $('#AddEmployee').modal('hide');
         getAll();
@@ -169,6 +176,9 @@ $(document).on('click', '#addEmployee', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
@@ -178,10 +188,8 @@ function showAddDeptModal() {
 
 $(document).on('click', '#addDepartment', function (e) {
   e.preventDefault();
-  // alert("Add Department Clicked");
   let department = $('#departmentAdd').val();
   let location = $('#loca').val();
-  // alert('Details Saved');
   $.ajax({
     url: 'libs/php/insertDepartment.php',
     data: {
@@ -191,7 +199,6 @@ $(document).on('click', '#addDepartment', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result);
       if (result.status.description == 'success') {
         $('#AddDepartment').modal('hide');
         getAll();
@@ -204,6 +211,9 @@ $(document).on('click', '#addDepartment', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
@@ -213,7 +223,6 @@ function showUpdDeptModal() {
 
 $(document).on('click', '#updateDepartment', function (e) {
   e.preventDefault();
-  // alert('Add Department Clicked');
   let prevDepartment = $('#prevDept option:selected').text();
   let newDepartment = $('#newDept').val();
   alert(prevDepartment);
@@ -227,7 +236,6 @@ $(document).on('click', '#updateDepartment', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.description == 'success') {
         $('#UpdateDepartment').modal('hide');
         // getAll();
@@ -240,6 +248,9 @@ $(document).on('click', '#updateDepartment', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
@@ -249,9 +260,7 @@ function showDelDeptModal() {
 
 $(document).on('click', '#deleteDepartment', function (e) {
   e.preventDefault();
-  // alert("Add Department Clicked");
   let deleteDepartment = $('#deleteDept').val();
-  // alert(deleteDepartment);
   $.ajax({
     url: 'libs/php/deleteDepartmentByID.php',
     data: {
@@ -260,7 +269,6 @@ $(document).on('click', '#deleteDepartment', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result);
       if (result.status.description == 'success') {
         $('#DeleteDepartment').modal('hide');
         // getAll();
@@ -273,6 +281,9 @@ $(document).on('click', '#deleteDepartment', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
@@ -282,9 +293,7 @@ function showAddLocModal() {
 
 $(document).on('click', '#addLocation', function (e) {
   e.preventDefault();
-  //  alert("Add Location Clicked");
   let location = $('#locationAdd').val();
-  // alert(location);
   $.ajax({
     url: 'libs/php/insertLocation.php',
     data: {
@@ -293,7 +302,6 @@ $(document).on('click', '#addLocation', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.description == 'success') {
         $('#AddLocation').modal('hide');
         // getAll();
@@ -306,6 +314,9 @@ $(document).on('click', '#addLocation', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
@@ -315,11 +326,8 @@ function showUpdLocModal() {
 
 $(document).on('click', '#updateLocation', function (e) {
   e.preventDefault();
-  //  alert("Add Location Clicked");
   let prevLocation = $('#prevLocation').val();
   let newLocation = $('#newLocation').val();
-  // alert(prevLocation);
-  // alert(newLocation);
   $.ajax({
     url: 'libs/php/editLocation.php',
     data: {
@@ -329,10 +337,8 @@ $(document).on('click', '#updateLocation', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.description == 'success') {
         $('#UpdateLocation').modal('hide');
-        // getAll();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -341,6 +347,9 @@ $(document).on('click', '#updateLocation', function (e) {
           timer: 1500,
         });
       }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
     },
   });
 });
@@ -351,9 +360,7 @@ function showDelLocModal() {
 
 $(document).on('click', '#deleteLocation', function (e) {
   e.preventDefault();
-  //  alert("Add Location Clicked");
   let deleteLocation = $('#deleteLoc').val();
-  // alert(deleteLoc);
   $.ajax({
     url: 'libs/php/deleteLocationByID.php',
     data: {
@@ -362,7 +369,6 @@ $(document).on('click', '#deleteLocation', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      // console.log(result);
       if (result.status.description == 'success') {
         $('#DeleteLocation').modal('hide');
         // getAll();
@@ -375,13 +381,14 @@ $(document).on('click', '#deleteLocation', function (e) {
         });
       }
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
 $(document).on('click', '#editEmployee', function () {
-  //alert('Edit Button Clicked');
   let getEmpID = $(this).data('id');
-  // alert('Employee ID: ' + getEmpID);
   $.ajax({
     url: 'libs/php/getPersonnelByID.php',
     data: {
@@ -390,7 +397,6 @@ $(document).on('click', '#editEmployee', function () {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result.data);
       let id = result.data.id;
       let firstName = result.data.firstName;
       let lastName = result.data.lastName;
@@ -407,12 +413,14 @@ $(document).on('click', '#editEmployee', function () {
       $('#department').val(department);
       $('#location').val(location);
     },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
   });
 });
 
 $(document).on('click', '#updateEmp', function (e) {
-  // alert("Update Button Clicked");
-  e.preventDefault(); //  prevent page default behavior
+  e.preventDefault();
 
   let empID = $('#empid').val();
   let firstname = $('#firstname').val();
@@ -421,15 +429,6 @@ $(document).on('click', '#updateEmp', function (e) {
   let email = $('#email').val();
   let department = $('#department option:selected').text();
   let location = $('#location option:selected').text();
-  // console.log(
-  //   empID,
-  //   firstname,
-  //   lastname,
-  //   jobtitle,
-  //   email,
-  //   department,
-  //   location
-  // );
   $.ajax({
     url: 'libs/php/editPersonnel.php',
     data: {
@@ -444,20 +443,20 @@ $(document).on('click', '#updateEmp', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result);
       if (result.status.description == 'success') {
         getAll();
         $('#updEmpModal').modal('hide');
       }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
     },
   });
 });
 
 $(document).on('click', '.deleteEmp', function () {
   getAll();
-  // alert("Delete Button Clicked");
   let empID = $(this).data('id');
-  console.log(empID);
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -487,9 +486,11 @@ $(document).on('click', '.deleteEmp', function () {
           type: 'POST',
           success: function (result) {
             if (result.status.description == 'success') {
-              console.log(result);
               getAll();
             }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
           },
         });
         swalWithBootstrapButtons.fire(
@@ -497,10 +498,7 @@ $(document).on('click', '.deleteEmp', function () {
           'Your file has been deleted.',
           'success'
         );
-      } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         swalWithBootstrapButtons.fire(
           'Cancelled',
           'Your imaginary file is safe :)',
@@ -510,69 +508,45 @@ $(document).on('click', '.deleteEmp', function () {
     });
 });
 
-$('.searchDept').change(function () {
-  select();
-});
 $('#search').keyup(function () {
-  select();
+  search = $(this).val();
+  select(search);
+});
+$('.searchDept').change(function () {
+  searchDept = $('.searchDept option:selected').text() || '';
+  select(searchDept);
 });
 $('.searchLoc').change(function () {
-  select();
+  searchLoc = $('.searchLoc option:selected').text() || '';
+  select(searchLoc);
 });
 
-function select() {
-  let department = $('.searchDept option:selected').text();
-  let search = $('#search').val();
-  let location = $('.searchLoc option:selected').text();
-
-  console.log(department);
-
-  $('.empCardBox').hide();
-  let boxes = $('.empCardBox').filter(function (index) {
-    return (
-      (department === 'all' ||
-        $(this)
-          .children('.card-box')
-          .children('.updDelBox')
-          .children('.mt-1')
-          .children('span')
-          .children('.titleHead')
-          .attr('data-department'.toLowerCase()) === department) &&
-      (!search ||
-        $(this)
-          .children('.card-box')
-          .children('.updDelBox')
-          .children('h2')
-          .attr('data-first')
-          .toLowerCase()
-          .indexOf(search.toLowerCase()) >= 0 ||
-        !search ||
-        $(this)
-          .children('.card-box')
-          .children('.updDelBox')
-          .children('h2')
-          .attr('data-last')
-          .toLowerCase()
-          .indexOf(search.toLowerCase()) >= 0 ||
-        ((!search ||
-          $(this)
-            .children('.card-box')
-            .children('.updDelBox')
-            .children('.mt-1')
-            .children('.titleHead')
-            .attr('data-email')
-            .indexOf(search.toLowerCase()) >= 0) &&
-          (location === 'all' ||
-            $(this)
-              .children('.card-box')
-              .children('.updDelBox')
-              .children('.mt-1')
-              .children('span')
-              .children('.titleHead')
-              .attr('data-location') === location)))
-    );
-  });
-  boxes.show();
+function select(searchName) {
+  if (searchName != '') {
+    $.ajax({
+      url: 'libs/php/getPersonnelByName.php',
+      type: 'POST',
+      data: {
+        search: searchName,
+        dept: searchName,
+        loca: searchName,
+      },
+      success: function (result) {
+        empContent = '';
+        if (result['data'].length > 0) {
+          renderEmps(result['data']);
+        } else {
+          getAll();
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+    });
+  } else {
+    empContent = '';
+    getAll();
+  }
 }
 
 $('#advanced-button').on('click', function () {
@@ -596,29 +570,6 @@ $('#return-button').on('click', function () {
   $('.searchLoc').val('all').trigger('change');
   $('.searchDept').val('all').trigger('change');
 });
-
-// $(document).on('keyup', '#search', function () {
-//   // console.log("Data loaded");
-
-//   let empName = $(this).val(); // Renders whatever we type on the search field
-//   //console.log(empName);
-//   createRecord(empName);
-// });
-
-// function createRecord(empName) {
-//   console.log(empName);
-//   $.ajax({
-//     url: 'libs/php/getPersonnelByName2.php',
-//     data: {
-//       emp: empName,
-//     },
-//     type: 'POST',
-//     success: function (result) {
-//       console.log(result);
-//       $('.row-employeeData-container').html(result);
-//     },
-//   });
-// }
 
 let conf = {
   bgColor: 'rgb(31, 43, 49)',

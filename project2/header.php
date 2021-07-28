@@ -46,7 +46,7 @@
 
         <ul class="navbar-nav mr-auto" id="searchBar">
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name, Department, Location & Email">
+                <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By First Name, Last Name & Email">
             </form>
             <a class="btn btn-secondary btn-sm mr-sm-2" id="advanced-button" style="width: 150px; border-radius: 100px;">Advanced search</a>
             <div class="advcontainer">

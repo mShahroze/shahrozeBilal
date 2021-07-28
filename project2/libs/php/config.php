@@ -3,8 +3,6 @@
 	$cd_host = "127.0.0.1";
 	$cd_port = 3306;
 	$cd_socket = "";
-	$cd_user = "root"; // user name
-	$cd_password = "mango"; // password
-	$cd_dbname = "companydirectory"; // database name
-	
-?>
+	$cd_user = "root"; 
+	$cd_password = "mango"; 
+	$cd_dbname = "companydirectory";

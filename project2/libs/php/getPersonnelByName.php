@@ -26,18 +26,21 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-if (isset($_POST['emp'])) {
-  $emp = $_POST['emp'];
+if (isset($_POST['search'], $_POST['dept'], $_POST['loca'])) {
+  $search = $_POST['search'];
+  $dept = $_POST['dept'];
+  $loca = $_POST['loca'];
+
   $query = "SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
         as location FROM personnel p 
         LEFT JOIN department d ON (d.id = p.departmentID) 
         LEFT JOIN location l ON (l.id = d.locationID) 
-        WHERE p.firstName LIKE '$emp%' 
-        OR p.lastName LIKE '$emp%'
-        OR d.name LIKE '$emp%'
-        OR l.name LIKE '$emp%'
-        OR p.email LIKE '$emp%'
-        ORDER BY p.firstName, p.lastName, d.name, l.name";
+        WHERE p.firstName LIKE '%$search%' 
+        OR d.name LIKE '%$dept%'
+        OR l.name LIKE '%$loca%'
+        OR p.lastName LIKE '%$search%'
+        OR p.email LIKE '%$search%'
+        ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name";
 
   $result = $conn->query($query);
 
@@ -57,8 +60,6 @@ if (isset($_POST['emp'])) {
 
   $data = [];
 
-  // $resultObj = $result->fetch_object();
-
   while ($row = mysqli_fetch_assoc($result)) {
 
     array_push($data, $row);
@@ -68,7 +69,7 @@ if (isset($_POST['emp'])) {
   $output['status']['name'] = "ok";
   $output['status']['description'] = "success";
   $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-  $output['data'] = $data[0];
+  $output['data'] = $data;
 
   mysqli_close($conn);
 
