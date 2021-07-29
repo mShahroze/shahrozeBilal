@@ -7,14 +7,51 @@
 
 body {
   margin: 0 auto;
-  background: #2c3e50 !important;
-  background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);
+  padding: 0;
+  background: #cfcfcf !important;
   background: linear-gradient(to right, #eef2f3, #8e9eab);
+  background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);
 }
 
 body .modal-open {
   position: fixed;
   position: relative;
+}
+
+.container,
+.container-lg,
+.container-md,
+.container-sm {
+  max-width: 1120px;
+}
+
+.btn-primary {
+  color: #212529 !important;
+  font-weight: 500 !important;
+  background-color: lightslategray !important;
+  border: none !important;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+a.btn.btn-success {
+  color: #212529 !important;
+  background-color: #f2a65a;
+  border: none;
+}
+
+img.d-inline-block.align-top {
+  width: 140px !important;
+  height: 140px !important;
+  margin-left: 22px;
+  margin-top: 18px;
+}
+
+.img-thumbnail {
+  margin-top: 5px;
 }
 
 #searchBar {
@@ -30,6 +67,12 @@ body .modal-open {
 #search {
   width: 500px;
   border-radius: 100px;
+  font-weight: 500;
+  background-color: lightslategray;
+}
+
+#search::placeholder {
+  color: #212529;
 }
 
 #advanced-button {
@@ -41,11 +84,15 @@ body .modal-open {
   margin-top: 37px;
   padding: 0;
   color: #212529;
-  background-color: #fff;
+  font-weight: 500;
+  background-color: lightslategray;
 }
 
 #return-button {
   display: none;
+  color: #212529;
+  background-color: lightslategray;
+  font-weight: 500;
 }
 
 #advancedRow {
@@ -93,6 +140,9 @@ select#searchDept {
   cursor: pointer;
   width: 195px;
   outline: 0px;
+  color: #212529;
+  background-color: lightslategray;
+  font-weight: 500;
 }
 
 select#searchLoc {
@@ -100,14 +150,25 @@ select#searchLoc {
   cursor: pointer;
   width: 195px;
   outline: 0px;
+  color: #212529;
+  background-color: lightslategray;
+  font-weight: 500;
 }
 
 #navBar1 {
-  height: 50px;
+  height: 90px;
 }
 
 #navBar2 {
-  height: 71px;
+  height: 75px;
+}
+
+#navBar {
+  width: 100%;
+}
+
+.container.mw-100 {
+  padding: 0;
 }
 
 .card-box {
@@ -115,6 +176,8 @@ select#searchLoc {
   padding: 5px 10px;
   margin-bottom: 15px;
   background-color: white;
+  border-radius: 1em;
+  margin: 10px;
 }
 
 .update-btn {
@@ -134,6 +197,7 @@ select#searchLoc {
 .img-thumbnail {
   padding: 2rem;
   margin-bottom: 20px;
+  border-radius: 1em !important;
 }
 
 .btn-default {
@@ -147,13 +211,18 @@ select#searchLoc {
 .row-employeeData-container {
   display: flex;
   flex-wrap: wrap;
+  padding: 0 1%;
+  margin-left: 20px;
 }
 
-.card-box {
-  margin: 10px 15px;
+.card-box.flex-row {
+  margin: 15px 100px;
+  width: 18rem;
 }
 
 .empCardBox {
+  flex: 1;
+  margin: 0;
 }
 
 .update-bottom {
@@ -216,7 +285,7 @@ h3 {
 }
 
 h3 {
-  color: #0275d8;
+  color: #212529;
   border-radius: 10px;
   padding: 10px;
 }
@@ -263,7 +332,7 @@ button.swal2-confirm.btn.btn-success {
 
 @media screen and (max-width: 1200px) {
   #search {
-    width: 400px;
+    width: 470px;
   }
   select#searchDept {
     width: 194px;
@@ -273,5 +342,35 @@ button.swal2-confirm.btn.btn-success {
   }
   #advancedRow {
     padding-left: 71px;
+  }
+}
+
+@media screen and (max-width: 1030px) {
+  img.d-inline-block.align-top {
+    position: relative;
+    width: 140px !important;
+    height: 140px !important;
+    margin: 0 !important;
+  }
+  #navBar1 {
+    height: 120px;
+  }
+  button.navbar-toggler {
+    margin-left: 33px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  img.d-inline-block.align-top {
+    position: relative;
+    width: 140px !important;
+    height: 140px !important;
+    margin: 0 !important;
+  }
+  #navBar1 {
+    height: 120px;
+  }
+  button.navbar-toggler {
+    margin-left: 33px;
   }
 }

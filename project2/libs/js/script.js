@@ -79,8 +79,9 @@ $('#return-button').on('click', function () {
 function renderEmps(empArray) {
   empArray.forEach((emp) => {
     empContent += `
-    <div class="col-lg-4 col-md-5 col-sm-6 empCardBox">
-    <div class="card-box">
+    <div class="col-lg-4 col-md-6 col-sm-12 empCardBox">
+    <div class="card-deck">
+    <div class="card-box bg-light mb-3 h-100">
       <div class="update-btn" onclick>
         <img src="libs/images/EmployeeAvatar.png" class="img-thumbnail img-fluid" alt="">
         <!-- Edit Button trigger modal -->
@@ -89,9 +90,9 @@ function renderEmps(empArray) {
         </a>
       </div>
       <div class="updDelBox">
-        <h2 data-first=${emp.firstName} data-last=${emp.lastName}>
+        <h4 data-first=${emp.firstName} data-last=${emp.lastName}>
         ${emp.firstName} ${emp.lastName}
-        </h2>
+        </h4>
         <hr>
         <div class="mt-1">
           Job Title:
@@ -116,6 +117,7 @@ function renderEmps(empArray) {
         </div>
       </div>
       <div class="clearfix"></div>
+    </div>
     </div>
   </div>
     `;
