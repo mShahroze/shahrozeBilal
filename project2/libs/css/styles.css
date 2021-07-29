@@ -18,6 +18,15 @@ body .modal-open {
   position: relative;
 }
 
+::-moz-selection {
+  background-color: #f2a65a;
+  color: #fff;
+}
+::selection {
+  background-color: #f2a65a;
+  color: #fff;
+}
+
 .container,
 .container-lg,
 .container-md,
