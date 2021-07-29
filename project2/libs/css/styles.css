@@ -63,6 +63,14 @@ img.d-inline-block.align-top {
   margin-top: 5px;
 }
 
+.dropdown-menu.show {
+  display: block;
+  background-color: lightslategray;
+}
+
+a.dropdown-item:hover {
+  background-color: #cfcfcf !important;
+}
 #searchBar {
   position: absolute;
   right: 0;
