@@ -32,17 +32,15 @@ if (isset($_POST['empID'])) {
   $lastName = $_POST['lastName'];
   $jobTitle = $_POST['jobTitle'];
   $email = $_POST['email'];
-  $location = $_POST['location'];
   $department = $_POST['department'];
+  $location = $_POST['location'];
 
-  $updateEmpQuery = "UPDATE personnel, department, location 
-  SET personnel.firstname = '$firstName',
-      personnel.lastname =  '$lastName', 
-      personnel.jobtitle = '$jobTitle',
+  $updateEmpQuery = "UPDATE personnel, department, location
+  SET personnel.firstName = '$firstName',
+      personnel.lastName =  '$lastName', 
+      personnel.jobTitle = '$jobTitle',
       personnel.email = '$email',
-      -- personnel.location = '$location',
-      department.name = '$department',
-  location.name = '$location'
+      personnel.departmentID = '$department'
   WHERE personnel.departmentID = department.id AND
   department.locationID = location.id AND
   personnel.id = '$empID'";

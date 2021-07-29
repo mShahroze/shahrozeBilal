@@ -165,7 +165,7 @@ function getDepartments() {
           `;
         });
         document.querySelector('#searchDept').innerHTML = empDeptInfo;
-        document.querySelector('#empUpdDept').innerHTML = empUpdDeptInfo;
+        document.querySelector('#empUpdDept').innerHTML = empDeptInfo;
         document.querySelector('#dept').innerHTML = empDeptInfo;
         document.querySelector('#prevDept').innerHTML = empUpdDeptInfo;
         document.querySelector('#deleteDept').innerHTML = empDeptInfo;
@@ -197,7 +197,7 @@ function getLocations() {
           `;
         });
         document.querySelector('#searchLoc').innerHTML = empLocInfo;
-        document.querySelector('#empUpdLoc').innerHTML = empUpdLocInfo;
+        document.querySelector('#empUpdLoc').innerHTML = empLocInfo;
         document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
         document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
@@ -295,8 +295,10 @@ $(document).on('click', '#updateEmp', function (e) {
   let lastname = $('#lastname').val();
   let jobtitle = $('#jobtitle').val();
   let email = $('#email').val();
-  let department = $('#department option:selected').text();
-  let location = $('#location option:selected').text();
+  let department = $('#empUpdDept').val();
+  let location = $('#empUpdLoc').val();
+
+  console.log(department, location);
   $.ajax({
     url: 'libs/php/editPersonnel.php',
     data: {
@@ -419,8 +421,6 @@ $(document).on('click', '#updateDepartment', function (e) {
   e.preventDefault();
   let prevDepartment = $('#prevDept option:selected').text();
   let newDepartment = $('#newDept').val();
-  alert(prevDepartment);
-  alert(newDepartment);
   $.ajax({
     url: 'libs/php/editDepartment.php',
     data: {
