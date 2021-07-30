@@ -582,6 +582,15 @@ $(document).on('click', '#deleteLocation', function (e) {
   });
 });
 
+function navBarCollapse() {
+  let dropDown = document.getElementById('navbarSupportedContent');
+  if (dropDown.style.display === 'block') {
+    dropDown.style.display = 'none';
+  } else {
+    dropDown.style.display = 'block';
+  }
+}
+
 let conf = {
   bgColor: 'rgb(31, 43, 49)',
   hoverColor: '#212529',

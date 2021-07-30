@@ -155,7 +155,7 @@ a.dropdown-item:hover {
 select#searchDept {
   border-radius: 10px;
   cursor: pointer;
-  width: 195px;
+  width: 198px;
   outline: 0px;
   color: #212529;
   background-color: lightslategray;
@@ -288,6 +288,7 @@ h1 {
   background-repeat: no-repeat;
   background-size: 80%;
   animation: animate 3s linear infinite;
+  background-clip: inherit;
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(255, 255, 255, 0);
 }
@@ -349,7 +350,7 @@ button.swal2-confirm.btn.btn-success {
 
 @media screen and (max-width: 1200px) {
   #search {
-    width: 470px;
+    width: 415px;
   }
   select#searchDept {
     width: 194px;
@@ -362,22 +363,32 @@ button.swal2-confirm.btn.btn-success {
   }
 }
 
-@media screen and (max-width: 1030px) {
-  img.d-inline-block.align-top {
-    position: relative;
-    width: 140px !important;
-    height: 140px !important;
-    margin: 0 !important;
+@media screen and (min-width: 1700px) {
+  .img-thumbnail {
+    margin-top: 5px;
+    max-width: 500px !important;
   }
-  #navBar1 {
-    height: 120px;
+  .bg-light {
+    max-width: 525px;
   }
-  button.navbar-toggler {
-    margin-left: 33px;
+  .empCardBox {
+    max-width: 540px;
+  }
+  .row-employeeData-container {
+    padding-left: 150px;
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 990px) {
+  button.navbar-toggler {
+    margin-left: 33px;
+  }
+
+  #navBar2 {
+    height: 120px;
+    margin-bottom: 50px !important;
+  }
+
   img.d-inline-block.align-top {
     position: relative;
     width: 140px !important;
@@ -389,5 +400,365 @@ button.swal2-confirm.btn.btn-success {
   }
   button.navbar-toggler {
     margin-left: 33px;
+  }
+  #navBar {
+    overflow: hidden;
+    position: relative;
+  }
+
+  #navBar .navbar-collapse {
+    display: none;
+  }
+
+  #navBar #AddEmpButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 75px;
+    left: 96px;
+    margin: 0 !important;
+  }
+  #navBar #AddDeptButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 27px;
+    left: 253px;
+  }
+  #navBar #AddLocButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 51px;
+    left: 393px;
+  }
+
+  ul#searchBar {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 94px !important;
+    margin-right: 0 !important;
+    top: 32px;
+    height: 100px;
+  }
+
+  #advanced-button {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    left: 0;
+    margin: 0 !important;
+    top: 48px;
+  }
+
+  a.btn.btn-success {
+    overflow: hidden;
+    float: right;
+    position: absolute;
+    bottom: 75px;
+    left: 508px;
+  }
+
+  #navbarSupportedContent {
+    width: 100px !important;
+  }
+
+  select#searchDept {
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: -199px !important;
+    margin-right: 0 !important;
+    top: 11px;
+    height: 23px;
+    width: 31%;
+  }
+
+  select#searchLoc {
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: -1px !important;
+    margin-right: 0 !important;
+    top: 11px;
+    height: 23px;
+    width: 27%;
+  }
+
+  #return-button {
+    position: absolute !important;
+    left: 174px !important;
+    margin-right: 0 !important;
+    top: 11px;
+    height: 23px;
+    width: 10%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #search {
+    width: 268px;
+  }
+
+  button.navbar-toggler {
+    margin-left: 33px;
+  }
+
+  #navBar2 {
+    height: 120px;
+    margin-bottom: 50px !important;
+  }
+
+  #navBar #AddEmpButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 72px;
+    left: 96px;
+    margin: 0 !important;
+    width: 36%;
+    display: block;
+    padding: 0;
+    height: 41px;
+  }
+  #navBar #AddDeptButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 44px;
+    left: 309px;
+    width: 31%;
+    display: block;
+    padding: 0;
+    height: 21px;
+  }
+  #navBar #AddLocButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 46px;
+    left: 309px;
+    width: 31%;
+    display: block;
+    padding: 0;
+    height: 20px;
+  }
+
+  ul#searchBar {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 94px !important;
+    margin-right: 0 !important;
+    top: 37px;
+    height: 100px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  #advanced-button {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    left: 0;
+    margin: 0 !important;
+    top: 48px;
+  }
+
+  a.btn.btn-success {
+    overflow: hidden;
+    float: right;
+    position: absolute;
+    bottom: 75px;
+    left: 496px;
+  }
+
+  #navbarSupportedContent {
+    width: 100px !important;
+  }
+
+  div.dropdown-menu.show {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    left: 235px;
+    width: 31% !important;
+    display: block;
+    padding: 0;
+    height: 96px;
+    top: -48px !important;
+  }
+
+  select#searchDept {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 372px !important;
+    margin-right: 0 !important;
+    top: 11px;
+    height: 23px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  select#searchLoc {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 372px !important;
+    margin-right: 0 !important;
+    top: 37px;
+    height: 23px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  #return-button {
+    position: absolute !important;
+    left: 542px !important;
+    margin-right: 0 !important;
+    top: 36px;
+    height: 24px;
+    max-width: 10%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #search {
+    width: 268px;
+  }
+
+  button.navbar-toggler {
+    margin-left: 33px;
+  }
+
+  #navBar2 {
+    height: 120px;
+    margin-bottom: 50px !important;
+  }
+
+  #navBar #AddEmpButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 72px;
+    left: 96px;
+    margin: 0 !important;
+    width: 36%;
+    display: block;
+    padding: 0;
+    height: 41px;
+  }
+  #navBar #AddDeptButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 44px;
+    left: 234px;
+    width: 31%;
+    display: block;
+    padding: 0;
+    height: 21px;
+  }
+  #navBar #AddLocButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 46px;
+    left: 234px;
+    width: 31%;
+    display: block;
+    padding: 0;
+    height: 20px;
+  }
+
+  ul#searchBar {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 94px !important;
+    margin-right: 0 !important;
+    top: 37px;
+    height: 100px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  #advanced-button {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    left: 0;
+    margin: 0 !important;
+    top: 48px;
+  }
+
+  a.btn.btn-success {
+    overflow: hidden;
+    float: right;
+    position: absolute;
+    bottom: 25px;
+    left: 40px;
+  }
+
+  #navbarSupportedContent {
+    width: 100px !important;
+  }
+
+  div.dropdown-menu.show {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    left: 235px;
+    width: 31% !important;
+    display: block;
+    padding: 0;
+    height: 96px;
+    top: -48px !important;
+  }
+
+  select#searchDept {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 372px !important;
+    margin-right: 0 !important;
+    top: 11px;
+    height: 23px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  select#searchLoc {
+    overflow: hidden;
+    float: left;
+    position: absolute !important;
+    bottom: 30px m !important;
+    left: 372px !important;
+    margin-right: 0 !important;
+    top: 37px;
+    height: 23px;
+    max-width: 72%;
+    display: block;
+    padding: 0;
+  }
+
+  #return-button {
+    position: absolute !important;
+    left: 542px !important;
+    margin-right: 0 !important;
+    top: 36px;
+    height: 24px;
+    max-width: 10%;
   }
 }
