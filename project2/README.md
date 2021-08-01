@@ -27,7 +27,7 @@
 |-- .prettierrc - Config file for beautify code structure.
 |-- PHP files read data from endpoints and return json in objects to be manipulated. Qeuery were written to get correct data upon request
 
-> <p align="center">  Watch Project Demo Video By Clicking Below Image: 
+> <p align="center">  Project Main Page Demo Image is below: 
 > [![Watch the Demo](https://i.ibb.co/MD585vP/MainPage.png)]()
 
   </p>
