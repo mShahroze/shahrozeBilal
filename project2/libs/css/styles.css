@@ -18,6 +18,35 @@ body .modal-open {
   position: relative;
 }
 
+.loader {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #16191e;
+  position: absolute;
+}
+
+.loader > div {
+  height: 50px;
+  width: 50px;
+  border: 10px solid #45474b;
+  border-top-color: #2a88e6;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 50%;
+  animation: spin 1.5s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 ::-moz-selection {
   background-color: #f2a65a;
   color: #fff;

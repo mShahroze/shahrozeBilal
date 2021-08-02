@@ -21,6 +21,10 @@
 </head>
 
 <body>
+  <div class="loader">
+    <div></div>
+  </div>
+  
   <div class="container mw-100">
     <!--header start-->
     <div id="navBar">
@@ -123,8 +127,8 @@
                 <select id="dept" class='form-control'>
                 </select>
                 <br>
-                <select id="loc" class='form-control'>
-                </select>
+                <!-- <select id="loc" class='form-control'>
+                </select> -->
               </div>
               <button type="submit" class="btn btn-primary" id="addEmployee">Add</button>
             </form>
@@ -149,10 +153,10 @@
           </div>
           <div class="modal-body">
             <form>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="#">ID</label>
                 <input type="text" class="form-control" id="empid" aria-describedby="empid" readonly>
-              </div>
+              </div> -->
               <div class="form-group">
                 <label for="#">First Name</label>
                 <input type="text" class="form-control" id="firstname" aria-describedby="firstname">
@@ -175,12 +179,12 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="department" aria-describedby="department"> -->
               </div>
-              <div class="form-group" id="updLocation">
+              <!-- <div class="form-group" id="updLocation">
                 <label>Location</label>
                 <select id='empUpdLoc' class='form-control'>
                 </select>
-                <!-- <input type="text" class="form-control" id="location" aria-describedby="location"> -->
-              </div>
+                <input type="text" class="form-control" id="location" aria-describedby="location">
+              </div> -->
               <button type="submit" id="updateEmp" class="btn btn-primary">Update</button>
             </form>
           </div>
@@ -361,6 +365,8 @@
       </div>
     </div>
     <!-- Delete Location Details Pop up Modal End -->
+
+    <div id="preloader"></div>
 
     <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
     <script src="vendors/js/bootstrap.min.js"></script>

@@ -7,6 +7,11 @@ let search = '';
 let searchDept = '';
 let searchLoc = '';
 
+$(window).on('load', function () {
+  $('.loader').fadeOut(2000);
+  $('.container').fadeIn(2000);
+});
+
 function reload() {
   setTimeout(function () {
     window.location.reload(1);
@@ -197,8 +202,8 @@ function getLocations() {
           `;
         });
         document.querySelector('#searchLoc').innerHTML = empLocInfo;
-        document.querySelector('#empUpdLoc').innerHTML = empLocInfo;
-        document.querySelector('#loc').innerHTML = empLocInfo;
+        // document.querySelector('#empUpdLoc').innerHTML = empLocInfo;
+        // document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
         document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
         document.querySelector('#deleteLoc').innerHTML = empLocInfo;
