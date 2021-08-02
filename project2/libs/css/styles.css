@@ -111,7 +111,7 @@ a.dropdown-item:hover {
 }
 
 #search {
-  width: 500px;
+  width: 338px;
   border-radius: 100px;
   font-weight: 500;
   background-color: lightslategray;
@@ -146,13 +146,17 @@ a.dropdown-item:hover {
   margin-left: 150px;
 }
 
+a#advanced-button {
+  margin-top: 40px;
+}
+
 .advanced {
   display: none;
 }
 
 .advcontainer {
   position: absolute;
-  right: 0;
+  right: -30px;
   top: 0;
   margin-right: 4px;
   margin-bottom: 30px;
@@ -211,6 +215,8 @@ select#searchLoc {
 
 #navBar {
   width: 100%;
+  position: fixed;
+  z-index: 1;
 }
 
 .container.mw-100 {
@@ -379,7 +385,7 @@ button.swal2-confirm.btn.btn-success {
 
 @media screen and (max-width: 1200px) {
   #search {
-    width: 415px;
+    width: 338px;
   }
   select#searchDept {
     width: 194px;
@@ -452,14 +458,14 @@ button.swal2-confirm.btn.btn-success {
     float: left;
     position: absolute;
     bottom: 27px;
-    left: 253px;
+    left: 254px;
   }
   #navBar #AddLocButton {
     overflow: hidden;
     float: left;
     position: absolute;
     bottom: 51px;
-    left: 393px;
+    left: 412px;
   }
 
   ul#searchBar {
@@ -487,7 +493,7 @@ button.swal2-confirm.btn.btn-success {
     float: right;
     position: absolute;
     bottom: 75px;
-    left: 508px;
+    left: 543px;
   }
 
   #navbarSupportedContent {
@@ -522,11 +528,17 @@ button.swal2-confirm.btn.btn-success {
     height: 23px;
     width: 10%;
   }
+
+  div#spacing {
+    padding: 0 !important;
+  }
 }
 
 @media screen and (max-width: 600px) {
   #search {
-    width: 268px;
+    width: 277px;
+    border: none;
+    border-radius: 0 !important;
   }
 
   button.navbar-toggler {
@@ -538,19 +550,28 @@ button.swal2-confirm.btn.btn-success {
     margin-bottom: 50px !important;
   }
 
-  #navBar #AddEmpButton {
+  div#spacing {
+    padding: 0 !important;
+  }
+
+  .addButton-text {
+    display: none;
+  }
+
+  /* #navBar #AddEmpButton {
     overflow: hidden;
     float: left;
     position: absolute;
     bottom: 72px;
     left: 96px;
     margin: 0 !important;
-    width: 36%;
+    width: 10%;
     display: block;
     padding: 0;
     height: 41px;
-  }
-  #navBar #AddDeptButton {
+  } */
+
+  /* #navBar #AddDeptButton {
     overflow: hidden;
     float: left;
     position: absolute;
@@ -571,6 +592,35 @@ button.swal2-confirm.btn.btn-success {
     display: block;
     padding: 0;
     height: 20px;
+  } */
+
+  #navBar #AddEmpButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 75px;
+    left: 96px;
+    margin: 0 !important;
+  }
+
+  #navBar #AddDeptButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 3px;
+    left: 146px;
+  }
+  #navBar #AddLocButton {
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    bottom: 27px;
+    left: 208px;
+  }
+
+  .navbar-toggler {
+    /* right: 15px; */
+    position: absolute;
   }
 
   ul#searchBar {
@@ -594,6 +644,8 @@ button.swal2-confirm.btn.btn-success {
     left: 0;
     margin: 0 !important;
     top: 48px;
+    border: none;
+    border-radius: 0 !important;
   }
 
   a.btn.btn-success {
@@ -601,7 +653,7 @@ button.swal2-confirm.btn.btn-success {
     float: right;
     position: absolute;
     bottom: 75px;
-    left: 496px;
+    left: 267px;
   }
 
   #navbarSupportedContent {
@@ -612,146 +664,12 @@ button.swal2-confirm.btn.btn-success {
     overflow: hidden;
     float: left;
     position: absolute;
-    left: 235px;
+    left: 145px;
     width: 31% !important;
     display: block;
     padding: 0;
     height: 96px;
-    top: -48px !important;
-  }
-
-  select#searchDept {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 372px !important;
-    margin-right: 0 !important;
-    top: 11px;
-    height: 23px;
-    max-width: 72%;
-    display: block;
-    padding: 0;
-  }
-
-  select#searchLoc {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 372px !important;
-    margin-right: 0 !important;
-    top: 37px;
-    height: 23px;
-    max-width: 72%;
-    display: block;
-    padding: 0;
-  }
-
-  #return-button {
-    position: absolute !important;
-    left: 542px !important;
-    margin-right: 0 !important;
-    top: 36px;
-    height: 24px;
-    max-width: 10%;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  #search {
-    width: 268px;
-  }
-
-  button.navbar-toggler {
-    margin-left: 33px;
-  }
-
-  #navBar2 {
-    height: 120px;
-    margin-bottom: 50px !important;
-  }
-
-  #navBar #AddEmpButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 72px;
-    left: 96px;
-    margin: 0 !important;
-    width: 36%;
-    display: block;
-    padding: 0;
-    height: 41px;
-  }
-  #navBar #AddDeptButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 44px;
-    left: 234px;
-    width: 31%;
-    display: block;
-    padding: 0;
-    height: 21px;
-  }
-  #navBar #AddLocButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 46px;
-    left: 234px;
-    width: 31%;
-    display: block;
-    padding: 0;
-    height: 20px;
-  }
-
-  ul#searchBar {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 94px !important;
-    margin-right: 0 !important;
-    top: 37px;
-    height: 100px;
-    max-width: 72%;
-    display: block;
-    padding: 0;
-  }
-
-  #advanced-button {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    left: 0;
-    margin: 0 !important;
-    top: 48px;
-  }
-
-  a.btn.btn-success {
-    overflow: hidden;
-    float: right;
-    position: absolute;
-    bottom: 25px;
-    left: 40px;
-  }
-
-  #navbarSupportedContent {
-    width: 100px !important;
-  }
-
-  div.dropdown-menu.show {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    left: 235px;
-    width: 31% !important;
-    display: block;
-    padding: 0;
-    height: 96px;
-    top: -48px !important;
+    top: -29px !important;
   }
 
   select#searchDept {

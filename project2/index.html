@@ -40,13 +40,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
       
         <button type="button" id="AddEmpButton" class="btn btn-primary" data-toggle="modal" data-target="#AddEmployee" style="margin-left:30px;" onclick="showAddEmpModal()">
-          <i class="fa fa-fw fa-plus"></i> Add Employee
+          <i class="fa fa-fw fa-plus"></i> 
+          <span class="addButton-text">Add Employee</span>
         </button>
         &nbsp;
 
         <div class="dropdown">
           <button type="button" id="AddDeptButton" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Departments
+            <i class="fas fa-address-book"></i>
+            <span class="addButton-text">Departments</span>
           </button>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
@@ -58,9 +60,10 @@
 
         <div class="dropdown">
           <button type="button"  id="AddLocButton" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Locations
+            <i class="fas fa-thumbtack"></i>
+            <span class="addButton-text">Locations</span>
           </button>
-          <div class="dropdown-menu">
+          <div class="dropdown-menu" id="LocDropdown">
             <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation" onclick="showAddLocModal()">Add</a>
             <a class="dropdown-item" href="#UpdateLocation" data-toggle="modal" data-target="#UpdateLocation" onclick="showUpdLocModal()">Update</a>
             <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation" onclick="showDelLocModal()">Delete</a>
@@ -93,6 +96,8 @@
     </nav>
   </div>
     <!--header end-->
+
+    <div class="using-border py-5" id="spacing"></div>
 
     <!-- Main Section Start-->
     <section class="py-lg-4 py-md-3 py-sm-3 py-3">
