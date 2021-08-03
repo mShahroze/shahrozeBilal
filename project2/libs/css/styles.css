@@ -489,14 +489,14 @@ button.swal2-confirm.btn.btn-success {
     overflow: hidden;
     float: left;
     position: absolute;
-    bottom: 27px;
+    bottom: 3px;
     left: 254px;
   }
   #navBar #AddLocButton {
     overflow: hidden;
     float: left;
     position: absolute;
-    bottom: 51px;
+    bottom: 27px;
     left: 412px;
   }
 
@@ -580,6 +580,11 @@ button.swal2-confirm.btn.btn-success {
 
   div#spacing {
     padding: 0 !important;
+  }
+
+  .navbar-toggler {
+    /* right: 15px; */
+    position: absolute;
   }
 }
 
@@ -768,5 +773,13 @@ button.swal2-confirm.btn.btn-success {
     top: 36px;
     height: 24px;
     max-width: 10%;
+  }
+
+  div#DepDropdown {
+    margin-top: 26px;
+  }
+
+  div#LocDropdown {
+    margin-left: 62px;
   }
 }

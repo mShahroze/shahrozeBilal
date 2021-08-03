@@ -12,6 +12,15 @@ $(window).on('load', function () {
   $('.container').fadeIn(2000);
 });
 
+$(document).click(function () {
+  $('#searchImg').show();
+});
+
+$('#searchBar').click(function (e) {
+  e.stopPropagation();
+  $('#searchImg').hide();
+});
+
 function reload() {
   setTimeout(function () {
     window.location.reload(1);
@@ -462,31 +471,64 @@ function showDelDeptModal() {
 
 $(document).on('click', '#deleteDepartment', function (e) {
   e.preventDefault();
-  let deleteDepartment = $('#deleteDept').val();
-  $.ajax({
-    url: 'libs/php/deleteDepartmentByID.php',
-    data: {
-      deleteDepartment: deleteDepartment,
+  let deleteDepartmentID = $('#deleteDept').val();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
     },
-    type: 'POST',
-    dataType: 'json',
-    success: function (result) {
-      if (result.status.description == 'success') {
-        $('#DeleteDepartment').modal('hide');
-        reload();
-        Swal.fire({
-          position: 'top-end',
-          type: 'success',
-          title: 'Department has been Deleted Successfully',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
+    buttonsStyling: false,
   });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'libs/php/deleteDepartmentByID.php',
+          data: {
+            departmentID: deleteDepartmentID,
+          },
+          type: 'POST',
+          dataType: 'json',
+          success: function (result) {
+            if (result.status.description == 'delete success') {
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              );
+              $('#DeleteDepartment').modal('hide');
+              reload();
+            } else {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Employees are connected with this Department',
+                'error'
+              );
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          },
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
 });
 
 function showAddLocModal() {
@@ -563,31 +605,64 @@ function showDelLocModal() {
 
 $(document).on('click', '#deleteLocation', function (e) {
   e.preventDefault();
-  let deleteLocation = $('#deleteLoc').val();
-  $.ajax({
-    url: 'libs/php/deleteLocationByID.php',
-    data: {
-      deleteLocation: deleteLocation,
+  let deleteLocationID = $('#deleteLoc').val();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
     },
-    type: 'POST',
-    dataType: 'json',
-    success: function (result) {
-      if (result.status.description == 'success') {
-        $('#DeleteLocation').modal('hide');
-        reload();
-        Swal.fire({
-          position: 'top-end',
-          type: 'success',
-          title: 'Location has been Deleted',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
+    buttonsStyling: false,
   });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'libs/php/deleteLocationByID.php',
+          data: {
+            locationID: deleteLocationID,
+          },
+          type: 'POST',
+          dataType: 'json',
+          success: function (result) {
+            if (result.status.description == 'delete success') {
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              );
+              $('#DeleteLocation').modal('hide');
+              reload();
+            } else {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'This Location is connected to a Department',
+                'error'
+              );
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          },
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
 });
 
 function navBarCollapse() {

@@ -50,7 +50,7 @@
             <i class="fas fa-address-book"></i>
             <span class="addButton-text">Departments</span>
           </button>
-          <div class="dropdown-menu">
+          <div class="dropdown-menu" id="DepDropdown">
             <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
             <a class="dropdown-item" href="#UpdateDepartment" data-toggle="modal" data-target="#UpdateDepartment" onclick="showUpdDeptModal()">Update </a>
             <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment" onclick="showDelDeptModal()">Delete </a>
@@ -76,7 +76,7 @@
 
         <ul class="navbar-nav mr-auto" id="searchBar">
           <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name or Email">
+            <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name or Email"">
             <img src="libs/images/search.png" id="searchImg">
           </form>
           <a class="btn btn-secondary btn-sm mr-sm-2" id="advanced-button" style="width: 150px; border-radius: 100px;">Advanced search</a>

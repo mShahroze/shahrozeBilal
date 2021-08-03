@@ -32,18 +32,27 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-if (isset($_POST['deleteDepartment'])) {
-	$deleteDepartment = (int)$_POST['deleteDepartment'];
+if (isset($_POST['departmentID'])) {
+	$departmentID = (int)$_POST['departmentID'];
 
-	$deleteDeptQuery = "DELETE FROM department WHERE id =" . $deleteDepartment;
+	$deleteDeptCountQuery = "SELECT COUNT(firstName) as emp FROM personnel WHERE personnel.departmentID = '$departmentID'";
 
-	$result = $conn->query($deleteDeptQuery);
+	$countResult = $conn->query($deleteDeptCountQuery);
 
-	if (!$result) {
+	$data = [];
+
+	while ($row = mysqli_fetch_assoc($countResult)) {
+
+		array_push($data, $row);
+	}
+
+	$personnel = $data[0]['emp'];
+
+	if ($personnel > 0) {
 
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";
+		$output['status']['description'] = "delete denied";
 		$output['data'] = [];
 
 		mysqli_close($conn);
@@ -52,14 +61,32 @@ if (isset($_POST['deleteDepartment'])) {
 
 		exit;
 	}
+}
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+$deleteDeptQuery = "DELETE FROM department WHERE id =" . $departmentID;
+
+$result = $conn->query($deleteDeptQuery);
+
+if (!$result) {
+
+	$output['status']['code'] = "400";
+	$output['status']['name'] = "executed";
+	$output['status']['description'] = "query failed";
 	$output['data'] = [];
 
 	mysqli_close($conn);
 
 	echo json_encode($output);
+
+	exit;
 }
+
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
+$output['status']['description'] = "delete success";
+$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+$output['data'] = [];
+
+mysqli_close($conn);
+
+echo json_encode($output);
