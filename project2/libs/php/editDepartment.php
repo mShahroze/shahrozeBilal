@@ -29,9 +29,9 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['prevDepartment'])) {
   $prevDepartment = $_POST['prevDepartment'];
   $newDepartment = $_POST['newDepartment'];
+  $locationID = $_REQUEST['locationID'];
 
-
-  $updDeptQuery = "UPDATE department SET name = '$newDepartment' WHERE name = '$prevDepartment'";
+  $updDeptQuery = "UPDATE department SET name = '$newDepartment', locationID = '$locationID' WHERE name = '$prevDepartment'";
   $result = $conn->query($updDeptQuery);
 
   if (!$result) {

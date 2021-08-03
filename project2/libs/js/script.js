@@ -205,6 +205,7 @@ function getLocations() {
         // document.querySelector('#empUpdLoc').innerHTML = empLocInfo;
         // document.querySelector('#loc').innerHTML = empLocInfo;
         document.querySelector('#loca').innerHTML = empLocInfo;
+        document.querySelector('#updloca').innerHTML = empLocInfo;
         document.querySelector('#prevLocation').innerHTML = empUpdLocInfo;
         document.querySelector('#deleteLoc').innerHTML = empLocInfo;
       }
@@ -228,7 +229,7 @@ $(document).on('click', '#addEmployee', function (e) {
   let job_title = $('#emp_jobTitle').val();
   let email = $('#emp_email').val();
   let dept = $('#dept').val();
-  let location = $('#location').val();
+  // let location = $('#location').val();
   $.ajax({
     url: 'libs/php/insertPersonnel.php',
     data: {
@@ -237,7 +238,7 @@ $(document).on('click', '#addEmployee', function (e) {
       job_title: job_title,
       email: email,
       dept: dept,
-      location: location,
+      // location: location,
     },
     type: 'POST',
     dataType: 'json',
@@ -301,7 +302,7 @@ $(document).on('click', '#updateEmp', function (e) {
   let jobtitle = $('#jobtitle').val();
   let email = $('#email').val();
   let department = $('#empUpdDept').val();
-  let location = $('#empUpdLoc').val();
+  // let location = $('#empUpdLoc').val();
 
   console.log(department, location);
   $.ajax({
@@ -313,7 +314,7 @@ $(document).on('click', '#updateEmp', function (e) {
       jobTitle: jobtitle,
       email: email,
       department: department,
-      location: location,
+      // location: location,
     },
     type: 'POST',
     dataType: 'json',
@@ -346,7 +347,7 @@ $(document).on('click', '.deleteEmp', function () {
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
       type: 'warning',
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
       reverseButtons: true,
@@ -426,11 +427,13 @@ $(document).on('click', '#updateDepartment', function (e) {
   e.preventDefault();
   let prevDepartment = $('#prevDept option:selected').text();
   let newDepartment = $('#newDept').val();
+  let locationID = $('#updloca').val();
   $.ajax({
     url: 'libs/php/editDepartment.php',
     data: {
       prevDepartment: prevDepartment,
       newDepartment: newDepartment,
+      locationID: locationID,
     },
     type: 'POST',
     dataType: 'json',

@@ -32,7 +32,7 @@ if (isset($_POST['fname'])) {
   $job_title = $_POST['job_title'];
   $email = $_POST['email'];
   $dept = $_POST['dept'];
-  $location = $_POST['location'];
+  // $location = $_POST['location'];
 
   $insertPersonnel = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES('$fname','$lname','$job_title','$email','$dept')";
 

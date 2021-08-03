@@ -111,10 +111,23 @@ a.dropdown-item:hover {
 }
 
 #search {
-  width: 338px;
+  width: 212px;
   border-radius: 100px;
   font-weight: 500;
   background-color: lightslategray;
+}
+
+#search::placeholder {
+  position: absolute;
+  right: 0.5px;
+}
+
+#searchImg {
+  position: absolute;
+  bottom: 12px;
+  right: 191px;
+  width: 15px;
+  height: 15px;
 }
 
 #search::placeholder {
@@ -414,6 +427,25 @@ button.swal2-confirm.btn.btn-success {
   }
 }
 
+@media screen and (min-width: 990px) and (max-width: 1200px) {
+  #search {
+    width: 218px;
+  }
+
+  #search::placeholder {
+    position: absolute;
+    right: 0.5px;
+  }
+
+  #searchImg {
+    position: absolute;
+    bottom: 12px;
+    left: 9px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
 @media screen and (max-width: 990px) {
   button.navbar-toggler {
     margin-left: 33px;
@@ -479,6 +511,23 @@ button.swal2-confirm.btn.btn-success {
     height: 100px;
   }
 
+  #search {
+    width: 218px;
+  }
+
+  #search::placeholder {
+    position: absolute;
+    right: 0.5px;
+  }
+
+  #searchImg {
+    position: absolute;
+    bottom: 66px;
+    left: 12px;
+    width: 15px;
+    height: 15px;
+  }
+
   #advanced-button {
     overflow: hidden;
     float: left;
@@ -536,7 +585,7 @@ button.swal2-confirm.btn.btn-success {
 
 @media screen and (max-width: 600px) {
   #search {
-    width: 277px;
+    width: 209px;
     border: none;
     border-radius: 0 !important;
   }
@@ -635,6 +684,18 @@ button.swal2-confirm.btn.btn-success {
     max-width: 72%;
     display: block;
     padding: 0;
+  }
+
+  #search::placeholder {
+    position: absolute;
+  }
+
+  #searchImg {
+    position: absolute;
+    bottom: 66px;
+    left: 6px;
+    width: 15px;
+    height: 15px;
   }
 
   #advanced-button {
