@@ -156,7 +156,8 @@ a.dropdown-item:hover {
 
 #advancedRow {
   display: none;
-  margin-left: 150px;
+  /* margin-left: 150px; */
+  width: 500px;
 }
 
 a#advanced-button {
@@ -175,10 +176,6 @@ a#advanced-button {
   margin-bottom: 30px;
   margin-top: 37px;
   padding-top: 2px;
-}
-
-#advancedRow {
-  width: 500px;
 }
 
 #searchdept {
@@ -401,14 +398,14 @@ button.swal2-confirm.btn.btn-success {
     width: 338px;
   }
   select#searchDept {
-    width: 194px;
+    width: 198px;
   }
   select#searchLoc {
-    width: 167px;
+    width: 171px;
   }
-  #advancedRow {
-    padding-left: 71px;
-  }
+  /* #advancedRow {
+    padding-left: 26px;
+  } */
 }
 
 @media screen and (min-width: 1700px) {
@@ -443,6 +440,10 @@ button.swal2-confirm.btn.btn-success {
     left: 9px;
     width: 15px;
     height: 15px;
+  }
+
+  #advancedRow {
+    width: 480px;
   }
 }
 
@@ -513,6 +514,7 @@ button.swal2-confirm.btn.btn-success {
 
   #search {
     width: 218px;
+    height: 36px;
   }
 
   #search::placeholder {
@@ -556,17 +558,17 @@ button.swal2-confirm.btn.btn-success {
     margin-right: 0 !important;
     top: 11px;
     height: 23px;
-    width: 31%;
+    width: 198px;
   }
 
   select#searchLoc {
     position: absolute !important;
     bottom: 30px m !important;
-    left: -1px !important;
+    left: 2px !important;
     margin-right: 0 !important;
     top: 11px;
     height: 23px;
-    width: 27%;
+    width: 169px;
   }
 
   #return-button {
@@ -575,7 +577,7 @@ button.swal2-confirm.btn.btn-success {
     margin-right: 0 !important;
     top: 11px;
     height: 23px;
-    width: 10%;
+    width: 60px;
   }
 
   div#spacing {
@@ -585,6 +587,16 @@ button.swal2-confirm.btn.btn-success {
   .navbar-toggler {
     /* right: 15px; */
     position: absolute;
+  }
+
+  .advcontainer {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    margin-bottom: 30px;
+    margin-top: 37px;
+    padding-top: 2px;
+    margin-left: 200px;
   }
 }
 
@@ -611,42 +623,6 @@ button.swal2-confirm.btn.btn-success {
   .addButton-text {
     display: none;
   }
-
-  /* #navBar #AddEmpButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 72px;
-    left: 96px;
-    margin: 0 !important;
-    width: 10%;
-    display: block;
-    padding: 0;
-    height: 41px;
-  } */
-
-  /* #navBar #AddDeptButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 44px;
-    left: 309px;
-    width: 31%;
-    display: block;
-    padding: 0;
-    height: 21px;
-  }
-  #navBar #AddLocButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 46px;
-    left: 309px;
-    width: 31%;
-    display: block;
-    padding: 0;
-    height: 20px;
-  } */
 
   #navBar #AddEmpButton {
     overflow: hidden;
@@ -687,7 +663,7 @@ button.swal2-confirm.btn.btn-success {
     top: 37px;
     height: 100px;
     max-width: 72%;
-    display: block;
+    /* display: block; */
     padding: 0;
   }
 
@@ -743,13 +719,13 @@ button.swal2-confirm.btn.btn-success {
     float: left;
     position: absolute !important;
     bottom: 30px m !important;
-    left: 372px !important;
+    left: -198px !important;
     margin-right: 0 !important;
     top: 11px;
     height: 23px;
-    max-width: 72%;
-    display: block;
+    width: 109px;
     padding: 0;
+    border: none !important;
   }
 
   select#searchLoc {
@@ -757,22 +733,22 @@ button.swal2-confirm.btn.btn-success {
     float: left;
     position: absolute !important;
     bottom: 30px m !important;
-    left: 372px !important;
+    left: -87px !important;
     margin-right: 0 !important;
-    top: 37px;
+    top: 11px;
     height: 23px;
-    max-width: 72%;
-    display: block;
     padding: 0;
+    border: none !important;
+    width: 105px;
   }
 
   #return-button {
     position: absolute !important;
-    left: 542px !important;
+    left: 19px !important;
     margin-right: 0 !important;
-    top: 36px;
+    top: 11px;
     height: 24px;
-    max-width: 10%;
+    max-width: 53px;
   }
 
   div#DepDropdown {
@@ -781,5 +757,15 @@ button.swal2-confirm.btn.btn-success {
 
   div#LocDropdown {
     margin-left: 62px;
+  }
+
+  .advcontainer {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    margin-bottom: 30px;
+    margin-top: 37px;
+    padding-top: 2px;
+    margin-left: 200px;
   }
 }

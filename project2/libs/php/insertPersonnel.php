@@ -34,9 +34,12 @@ if (isset($_POST['fname'])) {
   $dept = $_POST['dept'];
   // $location = $_POST['location'];
 
-  $insertPersonnel = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES('$fname','$lname','$job_title','$email','$dept')";
+  $insertPersonnel = $conn->prepare("INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?)");
+  $insertPersonnel->bind_param("sssss", $fname, $lname, $job_title, $email, $dept);
 
-  $result = $conn->query($insertPersonnel);
+  $insertPersonnel->execute();
+
+  $result = $insertPersonnel->get_result();
 
   if (!$result) {
 
@@ -50,6 +53,12 @@ if (isset($_POST['fname'])) {
     echo json_encode($output);
 
     exit;
+  }
+
+  $data = [];
+
+  while ($row = $result->fetch_row()) {
+    array_push($data, $row);
   }
 
   $output['status']['code'] = "200";

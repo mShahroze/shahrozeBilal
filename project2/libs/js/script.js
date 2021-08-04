@@ -252,9 +252,8 @@ $(document).on('click', '#addEmployee', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
+      console.log(result);
       if (result.status.description == 'success') {
-        $('#AddEmployee').modal('hide');
-        reload();
         Swal.fire({
           position: 'top-end',
           type: 'success',
@@ -262,6 +261,8 @@ $(document).on('click', '#addEmployee', function (e) {
           showConfirmButton: false,
           timer: 1500,
         });
+        $('#AddEmployee').modal('hide');
+        reload();
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
