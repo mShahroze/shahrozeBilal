@@ -37,9 +37,10 @@ if (isset($_POST['fname'])) {
   $insertPersonnel = $conn->prepare("INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?)");
   $insertPersonnel->bind_param("sssss", $fname, $lname, $job_title, $email, $dept);
 
-  $insertPersonnel->execute();
+  $addResult = $insertPersonnel->execute();
 
-  $result = $insertPersonnel->get_result();
+
+  // $result = $insertPersonnel->get_result();
 
   if (!$result) {
 
