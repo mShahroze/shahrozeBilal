@@ -252,7 +252,6 @@ $(document).on('click', '#addEmployee', function (e) {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
-      console.log(result);
       if (result.status.description == 'success') {
         Swal.fire({
           position: 'top-end',
@@ -314,7 +313,7 @@ $(document).on('click', '#updateEmp', function (e) {
   let department = $('#empUpdDept').val();
   // let location = $('#empUpdLoc').val();
 
-  console.log(department, location);
+  // console.log(department, location);
   $.ajax({
     url: 'libs/php/editPersonnel.php',
     data: {

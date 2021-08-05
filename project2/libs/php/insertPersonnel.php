@@ -37,29 +37,12 @@ if (isset($_POST['fname'])) {
   $insertPersonnel = $conn->prepare("INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?)");
   $insertPersonnel->bind_param("sssss", $fname, $lname, $job_title, $email, $dept);
 
-  $addResult = $insertPersonnel->execute();
-
+  $result = $insertPersonnel->execute();
 
   // $result = $insertPersonnel->get_result();
 
-  if (!$result) {
-
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
-  }
-
-  $data = [];
-
-  while ($row = $result->fetch_row()) {
-    array_push($data, $row);
+  if ($result === false) {
+    trigger_error($insertPersonnel->error, E_USER_ERROR);
   }
 
   $output['status']['code'] = "200";

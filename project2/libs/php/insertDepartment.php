@@ -35,22 +35,15 @@ if (isset($_POST['department'])) {
 	$department = $_POST['department'];
 	$location_id = $_POST['location'];
 
-	$addDeptQuery = "INSERT INTO department (name, locationID) VALUES('$department','$location_id')";
+	$addDeptQuery = $conn->prepare("INSERT INTO department (name, locationID) VALUES (?,?)");
+	$addDeptQuery->bind_param('si', $department, $location_id);
 
-	$result = $conn->query($addDeptQuery);
+	$result = $addDeptQuery->execute();
 
-	if (!$result) {
+	// $result = $insertPersonnel->get_result();
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output);
-
-		exit;
+	if ($result === false) {
+		trigger_error($addDeptQuery->error, E_USER_ERROR);
 	}
 
 	$output['status']['code'] = "200";

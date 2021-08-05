@@ -33,33 +33,24 @@ if (isset($_POST['empID'])) {
   $jobTitle = $_POST['jobTitle'];
   $email = $_POST['email'];
   $department = $_POST['department'];
-  $location = $_POST['location'];
+  // $location = $_POST['location'];
 
-  $updateEmpQuery = "UPDATE personnel, department, location
-  SET personnel.firstName = '$firstName',
-      personnel.lastName =  '$lastName', 
-      personnel.jobTitle = '$jobTitle',
-      personnel.email = '$email',
-      personnel.departmentID = '$department'
-  WHERE personnel.departmentID = department.id AND
-  department.locationID = location.id AND
-  personnel.id = '$empID'";
+  $updateEmpQuery = $conn->prepare("UPDATE personnel, department, location 
+  SET personnel.firstName=?, 
+      personnel.lastName =?,
+      personnel.jobTitle =?,
+      personnel.email = ?,
+      personnel.departmentID =? 
+  WHERE personnel.departmentID = department.id AND 
+  department.locationID = location.id AND 
+  personnel.id =?");
 
-  $result = $conn->query($updateEmpQuery);
+  $updateEmpQuery->bind_param('ssssii', $firstName, $lastName, $jobTitle, $email, $department, $empID);
 
+  $result = $updateEmpQuery->execute();
 
-  if (!$result) {
-
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
+  if ($result === false) {
+    trigger_error($updateEmpQuery->error, E_USER_ERROR);
   }
 
   $output['status']['code'] = "204";

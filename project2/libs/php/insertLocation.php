@@ -34,22 +34,13 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['location'])) {
 	$location = $_POST['location'];
 
-	$insertLocation = "INSERT INTO location (name) VALUES('$location')";
+	$insertLocation = $conn->prepare("INSERT INTO location (name) VALUES (?)");
+	$insertLocation->bind_param("s", $location);
 
-	$result = $conn->query($insertLocation);
+	$result = $insertLocation->execute();
 
-	if (!$result) {
-
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output);
-
-		exit;
+	if ($result === false) {
+		trigger_error($insertLocation->error, E_USER_ERROR);
 	}
 
 	$output['status']['code'] = "200";
