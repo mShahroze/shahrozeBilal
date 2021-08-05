@@ -26,23 +26,14 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-$query = 'SELECT id, name, locationID FROM department
-ORDER BY name';
+$getAllDepQuery = $conn->prepare('SELECT id, name, locationID FROM department ORDER BY name');
 
-$result = $conn->query($query);
+$getAllDepQuery->execute();
 
-if (!$result) {
+$result = $getAllDepQuery->get_result();
 
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
+if ($result === false) {
+	trigger_error($deleteLocQuery->error, E_USER_ERROR);
 }
 
 $data = [];

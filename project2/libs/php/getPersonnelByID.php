@@ -28,27 +28,22 @@ if (mysqli_connect_errno()) {
 
 if (isset($_POST['empID'])) {
   $empID = $_POST['empID'];
-  $query = "SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
+
+  $getPersonQuery = $conn->prepare("SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
   as location FROM personnel p 
   LEFT JOIN department d ON (d.id = p.departmentID) 
   LEFT JOIN location l ON (l.id = d.locationID) 
-  WHERE p.id = $empID
-  ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name";
+  WHERE p.id = ?
+  ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name");
 
-  $result = $conn->query($query);
+  $getPersonQuery->bind_param('i', $empID);
 
-  if (!$result) {
+  $getPersonQuery->execute();
 
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
+  $result = $getPersonQuery->get_result();
 
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
+  if ($result === false) {
+    trigger_error($updateEmpQuery->error, E_USER_ERROR);
   }
 
   $data = [];

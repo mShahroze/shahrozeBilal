@@ -59,7 +59,7 @@ function select(searchName) {
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
+        console.log(jqXHR);
       },
     });
   } else {
@@ -150,7 +150,7 @@ function getAll() {
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
+      console.log(jqXHR);
     },
   });
 }
@@ -280,6 +280,7 @@ $(document).on('click', '#editEmployee', function () {
     type: 'POST',
     dataType: 'json',
     success: function (result) {
+      console.log(result);
       let id = result.data.id;
       let firstName = result.data.firstName;
       let lastName = result.data.lastName;
@@ -297,7 +298,7 @@ $(document).on('click', '#editEmployee', function () {
       $('#empUpdLoc').val(location);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
+      console.log(jqXHR);
     },
   });
 });
@@ -313,7 +314,7 @@ $(document).on('click', '#updateEmp', function (e) {
   let department = $('#empUpdDept').val();
   // let location = $('#empUpdLoc').val();
 
-  // console.log(department, location);
+  console.log(firstname, lastname, jobtitle, email, department);
   $.ajax({
     url: 'libs/php/editPersonnel.php',
     data: {
@@ -334,7 +335,7 @@ $(document).on('click', '#updateEmp', function (e) {
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus);
+      console.log(jqXHR);
     },
   });
 });

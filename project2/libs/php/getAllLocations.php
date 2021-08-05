@@ -28,23 +28,14 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-$query = 'SELECT id, name FROM location
-ORDER BY name';
+$getAllLocQuery = $conn->prepare('SELECT id, name FROM location ORDER BY name');
 
-$result = $conn->query($query);
+$getAllLocQuery->execute();
 
-if (!$result) {
+$result = $getAllLocQuery->get_result();
 
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
+if ($result === false) {
+	trigger_error($getAllLocQuery->error, E_USER_ERROR);
 }
 
 $data = [];

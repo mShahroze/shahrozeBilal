@@ -26,12 +26,21 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-$sql = "SELECT p.firstName, d.name as department FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) WHERE departmentID = " . $_POST['id'];
-$result = $conn->query($sql);
-$array = [];
-foreach ($result as $row) {
+if (isset($_POST['id'])) {
+  $departmentID = $_POST['id'];
 
-  array_push($array, $row);
+  $personByDepIDQuery = $conn->prepare("SELECT p.firstName, d.name as department FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) WHERE departmentID = " . '?');
+
+  $personByDepIDQuery->bind_param('i', $departmentID);
+
+  $personByDepIDQuery->execute();
+
+  $result = $personByDepIDQuery->get_result()->fetch_all(MYSQLI_ASSOC);
+
+  $array = [];
+  foreach ($result as $row) {
+    array_push($array, $row);
+  }
+
+  echo json_encode($array);
 }
-
-echo json_encode($array);

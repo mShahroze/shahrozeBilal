@@ -31,25 +31,17 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-$query = 'SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p 
-	LEFT JOIN department d ON (d.id = p.departmentID) 
-	LEFT JOIN location l ON (l.id = d.locationID) 
-	ORDER BY p.firstName, p.lastName, d.name, l.name';
+$getAllQuery = $conn->prepare('SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p 
+LEFT JOIN department d ON (d.id = p.departmentID) 
+LEFT JOIN location l ON (l.id = d.locationID) 
+ORDER BY p.firstName, p.lastName, d.name, l.name');
 
-$result = $conn->query($query);
+$getAllQuery->execute();
 
-if (!$result) {
+$result = $getAllQuery->get_result();
 
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
+if ($result === false) {
+	trigger_error($deleteLocQuery->error, E_USER_ERROR);
 }
 
 $data = [];

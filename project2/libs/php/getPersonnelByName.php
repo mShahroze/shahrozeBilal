@@ -27,41 +27,34 @@ if (mysqli_connect_errno()) {
 }
 
 if (isset($_POST['search'], $_POST['dept'], $_POST['loca'])) {
-  $search = $_POST['search'];
-  $dept = $_POST['dept'];
-  $loca = $_POST['loca'];
+  $search = '%' . $_POST['search'] . '%';
+  $dept = '%' . $_POST['dept'] . '%';
+  $loca = '%' . $_POST['loca'] . '%';
 
-  $query = "SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
-        as location FROM personnel p 
-        LEFT JOIN department d ON (d.id = p.departmentID) 
-        LEFT JOIN location l ON (l.id = d.locationID) 
-        WHERE p.firstName LIKE '%$search%' 
-        OR d.name LIKE '%$dept%'
-        OR l.name LIKE '%$loca%'
-        OR p.lastName LIKE '%$search%'
-        OR p.email LIKE '%$search%'
-        ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name";
+  $getPersonByNameQuery = $conn->prepare("SELECT p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name as department, l.name 
+  as location FROM personnel p 
+  LEFT JOIN department d ON (d.id = p.departmentID) 
+  LEFT JOIN location l ON (l.id = d.locationID) 
+  WHERE p.firstName LIKE ?
+  OR d.name LIKE ?
+  OR l.name LIKE ?
+  OR p.lastName LIKE ?
+  OR p.email LIKE ?
+  ORDER BY p.id, p.firstName, p.lastName, p.jobTitle, p.email, d.name, l.name");
 
-  $result = $conn->query($query);
+  $getPersonByNameQuery->bind_param('sssss', $search, $dept, $loca, $search, $search);
 
-  if (!$result) {
+  $getPersonByNameQuery->execute();
 
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
+  $result = $getPersonByNameQuery->get_result();
 
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
+  if ($result === false) {
+    trigger_error($deleteLocQuery->error, E_USER_ERROR);
   }
 
   $data = [];
 
   while ($row = mysqli_fetch_assoc($result)) {
-
     array_push($data, $row);
   }
 

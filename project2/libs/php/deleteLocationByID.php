@@ -29,23 +29,15 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['locationID'])) {
   $locationID = (int)$_POST['locationID'];
 
-  $deleteLocCountQuery = $conn->prepare("SELECT COUNT(name) as departments FROM department WHERE department.locationID = '?'");
+  $deleteLocCountQuery = $conn->prepare("SELECT COUNT(name) as departments FROM department WHERE department.locationID = ?");
 
   $deleteLocCountQuery->bind_param('i', $locationID);
 
   $deleteLocCountQuery->execute();
 
-  /* fetch values */
-  $data = [];
+  $countResult = $deleteLocCountQuery->get_result()->fetch_all(MYSQLI_ASSOC);
 
-  while ($row = $deleteLocCountQuery->fetch()) {
-    array_push($data, $row);
-  }
-
-
-  // $countResult = $deleteLocCountQuery->get_result()->fetch_all(MYSQLI_ASSOC);
-
-  $personnel = $data[0]['departments'];
+  $personnel = $countResult[0]['departments'];
 
   if ($personnel > 0) {
 

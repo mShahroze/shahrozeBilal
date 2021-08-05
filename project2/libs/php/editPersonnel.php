@@ -27,27 +27,21 @@ if (mysqli_connect_errno()) {
 }
 
 if (isset($_POST['empID'])) {
-  $empID = $_POST['empID'] ?: '';
-  $firstName = $_POST['firstName'] ?: '';
-  $lastName = $_POST['lastName'] ?: '';
-  $jobTitle = $_POST['jobTitle'] ?: '';
-  $email = $_POST['email'] ?: '';
-  $department = $_POST['department'] ?: '';
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
+  $jobTitle = $_POST['jobTitle'];
+  $email = $_POST['email'];
+  $department = $_POST['department'];
+  $empID = $_POST['empID'];
   // $location = $_POST['location'];
 
-  $updateEmpQuery = $conn->prepare("UPDATE personnel, department, location 
-  SET personnel.firstName=?, 
-      personnel.lastName =?,
-      personnel.jobTitle =?,
-      personnel.email = ?,
-      personnel.departmentID =? 
-  WHERE personnel.departmentID = department.id AND 
-  department.locationID = location.id AND 
-  personnel.id =?");
+  $updateEmpQuery = $conn->prepare("UPDATE personnel SET firstName=?, lastName =?, jobTitle =?, email = ?, departmentID = ? WHERE id = ?");
 
   $updateEmpQuery->bind_param('ssssii', $firstName, $lastName, $jobTitle, $email, $department, $empID);
 
   $result = $updateEmpQuery->execute();
+
+  // $result = $getPersonByNameQuery->get_result();
 
   if ($result === false) {
     trigger_error($updateEmpQuery->error, E_USER_ERROR);

@@ -184,12 +184,14 @@ a#advanced-button {
   position: absolute;
   left: -17px;
   top: 6px;
+  width: 30px;
 }
 
 #mobLocIcon {
   position: absolute;
   left: 184px;
   top: 6px;
+  width: 30px;
 }
 
 #searchdept {
@@ -235,6 +237,11 @@ select#searchLoc {
   position: absolute;
   left: 193px !important;
   top: 7px !important;
+  width: 30px;
+}
+
+#EMPID {
+  display: none;
 }
 
 #navBar1 {
@@ -420,14 +427,11 @@ button.swal2-confirm.btn.btn-success {
     width: 338px;
   }
   select#searchDept {
-    width: 198px;
+    width: 205px;
   }
   select#searchLoc {
     width: 171px;
   }
-  /* #advancedRow {
-    padding-left: 26px;
-  } */
 }
 
 @media screen and (min-width: 1700px) {
@@ -449,6 +453,7 @@ button.swal2-confirm.btn.btn-success {
     position: absolute;
     left: 186px !important;
     top: 7px !important;
+    width: 30px;
   }
 }
 
@@ -476,8 +481,9 @@ button.swal2-confirm.btn.btn-success {
 
   #mobLocIcon {
     position: absolute;
-    left: 184px !important;
+    left: 190px !important;
     top: 7px !important;
+    width: 30px;
   }
 
   select#searchLoc {
@@ -552,7 +558,7 @@ button.swal2-confirm.btn.btn-success {
 
   #search {
     width: 218px;
-    height: 36px;
+    height: 34px;
   }
 
   #search::placeholder {
@@ -641,12 +647,14 @@ button.swal2-confirm.btn.btn-success {
     position: absolute;
     left: -204px !important;
     top: 15px !important;
+    width: 30px;
   }
 
   #mobLocIcon {
     position: absolute;
     left: 3px !important;
     top: 16px !important;
+    width: 30px;
   }
 }
 
@@ -771,7 +779,7 @@ button.swal2-confirm.btn.btn-success {
     bottom: 30px m !important;
     left: -198px !important;
     margin-right: 0 !important;
-    top: 14px;
+    top: 13px;
     height: 23px;
     width: 42px;
     padding: 0;
@@ -786,7 +794,7 @@ button.swal2-confirm.btn.btn-success {
     bottom: 30px m !important;
     left: -150px !important;
     margin-right: 0 !important;
-    top: 14px;
+    top: 13px;
     height: 23px;
     padding: 0;
     border: none !important;
@@ -798,7 +806,7 @@ button.swal2-confirm.btn.btn-success {
     position: absolute !important;
     left: -107px !important;
     margin-right: 0 !important;
-    top: 14px;
+    top: 13px;
     height: 24px;
     max-width: 53px;
   }
@@ -825,12 +833,14 @@ button.swal2-confirm.btn.btn-success {
     position: absolute;
     left: -202px !important;
     top: 17px !important;
+    width: 20px;
   }
 
   #mobLocIcon {
     position: absolute;
     left: -154px !important;
     top: 18px !important;
+    width: 20px;
   }
 
   #navBar {

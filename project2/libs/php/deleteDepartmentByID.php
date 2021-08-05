@@ -35,18 +35,16 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['departmentID'])) {
 	$departmentID = (int)$_POST['departmentID'];
 
-	$deleteDeptCountQuery = "SELECT COUNT(firstName) as emp FROM personnel WHERE personnel.departmentID = '$departmentID'";
 
-	$countResult = $conn->query($deleteDeptCountQuery);
+	$deleteDeptCountQuery = $conn->prepare("SELECT COUNT(firstName) as emp FROM personnel WHERE personnel.departmentID = ?");
 
-	$data = [];
+	$deleteDeptCountQuery->bind_param('i', $departmentID);
 
-	while ($row = mysqli_fetch_assoc($countResult)) {
+	$deleteDeptCountQuery->execute();
 
-		array_push($data, $row);
-	}
+	$countResult = $deleteDeptCountQuery->get_result()->fetch_all(MYSQLI_ASSOC);
 
-	$personnel = $data[0]['emp'];
+	$personnel = $countResult[0]['emp'];
 
 	if ($personnel > 0) {
 
@@ -63,22 +61,13 @@ if (isset($_POST['departmentID'])) {
 	}
 }
 
-$deleteDeptQuery = "DELETE FROM department WHERE id =" . $departmentID;
+$deleteDeptQuery = $conn->prepare("DELETE FROM department WHERE id =" . '?');
+$deleteDeptQuery->bind_param('i', $departmentID);
 
-$result = $conn->query($deleteDeptQuery);
+$result = $deleteDeptQuery->execute();
 
-if (!$result) {
-
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
+if ($result === false) {
+	trigger_error($deleteLocQuery->error, E_USER_ERROR);
 }
 
 $output['status']['code'] = "200";

@@ -33,27 +33,20 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['deptID'])) {
 	$deptID = (int)$_POST['deptID'];
 
-	$getDeptByIDquery = "SELECT id, name, locationID FROM department WHERE id =" . $deptID;
+	$getDeptByIDquery = $conn->prepare("SELECT id, name, locationID FROM department WHERE id =" . '?');
+	$getDeptByIDquery->bind_param('i', $deptID);
 
-	$result = $conn->query($getDeptByIDquery);
+	$result = $getDeptByIDquery->execute();
 
-	if (!$result) {
-
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output);
-
-		exit;
+	if ($result === false) {
+		trigger_error($deleteLocQuery->error, E_USER_ERROR);
 	}
+
+	$resultArray = $deleteLocCountQuery->get_result()->fetch_all(MYSQLI_ASSOC);
 
 	$data = [];
 
-	while ($row = mysqli_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($resultArray)) {
 		$tempHolder['id'] = $row['id'];
 		$tempHolder['name'] = $row['name'];
 		array_push($data, $tempHolder);
