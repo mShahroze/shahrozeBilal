@@ -29,22 +29,14 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['empID'])) {
 	$empID = (int)$_POST['empID'];
 
-	$deleteEmpQuery = "DELETE FROM personnel WHERE id =" . $empID;
+	$deleteEmpQuery = $conn->prepare("DELETE FROM personnel WHERE id =" . '?');
 
-	$result = $conn->query($deleteEmpQuery);
+	$deleteEmpQuery->bind_param('i', $empID);
 
-	if (!$result) {
+	$result = $deleteEmpQuery->execute();
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output);
-
-		exit;
+	if ($result === false) {
+		trigger_error($deleteEmpQuery->error, E_USER_ERROR);
 	}
 
 	$output['status']['code'] = "200";

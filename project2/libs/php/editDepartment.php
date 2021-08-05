@@ -31,21 +31,12 @@ if (isset($_POST['prevDepartment'])) {
   $newDepartment = $_POST['newDepartment'];
   $locationID = $_REQUEST['locationID'];
 
-  $updDeptQuery = "UPDATE department SET name = '$newDepartment', locationID = '$locationID' WHERE name = '$prevDepartment'";
-  $result = $conn->query($updDeptQuery);
+  $updDeptQuery = $conn->prepare("UPDATE department SET name = ?, locationID = ? WHERE name = ?");
+  $updDeptQuery->bind_param('sis', $newDepartment, $locationID, $prevDepartment);
+  $result = $updDeptQuery->execute();
 
-  if (!$result) {
-
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
+  if ($result === false) {
+    trigger_error($updDeptQuery->error, E_USER_ERROR);
   }
 
   $output['status']['code'] = "200";

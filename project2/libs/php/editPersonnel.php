@@ -27,12 +27,12 @@ if (mysqli_connect_errno()) {
 }
 
 if (isset($_POST['empID'])) {
-  $empID = $_POST['empID'];
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $jobTitle = $_POST['jobTitle'];
-  $email = $_POST['email'];
-  $department = $_POST['department'];
+  $empID = $_POST['empID'] ?: '';
+  $firstName = $_POST['firstName'] ?: '';
+  $lastName = $_POST['lastName'] ?: '';
+  $jobTitle = $_POST['jobTitle'] ?: '';
+  $email = $_POST['email'] ?: '';
+  $department = $_POST['department'] ?: '';
   // $location = $_POST['location'];
 
   $updateEmpQuery = $conn->prepare("UPDATE personnel, department, location 

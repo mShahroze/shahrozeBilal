@@ -33,21 +33,13 @@ if (isset($_POST['prevLocation'])) {
   $prevLocation = $_POST['prevLocation'];
   $newLocation = $_POST['newLocation'];
 
-  $updLocationQuery = "UPDATE location SET name = '$newLocation' WHERE name = '$prevLocation'";
-  $result = $conn->query($updLocationQuery);
+  $updLocationQuery = $conn->prepare("UPDATE location SET name = ? WHERE name = ?");
+  $updLocationQuery->bind_param('ss', $newLocation, $prevLocation);
 
-  if (!$result) {
+  $result = $updLocationQuery->execute();
 
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
-    $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
+  if ($result === false) {
+    trigger_error($updLocationQuery->error, E_USER_ERROR);
   }
 
   $output['status']['code'] = "200";

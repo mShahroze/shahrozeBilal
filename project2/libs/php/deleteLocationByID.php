@@ -29,16 +29,21 @@ if (mysqli_connect_errno()) {
 if (isset($_POST['locationID'])) {
   $locationID = (int)$_POST['locationID'];
 
-  $deleteLocCountQuery = "SELECT COUNT(name) as departments FROM department WHERE department.locationID = '$locationID'";
+  $deleteLocCountQuery = $conn->prepare("SELECT COUNT(name) as departments FROM department WHERE department.locationID = '?'");
 
-  $countResult = $conn->query($deleteLocCountQuery);
+  $deleteLocCountQuery->bind_param('i', $locationID);
 
+  $deleteLocCountQuery->execute();
+
+  /* fetch values */
   $data = [];
 
-  while ($row = mysqli_fetch_assoc($countResult)) {
-
+  while ($row = $deleteLocCountQuery->fetch()) {
     array_push($data, $row);
   }
+
+
+  // $countResult = $deleteLocCountQuery->get_result()->fetch_all(MYSQLI_ASSOC);
 
   $personnel = $data[0]['departments'];
 
@@ -57,22 +62,13 @@ if (isset($_POST['locationID'])) {
   }
 }
 
-$deleteLocQuery = "DELETE FROM location WHERE id=" . $locationID;
+$deleteLocQuery = $conn->prepare("DELETE FROM location WHERE id=" . '?');
+$deleteLocQuery->bind_param('i', $locationID);
 
-$result = $conn->query($deleteLocQuery);
+$result = $deleteLocQuery->execute();
 
-if (!$result) {
-
-  $output['status']['code'] = "400";
-  $output['status']['name'] = "executed";
-  $output['status']['description'] = "query failed";
-  $output['data'] = [];
-
-  mysqli_close($conn);
-
-  echo json_encode($output);
-
-  exit;
+if ($result === false) {
+  trigger_error($deleteLocQuery->error, E_USER_ERROR);
 }
 
 $output['status']['code'] = "200";

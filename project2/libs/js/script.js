@@ -636,6 +636,7 @@ $(document).on('click', '#deleteLocation', function (e) {
           dataType: 'json',
           success: function (result) {
             if (result.status.description == 'delete success') {
+              console.log(result);
               swalWithBootstrapButtons.fire(
                 'Deleted!',
                 'Your file has been deleted.',
@@ -652,7 +653,7 @@ $(document).on('click', '#deleteLocation', function (e) {
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
+            console.log(jqXHR);
           },
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
