@@ -16,10 +16,10 @@ $(document).click(function () {
   $('#searchImg').show();
 });
 
-$('#searchBar').click(function (e) {
-  e.stopPropagation();
-  $('#searchImg').hide();
-});
+// $('#searchBar').click(function (e) {
+//   e.stopPropagation();
+//   $('#searchImg').hide();
+// });
 
 function reload() {
   setTimeout(function () {
@@ -69,6 +69,8 @@ function select(searchName) {
 }
 
 $('#advanced-button').on('click', function () {
+  $('#searchDept').val('');
+  $('#searchLoc').val('');
   $('#advanced-button').hide();
   $('#advancedRow').is(':visible')
     ? $('#advancedRow').hide()

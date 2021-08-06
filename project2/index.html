@@ -1,391 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="shortcut icon" type="image/png" href="./libs/images/favicon.ico">
-  <link href="libs/css/styles.css" rel='stylesheet' type='text/css' media="all">
-  <link href="vendors/css/bootstrap.css" rel="stylesheet" />
-  <link rel="stylesheet" href="vendors/fontawesome-free-5.15.3-web/css/all.css" />
-  <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="shortcut icon" href="./libs/images/favicon-16x16.png" type="image/x-icon">
-  <link rel="shortcut icon" href="./libs/images/favicon-32x32.png" type="image/x-icon">
-  <link rel="manifest" href="./libs/images/site.webmanifest">
-  <link rel="apple-touch-icon" href="./libs/images/apple-touch-icon.png">
-  <link rel="stylesheet" href="vendors/css/sweetalert2.min.css">
-
-  <title>Company Directory</title>
-</head>
-
-<body>
-  <div class="loader">
-    <div></div>
-  </div>
-  
-  <div class="container mw-100">
-    <!--header start-->
-    <div id="navBar">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navBar1">
-        <a class="navbar-brand" href="index.html">
-          <img src="libs/images/companydirectory-logo.png" style="display: inblock; width: 80px; height: 80px; margin-left: 30px;" class="d-inline-block align-top" alt="">
-        </a>
-      </nav>
-      <nav class="navbar navbar-expand-lg bg-dark navbar-dark" id="navBar2">
-        <button onclick="navBarCollapse()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-        <button type="button" id="AddEmpButton" class="btn btn-primary" data-toggle="modal" data-target="#AddEmployee" style="margin-left:30px;" onclick="showAddEmpModal()">
-          <i class="fa fa-fw fa-plus"></i> 
-          <span class="addButton-text">Add Employee</span>
-        </button>
-        &nbsp;
-
-        <div class="dropdown">
-          <button type="button" id="AddDeptButton" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-address-book"></i>
-            <span class="addButton-text">Departments</span>
-          </button>
-          <div class="dropdown-menu" id="DepDropdown">
-            <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
-            <a class="dropdown-item" href="#UpdateDepartment" data-toggle="modal" data-target="#UpdateDepartment" onclick="showUpdDeptModal()">Update </a>
-            <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment" onclick="showDelDeptModal()">Delete </a>
-          </div>
-        </div>
-        &nbsp;
-
-        <div class="dropdown">
-          <button type="button"  id="AddLocButton" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-thumbtack"></i>
-            <span class="addButton-text">Locations</span>
-          </button>
-          <div class="dropdown-menu" id="LocDropdown">
-            <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation" onclick="showAddLocModal()">Add</a>
-            <a class="dropdown-item" href="#UpdateLocation" data-toggle="modal" data-target="#UpdateLocation" onclick="showUpdLocModal()">Update</a>
-            <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation" onclick="showDelLocModal()">Delete</a>
-          </div>
-        </div>
-        &nbsp;
-
-        <a href="index.html" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i></a>
-        &nbsp;
-
-        <ul class="navbar-nav mr-auto" id="searchBar">
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" id="search" placeholder="Search By Name or Email"">
-            <img src="libs/images/search.png" id="searchImg">
-          </form>
-          <a class="btn btn-secondary btn-sm mr-sm-2" id="advanced-button" style="width: 150px; border-radius: 100px;">Advanced search</a>
-          <div class="advcontainer">
-            <div class="row justify-content-md-center" id="advancedRow">
-              <select class="col-sm-2 col-md-4" id="searchDept">
-                <option value="all">Departments</option>
-              </select>
-              <i class="fas fa-address-book" id="mobDeptIcon"></i>
-              <select class="col-sm-2 col-md-4" id="searchLoc">
-                <option value="all">Locations</option>
-              </select>
-              <i class="fas fa-thumbtack" id="mobLocIcon"></i>
-              <a class="btn-secondary btn-sm" id="return-button">Return</a>
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" type="image/png" href="./libs/images/favicon.ico">
+      <link href="libs/css/styles.css" rel='stylesheet' type='text/css' media="all">
+      <link href="vendors/css/bootstrap.css" rel="stylesheet" />
+      <link rel="stylesheet" href="vendors/fontawesome-free-5.15.3-web/css/all.css" />
+      <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+      <link rel="shortcut icon" href="./libs/images/favicon-16x16.png" type="image/x-icon">
+      <link rel="shortcut icon" href="./libs/images/favicon-32x32.png" type="image/x-icon">
+      <link rel="manifest" href="./libs/images/site.webmanifest">
+      <link rel="apple-touch-icon" href="./libs/images/apple-touch-icon.png">
+      <link rel="stylesheet" href="vendors/css/sweetalert2.min.css">
+      <title>Company Directory</title>
+   </head>
+   <body>
+      <div class="loader">
+         <div></div>
+      </div>
+      <div class="container mw-100">
+      <!--header start-->
+      <div id="navBar">
+         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navBar1">
+            <a class="navbar-brand" href="index.html">
+            <img id="Logo" src="libs/images/companydirectory-logo.png" style="display: inblock; width: 120px; height: 120px; margin-left: 30px;" class="d-inline-block align-top" alt="">
+            </a>
+         </nav>
+         <!-- <nav class="navbar navbar-expand-lg bg-dark navbar-dark" id="navBar2"> -->
+         <div style="background-color: #212529">
+            <div class='control-container py-2'>
+               <div class='nav-stuff'>
+                  <button type="button" id="AddEmpButton" class="btn btn-primary btn-custom me-2" data-toggle="modal" data-target="#AddEmployee" onclick="showAddEmpModal()">
+                  <i class="fa fa-fw fa-plus"></i> 
+                  <span class="addButton-text">Add Employee</span>
+                  </button>
+                  <div class="dropdown me-2">
+                     <button type="button" id="AddDeptButton" class="btn btn-primary btn-custom dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fas fa-address-book"></i>
+                     <span class="addButton-text">Departments</span>
+                     </button>
+                     <div class="dropdown-menu" id="DepDropdown">
+                        <a class="dropdown-item" href="#AddDepartment" data-toggle="modal" data-target="#AddDepartment" onclick="showAddDeptModal()">Add </a>
+                        <a class="dropdown-item" href="#UpdateDepartment" data-toggle="modal" data-target="#UpdateDepartment" onclick="showUpdDeptModal()">Update </a>
+                        <a class="dropdown-item" href="#DeleteDepartment" data-toggle="modal" data-target="#DeleteDepartment" onclick="showDelDeptModal()">Delete </a>
+                     </div>
+                  </div>
+                  <div class="dropdown me-2">
+                     <button type="button"  id="AddLocButton" class="btn btn-primary btn-custom dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fas fa-thumbtack"></i>
+                     <span class="addButton-text">Locations</span>
+                     </button>
+                     <div class="dropdown-menu" id="LocDropdown">
+                        <a class="dropdown-item" href="#AddLocation" data-toggle="modal" data-target="#AddLocation" onclick="showAddLocModal()">Add</a>
+                        <a class="dropdown-item" href="#UpdateLocation" data-toggle="modal" data-target="#UpdateLocation" onclick="showUpdLocModal()">Update</a>
+                        <a class="dropdown-item" href="#DeleteLocation" data-toggle="modal" data-target="#DeleteLocation" onclick="showDelLocModal()">Delete</a>
+                     </div>
+                  </div>
+                  <a href="index.html" class="btn btn-primary refresh-btn"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                  <form class="search-form">
+                     <div class="input-group">
+                        <span class="input-group-text" style="background: #f2a65a;"><img src="libs/images/search.png" /></span>
+                        <input id="search" type="text" class="form-control" placeholder="Search By Name or Email" aria-label="search" aria-describedby="basic-addon1">
+                     </div>
+                  </form>
+               </div>
+               <div class='advanced-search-container mt-2'>
+                  <div>
+                     <a class="btn btn-secondary btn-sm mr-sm-2" id="advanced-button">Advanced search</a>
+                     <div class="advcontainer-new">
+                        <div class="" id="advancedRow">
+                           <select class="" id="searchDept">
+                              <option value="all">Departments</option>
+                           </select>
+                           <i class="fas fa-address-book" id="mobDeptIcon"></i>
+                           <select class="" id="searchLoc">
+                              <option value="all">Locations</option>
+                           </select>
+                           <i class="fas fa-thumbtack" id="mobLocIcon"></i>
+                           <a class="btn-secondary btn-sm" id="return-button">Return</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-          </div>
-        </ul>
-
+         </div>
+         <!-- </nav> -->
       </div>
-    </nav>
-  </div>
-    <!--header end-->
-
-    <div class="using-border py-5" id="spacing"></div>
-
-    <!-- Main Section Start-->
-    <section class="py-lg-4 py-md-3 py-sm-3 py-3">
-      <!-- Get data dynamically on cards -->
-      <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
-        <div class="row-employeeData-container"></div>
-    </section>
-    <!-- Main Section End-->
-
-    <!-- Add Personnel Details Pop up Modal Start -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="AddEmployee" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title" id="#">Add Employee Record</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form method="post">
-              <div class="form-group">
-
-                <input type="text" class="form-control" id="emp_firstname" value="" placeholder="First Name">
-                <br>
-                <input type="text" class="form-control" id="emp_lastname" value="" placeholder="Last Name">
-                <br>
-                <input type="text" class="form-control" id="emp_jobTitle" value="" placeholder="Job Title">
-                <br>
-                <input type="text" class="form-control" id="emp_email" value="" placeholder="Email">
-                <br>
-                <select id="dept" class='form-control'>
-                </select>
-                <br>
-                <!-- <select id="loc" class='form-control'>
-                </select> -->
-              </div>
-              <button type="submit" class="btn btn-primary" id="addEmployee">Add</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!--header end-->
+      <div class="using-border"></div>
+      <!-- Main Section Start-->
+      <section class="py-lg-4 py-md-3 py-sm-3 py-3">
+         <!-- Get data dynamically on cards -->
+         <div class="container-fluid py-md-4 py-sm-4 py-3">
+         <div class="row-employeeData-container"></div>
+      </section>
+      <!-- Main Section End-->
+      <!-- Add Personnel Details Pop up Modal Start -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="AddEmployee" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title" id="#">Add Employee Record</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form method="post">
+                     <div class="form-group">
+                        <input type="text" class="form-control" id="emp_firstname" value="" placeholder="First Name">
+                        <br>
+                        <input type="text" class="form-control" id="emp_lastname" value="" placeholder="Last Name">
+                        <br>
+                        <input type="text" class="form-control" id="emp_jobTitle" value="" placeholder="Job Title">
+                        <br>
+                        <input type="text" class="form-control" id="emp_email" value="" placeholder="Email">
+                        <br>
+                        <select id="dept" class='form-control'>
+                        </select>
+                        <br>
+                        <!-- <select id="loc" class='form-control'>
+                           </select> -->
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="addEmployee">Add</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Add Personnel Details Pop up Modal End -->
-
-    <!-- Update Personnel Pop up Modal Start -->
-    <div class="modal fade" id="updEmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title" id="#">Update Employee Record</h3>
-            <button type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group" id="EMPID">
-                <label for="#">ID</label>
-                <input type="text" class="form-control" id="empid" aria-describedby="empid" readonly>
-              </div>
-              <div class="form-group">
-                <label for="#">First Name</label>
-                <input type="text" class="form-control" id="firstname" aria-describedby="firstname">
-              </div>
-              <div class="form-group">
-                <label for="#">Last Name</label>
-                <input type="text" class="form-control" id="lastname" aria-describedby="lastname">
-              </div>
-              <div class="form-group">
-                <label for="#">Job Title</label>
-                <input type="text" class="form-control" id="jobtitle" aria-describedby="jobtitle" placeholder="Enter Job Title">
-              </div>
-              <div class="form-group">
-                <label for="#">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="email">
-              </div>
-              <div class="form-group" id="updDepartment">
-                <label>Department</label>
-                <select id='empUpdDept' class='form-control'>
-                </select>
-                <!-- <input type="text" class="form-control" id="department" aria-describedby="department"> -->
-              </div>
-              <!-- <div class="form-group" id="updLocation">
-                <label>Location</label>
-                <select id='empUpdLoc' class='form-control'>
-                </select>
-                <input type="text" class="form-control" id="location" aria-describedby="location">
-              </div> -->
-              <button type="submit" id="updateEmp" class="btn btn-primary">Update</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button id='closeModal' type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Add Personnel Details Pop up Modal End -->
+      <!-- Update Personnel Pop up Modal Start -->
+      <div class="modal fade" id="updEmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title" id="#">Update Employee Record</h3>
+                  <button type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <div class="form-group" id="EMPID">
+                        <label for="#">ID</label>
+                        <input type="text" class="form-control" id="empid" aria-describedby="empid" readonly>
+                     </div>
+                     <div class="form-group">
+                        <label for="#">First Name</label>
+                        <input type="text" class="form-control" id="firstname" aria-describedby="firstname">
+                     </div>
+                     <div class="form-group">
+                        <label for="#">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" aria-describedby="lastname">
+                     </div>
+                     <div class="form-group">
+                        <label for="#">Job Title</label>
+                        <input type="text" class="form-control" id="jobtitle" aria-describedby="jobtitle" placeholder="Enter Job Title">
+                     </div>
+                     <div class="form-group">
+                        <label for="#">Email</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="email">
+                     </div>
+                     <div class="form-group" id="updDepartment">
+                        <label>Department</label>
+                        <select id='empUpdDept' class='form-control'>
+                        </select>
+                        <!-- <input type="text" class="form-control" id="department" aria-describedby="department"> -->
+                     </div>
+                     <!-- <div class="form-group" id="updLocation">
+                        <label>Location</label>
+                        <select id='empUpdLoc' class='form-control'>
+                        </select>
+                        <input type="text" class="form-control" id="location" aria-describedby="location">
+                        </div> -->
+                     <button type="submit" id="updateEmp" class="btn btn-primary btn-custom">Update</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button id='closeModal' type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Update Personnel Pop up Modal End -->
-
-    <!-- Add Department Details Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="AddDepartment">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Add Department</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form method="post">
-              <div class="form-group">
-                <label for="#">Department</label>
-                <input type="text" class="form-control" id="departmentAdd" value="" placeholder="Add New Department Name">
-                <br>
-                <select id="loca" class='form-control'>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary" id="addDepartment">Add</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Update Personnel Pop up Modal End -->
+      <!-- Add Department Details Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="AddDepartment">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Add Department</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form method="post">
+                     <div class="form-group">
+                        <label for="#">Department</label>
+                        <input type="text" class="form-control" id="departmentAdd" value="" placeholder="Add New Department Name">
+                        <br>
+                        <select id="loca" class='form-control'>
+                        </select>
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="addDepartment">Add</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Add Department Details Pop up Modal End  -->
-
-    <!-- Update Department Details Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="UpdateDepartment">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Update Department</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <select id="prevDept" class='form-control'>
-                </select>
-                <br>
-                <input type="text" class="form-control" id="newDept" value="" placeholder="Update Department Name">
-                <br>
-                <select id="updloca" class='form-control'>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary" id="updateDepartment">Update</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Add Department Details Pop up Modal End  -->
+      <!-- Update Department Details Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="UpdateDepartment">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Update Department</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <div class="form-group">
+                        <select id="prevDept" class='form-control'>
+                        </select>
+                        <br>
+                        <input type="text" class="form-control" id="newDept" value="" placeholder="Update Department Name">
+                        <br>
+                        <select id="updloca" class='form-control'>
+                        </select>
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="updateDepartment">Update</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Update Department Details Pop up Modal End  -->
-
-    <!-- Delete Department Details Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="DeleteDepartment">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Delete Department</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form method="post">
-              <div class="form-group">
-                <select id="deleteDept" class='form-control'>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary" id="deleteDepartment">Delete</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Update Department Details Pop up Modal End  -->
+      <!-- Delete Department Details Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="DeleteDepartment">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Delete Department</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form method="post">
+                     <div class="form-group">
+                        <select id="deleteDept" class='form-control'>
+                        </select>
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="deleteDepartment">Delete</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Delete Department Details Pop up Modal End  -->
-
-    <!-- Add Location Details Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="AddLocation">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Add Location</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="#">Location</label>
-                <input type="text" class="form-control" id="locationAdd" value="" placeholder="Add New Location Name">
-              </div>
-              <button type="submit" class="btn btn-primary" id="addLocation">Add</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Delete Department Details Pop up Modal End  -->
+      <!-- Add Location Details Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="AddLocation">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Add Location</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <div class="form-group">
+                        <label for="#">Location</label>
+                        <input type="text" class="form-control" id="locationAdd" value="" placeholder="Add New Location Name">
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="addLocation">Add</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Add Location Details Pop up Modal End  -->
-
-    <!-- Update Location Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="UpdateLocation">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Update Location</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <select id="prevLocation" class='form-control'>
-                </select>
-                <br>
-                <input type="text" class="form-control" id="newLocation" value="" placeholder="Update Location Name">
-              </div>
-              <button type="submit" class="btn btn-primary" id="updateLocation">Update</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Add Location Details Pop up Modal End  -->
+      <!-- Update Location Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="UpdateLocation">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Update Location</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <div class="form-group">
+                        <select id="prevLocation" class='form-control'>
+                        </select>
+                        <br>
+                        <input type="text" class="form-control" id="newLocation" value="" placeholder="Update Location Name">
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="updateLocation">Update</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Update Location Details Pop up Modal End  -->
-
-    <!-- Delete Location Details Pop up Modal Start -->
-    <div class="modal" tabindex="-1" role="dialog" id="DeleteLocation">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Delete Location</h3>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <select id="deleteLoc" class='form-control'>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary" id="deleteLocation">Delete</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <!-- Update Location Details Pop up Modal End  -->
+      <!-- Delete Location Details Pop up Modal Start -->
+      <div class="modal" tabindex="-1" role="dialog" id="DeleteLocation">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Delete Location</h3>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <div class="form-group">
+                        <select id="deleteLoc" class='form-control'>
+                        </select>
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-custom" id="deleteLocation">Delete</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-    <!-- Delete Location Details Pop up Modal End -->
-
-    <div id="preloader"></div>
-
-    <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
-    <script src="vendors/js/bootstrap.min.js"></script>
-    <script type="application/javascript" src="libs/js/script.js"></script>
-    <script type="application/javascript" src="vendors/js/scrolls.js"></script>
-    <script type="text/javascript">
-      scroller.init();
-    </script>
-    <script src="vendors/js/sweetalert2.all.min.js"></script>
-</body>
-
+      <!-- Delete Location Details Pop up Modal End -->
+      <div id="preloader"></div>
+      <script type="application/javascript" src="vendors/js/jquery-3.6.0.min.js"></script>
+      <script src="vendors/js/popper.min.js"></script>
+      <script src="vendors/js/bootstrap.min.js"></script>
+      <script type="application/javascript" src="libs/js/script.js"></script>
+      <script type="application/javascript" src="vendors/js/scrolls.js"></script>
+      <script type="text/javascript">
+         scroller.init();
+      </script>
+      <script src="vendors/js/sweetalert2.all.min.js"></script>
+   </body>
 </html>

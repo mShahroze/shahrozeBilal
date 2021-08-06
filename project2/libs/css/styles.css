@@ -63,10 +63,10 @@ body .modal-open {
   max-width: 1120px;
 }
 
-.btn-primary {
+button.btn-custom {
   color: #212529 !important;
   font-weight: 500 !important;
-  background-color: lightslategray !important;
+  background-color: lightslategray;
   border: none !important;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
@@ -75,17 +75,27 @@ body .modal-open {
     0 0 8px rgba(102, 175, 233, 0.6);
 }
 
-a.btn.btn-success {
+button.btn-custom:hover {
+  background-color: lightslategray;
+  border: none !important;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+button.btn-custom:focus {
+  color: #fff;
+  background-color: #f2a65a;
+  border-color: #f2a65a;
+  box-shadow: 0 0 0 0.25rem rgb(49 132 253 / 50%);
+}
+
+a.refresh-btn {
   color: #212529 !important;
   background-color: #f2a65a;
   border: none;
-}
-
-img.d-inline-block.align-top {
-  width: 140px !important;
-  height: 140px !important;
-  margin-left: 22px;
-  margin-top: 18px;
 }
 
 .img-thumbnail {
@@ -100,144 +110,109 @@ img.d-inline-block.align-top {
 a.dropdown-item:hover {
   background-color: #cfcfcf !important;
 }
-#searchBar {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 15px;
-  margin-bottom: 30px;
-  margin-top: 9px;
-  padding: 0;
+
+.control-container {
+  width: 92%;
+  margin: 0 auto;
+}
+
+.nav-stuff {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.advanced-search-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media screen and (max-width: 950px) {
+  .advanced-search-container {
+    justify-content: flex-start;
+  }
+}
+
+.advanced-search-container > div {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-form {
+  width: 330px;
+  margin-left: auto;
+}
+
+@media screen and (max-width: 950px) {
+  .search-form {
+    margin-left: unset;
+    margin-top: 10px;
+  }
 }
 
 #search {
-  width: 212px;
-  border-radius: 100px;
   font-weight: 500;
   background-color: lightslategray;
+  font-weight: 500;
+  letter-spacing: normal;
 }
 
 #search::placeholder {
-  position: absolute;
-  right: 0.5px;
-}
-
-#searchImg {
-  position: absolute;
-  bottom: 12px;
-  right: 191px;
-  width: 15px;
-  height: 15px;
-}
-
-#search::placeholder {
-  color: #212529;
+  color: #21252977;
+  font-weight: 500;
+  letter-spacing: normal;
 }
 
 #advanced-button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 4px;
-  margin-bottom: 30px;
-  margin-top: 37px;
-  padding: 0;
   color: #212529;
   font-weight: 500;
   background-color: lightslategray;
+}
+
+#advanced-button:focus {
+  color: #fff;
+  background-color: #f2a65a;
+  border-color: #f2a65a;
+  box-shadow: 0 0 0 0.25rem rgb(49 132 253 / 50%);
 }
 
 #return-button {
   display: none;
   color: #212529;
-  background-color: lightslategray;
+  background-color: #f2a65a;
   font-weight: 500;
-  padding-left: 5px;
-  padding-top: 2px;
+  text-decoration: none;
+  padding: 8px;
+  cursor: pointer;
 }
 
 #advancedRow {
   display: none;
-  /* margin-left: 150px; */
-  width: 500px;
-}
-
-a#advanced-button {
-  margin-top: 40px;
-}
-
-.advanced {
-  display: none;
-}
-
-.advcontainer {
-  position: absolute;
-  right: -30px;
-  top: 0;
-  margin-right: 4px;
-  margin-bottom: 30px;
-  margin-top: 37px;
-  padding-top: 2px;
-}
-
-#mobDeptIcon {
-  position: absolute;
-  left: -17px;
-  top: 6px;
-  width: 30px;
-}
-
-#mobLocIcon {
-  position: absolute;
-  left: 184px;
-  top: 6px;
-  width: 30px;
-}
-
-#searchdept {
-  border-radius: 10px;
-}
-
-#searchloca {
-  border-radius: 10px;
-}
-
-#return-button {
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-#return-button:hover {
-  cursor: pointer;
 }
 
 select#searchDept {
-  border-radius: 10px;
   cursor: pointer;
-  width: 206px;
-  outline: 0px;
   color: #212529;
   background-color: lightslategray;
+  padding: 5px;
+  width: 167px;
   font-weight: 500;
-  padding-left: 20px;
+  letter-spacing: normal;
 }
 
 select#searchLoc {
-  border-radius: 10px;
   cursor: pointer;
-  width: 180px;
-  outline: 0px;
   color: #212529;
   background-color: lightslategray;
+  padding: 5px;
+  width: 141px;
   font-weight: 500;
-  padding-left: 20px;
-}
-
-#mobLocIcon {
-  position: absolute;
-  left: 193px !important;
-  top: 7px !important;
-  width: 30px;
+  letter-spacing: normal;
 }
 
 #EMPID {
@@ -254,8 +229,9 @@ select#searchLoc {
 
 #navBar {
   width: 100%;
-  position: fixed;
-  z-index: 1;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .container.mw-100 {
@@ -422,18 +398,6 @@ button.swal2-confirm.btn.btn-success {
   margin-left: 10px;
 }
 
-@media screen and (max-width: 1200px) {
-  #search {
-    width: 338px;
-  }
-  select#searchDept {
-    width: 205px;
-  }
-  select#searchLoc {
-    width: 171px;
-  }
-}
-
 @media screen and (min-width: 1700px) {
   .img-thumbnail {
     margin-top: 5px;
@@ -458,37 +422,6 @@ button.swal2-confirm.btn.btn-success {
 }
 
 @media screen and (min-width: 990px) and (max-width: 1200px) {
-  #search {
-    width: 218px;
-  }
-
-  #search::placeholder {
-    position: absolute;
-    right: 0.5px;
-  }
-
-  #searchImg {
-    position: absolute;
-    bottom: 12px;
-    left: 9px;
-    width: 15px;
-    height: 15px;
-  }
-
-  #advancedRow {
-    width: 480px;
-  }
-
-  #mobLocIcon {
-    position: absolute;
-    left: 190px !important;
-    top: 7px !important;
-    width: 30px;
-  }
-
-  select#searchLoc {
-    width: 187px;
-  }
 }
 
 @media screen and (max-width: 990px) {
@@ -496,17 +429,6 @@ button.swal2-confirm.btn.btn-success {
     margin-left: 33px;
   }
 
-  #navBar2 {
-    height: 120px;
-    margin-bottom: 50px !important;
-  }
-
-  img.d-inline-block.align-top {
-    position: relative;
-    width: 140px !important;
-    height: 140px !important;
-    margin: 0 !important;
-  }
   #navBar1 {
     height: 120px;
   }
@@ -521,157 +443,11 @@ button.swal2-confirm.btn.btn-success {
   #navBar .navbar-collapse {
     display: none;
   }
-
-  #navBar #AddEmpButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 75px;
-    left: 96px;
-    margin: 0 !important;
-  }
-  #navBar #AddDeptButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 3px;
-    left: 254px;
-  }
-  #navBar #AddLocButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 27px;
-    left: 412px;
-  }
-
-  ul#searchBar {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 94px !important;
-    margin-right: 0 !important;
-    top: 32px;
-    height: 100px;
-  }
-
-  #search {
-    width: 218px;
-    height: 34px;
-  }
-
-  #search::placeholder {
-    position: absolute;
-    right: 0.5px;
-  }
-
-  #searchImg {
-    position: absolute;
-    bottom: 66px;
-    left: 12px;
-    width: 15px;
-    height: 15px;
-  }
-
-  #advanced-button {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    left: 0;
-    margin: 0 !important;
-    top: 48px;
-  }
-
-  a.btn.btn-success {
-    overflow: hidden;
-    float: right;
-    position: absolute;
-    bottom: 75px;
-    left: 543px;
-  }
-
-  #navbarSupportedContent {
-    width: 100px !important;
-  }
-
-  select#searchDept {
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: -199px !important;
-    margin-right: 0 !important;
-    top: 11px;
-    height: 23px;
-    width: 206px;
-  }
-
-  select#searchLoc {
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 10px !important;
-    margin-right: 0 !important;
-    top: 11px;
-    height: 23px;
-    width: 177px;
-  }
-
-  #return-button {
-    position: absolute !important;
-    left: 188px !important;
-    margin-right: 0 !important;
-    top: 11px;
-    height: 23px;
-    width: 60px;
-  }
-
-  div#spacing {
-    padding: 0 !important;
-  }
-
-  .navbar-toggler {
-    /* right: 15px; */
-    position: absolute;
-  }
-
-  .advcontainer {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    margin-bottom: 30px;
-    margin-top: 37px;
-    padding-top: 2px;
-    margin-left: 200px;
-  }
-
-  #mobDeptIcon {
-    position: absolute;
-    left: -204px !important;
-    top: 15px !important;
-    width: 30px;
-  }
-
-  #mobLocIcon {
-    position: absolute;
-    left: 3px !important;
-    top: 16px !important;
-    width: 30px;
-  }
 }
 
 @media screen and (max-width: 600px) {
-  #search {
-    width: 209px;
-    border: none;
-    border-radius: 0 !important;
-  }
-
   button.navbar-toggler {
     margin-left: 33px;
-  }
-
-  #navBar2 {
-    height: 120px;
-    margin-bottom: 50px !important;
   }
 
   div#spacing {
@@ -682,170 +458,7 @@ button.swal2-confirm.btn.btn-success {
     display: none;
   }
 
-  #navBar #AddEmpButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 75px;
-    left: 96px;
-    margin: 0 !important;
-  }
-
-  #navBar #AddDeptButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 3px;
-    left: 146px;
-  }
-  #navBar #AddLocButton {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    bottom: 27px;
-    left: 208px;
-  }
-
-  .navbar-toggler {
-    /* right: 15px; */
-    position: absolute;
-  }
-
-  ul#searchBar {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: 94px !important;
-    margin-right: 0 !important;
-    top: 37px;
-    height: 100px;
-    max-width: 72%;
-    /* display: block; */
-    padding: 0;
-  }
-
-  #search::placeholder {
-    position: absolute;
-  }
-
-  #searchImg {
-    position: absolute;
-    bottom: 66px;
-    left: 6px;
-    width: 15px;
-    height: 15px;
-  }
-
-  #advanced-button {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    left: 0;
-    margin: 0 !important;
-    top: 48px;
-    border: none;
-    border-radius: 0 !important;
-  }
-
-  a.btn.btn-success {
-    overflow: hidden;
-    float: right;
-    position: absolute;
-    bottom: 75px;
-    left: 267px;
-  }
-
   #navbarSupportedContent {
     width: 100px !important;
-  }
-
-  div.dropdown-menu.show {
-    overflow: hidden;
-    float: left;
-    position: absolute;
-    left: 145px;
-    width: 31% !important;
-    display: block;
-    padding: 0;
-    height: 96px;
-    top: -29px !important;
-  }
-
-  select#searchDept {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: -198px !important;
-    margin-right: 0 !important;
-    top: 13px;
-    height: 23px;
-    width: 42px;
-    padding: 0;
-    border: none !important;
-    padding-left: 22px;
-  }
-
-  select#searchLoc {
-    overflow: hidden;
-    float: left;
-    position: absolute !important;
-    bottom: 30px m !important;
-    left: -150px !important;
-    margin-right: 0 !important;
-    top: 13px;
-    height: 23px;
-    padding: 0;
-    border: none !important;
-    width: 40px;
-    padding-left: 22px;
-  }
-
-  #return-button {
-    position: absolute !important;
-    left: -107px !important;
-    margin-right: 0 !important;
-    top: 13px;
-    height: 24px;
-    max-width: 53px;
-  }
-
-  div#DepDropdown {
-    margin-top: 26px;
-  }
-
-  div#LocDropdown {
-    margin-left: 62px;
-  }
-
-  .advcontainer {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    margin-bottom: 30px;
-    margin-top: 37px;
-    padding-top: 2px;
-    margin-left: 200px;
-  }
-
-  #mobDeptIcon {
-    position: absolute;
-    left: -202px !important;
-    top: 17px !important;
-    width: 20px;
-  }
-
-  #mobLocIcon {
-    position: absolute;
-    left: -154px !important;
-    top: 18px !important;
-    width: 20px;
-  }
-
-  #navBar {
-    overflow: hidden;
-    position: relative;
-    height: 240px;
   }
 }
